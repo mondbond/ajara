@@ -1,0 +1,10 @@
+#content_panel {
+    margin-top: 200px;
+    margin-left: 40vh;
+}
+
+#undername_line {
+    height: 3px;
+    width: available;
+    background-color: #c3062a;
+}

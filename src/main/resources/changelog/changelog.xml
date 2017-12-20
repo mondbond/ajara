@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="4" author="mond">
+        <createTable tableName="AUTHOR">
+            <column name="id" type="int" autoIncrement="true" incrementBy="1" startWith="1000" >
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="FIRST_NAME" type="varchar2(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SECOND_NAME" type="varchar2(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE" type="DATETIME" valueDate="sysdate" defaultValueComputed="sysdate">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="mond">
+        <createSequence
+                        cycle="false"
+                        incrementBy="1"
+                        maxValue="99999999999"
+                        minValue="1"
+                        ordered="true"
+                        schemaName="c##MOND"
+                        sequenceName="AJARA_SEQ"
+                        startValue="1000"/>
+    </changeSet>
+
+</databaseChangeLog>

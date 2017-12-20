@@ -1,0 +1,21 @@
+#content_container{
+    width: min-content;
+    height: available;
+}
+
+#welcome_table{
+    width: 600px;
+    margin-top: 300px;
+}
+
+#author_div{
+    float: left;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+#books_div{
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
+}

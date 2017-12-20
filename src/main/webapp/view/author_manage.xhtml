@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich">
+
+<h:head>
+    <title>Author page</title>
+    <link rel="stylesheet" type="text/css" href="../style/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../style/detail_author_style.css"/>
+</h:head>
+
+<h:body>
+
+    <div id="content_panel">
+        <h2>Manage authors</h2>
+        <div id="undername_line">
+        </div>
+
+        <div id="authors_data" class="left margin">
+            <rich:dataTable value="#{authorcon.getAllAuthors()}" var="author" rows="4">
+                <f:facet name="header">
+                    <h:outputText value="All authors" />
+                </f:facet>
+                <rich:column>
+                    <f:facet name="header">Id</f:facet>
+                    <h:outputText value="1"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">First Name</f:facet>
+                    <h:outputText value="#{author.firstName}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Second Name</f:facet>
+                    <h:outputText value="#{author.secondName}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Create date</f:facet>
+                    <h:outputText value="#{author.createDate}"/>
+                </rich:column>
+                <f:facet name="pagenation">
+                    <rich:dataScroller />
+                </f:facet>
+                <f:facet name="footer">
+                    <h:outputText value="Capitals and States Table" />
+                </f:facet>
+
+            </rich:dataTable>
+        </div>
+
+        <div id="add_author_form" class="board_style left margin">
+            <h:form >
+                <h:panelGrid>
+                    <div>
+                        <h:outputLabel value="Name:"/>
+                        <h:inputText value="#{authorcon.author.firstName}"/>
+                    </div>
+                    <div>
+                        <h:outputLabel value="Second Name:"/>
+                        <h:inputText value="#{authorcon.author.secondName}"/>
+                    </div>
+                    <div>
+                        <div>
+                            <h:commandButton value="Save Record" action="#{authorcon.newAuthor}" />
+                        </div>
+                    </div>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+    </div>
+</h:body>
+
+</html>
