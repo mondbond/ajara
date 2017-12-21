@@ -7,10 +7,13 @@ import javax.persistence.PersistenceContext;
 
 public abstract class AbstractHome<T> {
 
+    Class<T> entity;
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    AbstractHome() {
+    AbstractHome(Class<T> entity) {
+        this.entity = entity;
     }
 
     EntityManager getEntityManager() {
@@ -23,5 +26,11 @@ public abstract class AbstractHome<T> {
 
     public void insert(T object) {
         getSession().save(object);
+    }
+
+    public void deleteByPk(long pk) {
+        T object = getSession().load(entity, pk);
+        getSession().delete(object);
+        getSession().flush();
     }
 }

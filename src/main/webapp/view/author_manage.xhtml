@@ -8,7 +8,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a4j="http://richfaces.org/a4j"
-      xmlns:rich="http://richfaces.org/rich">
+      xmlns:rich="http://richfaces.org/rich" xmlns:p="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
     <title>Author page</title>
@@ -24,14 +24,24 @@
         </div>
 
         <div id="authors_data" class="left margin">
-            <rich:dataTable value="#{authorcon.getAllAuthors()}" var="author" rows="4">
+            <rich:dataTable value="#{authorController.getAuthors()}" var="author">
                 <f:facet name="header">
                     <h:outputText value="All authors" />
                 </f:facet>
+
                 <rich:column>
-                    <f:facet name="header">Id</f:facet>
-                    <h:outputText value="1"/>
+                    <f:facet name="header">
+                        <h:form>
+                        <h:commandLink action="#{authorController.sortByNumber}"> ID
+                            <f:param name="columnName" value="pk" />
+                        </h:commandLink>
+                        </h:form>
+                    </f:facet>
+                    <h:outputText value="#{author.id}">
+                        <f:convertNumber/>
+                    </h:outputText>
                 </rich:column>
+
                 <rich:column>
                     <f:facet name="header">First Name</f:facet>
                     <h:outputText value="#{author.firstName}"/>
@@ -44,6 +54,12 @@
                     <f:facet name="header">Create date</f:facet>
                     <h:outputText value="#{author.createDate}"/>
                 </rich:column>
+                <rich:column>
+                    <f:facet name="header">Select</f:facet>
+                    <h:selectBooleanCheckbox>
+                        <p:ajax listener="#{authorController.selectPk(author.id)}"/>
+                    </h:selectBooleanCheckbox>
+                </rich:column>
                 <f:facet name="pagenation">
                     <rich:dataScroller />
                 </f:facet>
@@ -52,6 +68,12 @@
                 </f:facet>
 
             </rich:dataTable>
+            <div>
+                <h:commandButton value="delete selected" action="#{authorController.deleteSelected}">
+                    <p:ajax listener="#{authorController.deleteSelected()}"/>
+                </h:commandButton>
+            </div>
+
         </div>
 
         <div id="add_author_form" class="board_style left margin">
@@ -59,21 +81,23 @@
                 <h:panelGrid>
                     <div>
                         <h:outputLabel value="Name:"/>
-                        <h:inputText value="#{authorcon.author.firstName}"/>
+                        <h:inputText value="#{authorController.author.firstName}"/>
                     </div>
                     <div>
                         <h:outputLabel value="Second Name:"/>
-                        <h:inputText value="#{authorcon.author.secondName}"/>
+                        <h:inputText value="#{authorController.author.secondName}"/>
                     </div>
                     <div>
                         <div>
-                            <h:commandButton value="Save Record" action="#{authorcon.newAuthor}" />
+                            <h:form>
+                                <h:commandButton value="Save Record" action="#{authorController.newAuthor}">
+                                </h:commandButton>
+                            </h:form>
                         </div>
                     </div>
                 </h:panelGrid>
             </h:form>
         </div>
-
     </div>
 </h:body>
 

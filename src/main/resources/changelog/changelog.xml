@@ -25,14 +25,14 @@
 
     <changeSet id="5" author="mond">
         <createSequence
-                        cycle="false"
-                        incrementBy="1"
-                        maxValue="99999999999"
-                        minValue="1"
-                        ordered="true"
-                        schemaName="c##MOND"
-                        sequenceName="AJARA_SEQ"
-                        startValue="1000"/>
+            cycle="false"
+            incrementBy="1"
+            maxValue="99999999999"
+            minValue="1"
+            ordered="true"
+            schemaName="c##MOND"
+            sequenceName="AJARA_SEQ"
+            startValue="1000"/>
     </changeSet>
 
 </databaseChangeLog>

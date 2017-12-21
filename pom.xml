@@ -11,11 +11,11 @@
 
     <dependencies>
 
+        <!--ee-->
         <dependency>
-            <groupId>javax.faces</groupId>
-            <artifactId>jsf-api</artifactId>
-            <version>2.1</version>
-            <scope>provided</scope>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
@@ -25,18 +25,26 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--jsf-->
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>1.0</version>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.richfaces</groupId>
+            <artifactId>richfaces</artifactId>
+            <version>4.5.11.Final</version>
+        </dependency>
+
+        <!--hibernate-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.0.1.Final</version>
             <scope>provided</scope>
-
         </dependency>
 
         <dependency>
@@ -53,22 +61,18 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--driver-->
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc7</artifactId>
             <version>12.1.0</version>
         </dependency>
 
+        <!--db script-->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>3.5.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.richfaces</groupId>
-            <artifactId>richfaces</artifactId>
-            <version>4.5.11.Final</version>
         </dependency>
 
         <!--<dependency>-->

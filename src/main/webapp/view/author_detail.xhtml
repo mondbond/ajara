@@ -19,7 +19,7 @@
 <h:body>
 
     <div id="content_panel">
-        <h2>#{authorcon.getAuthorFullNameByPk()}</h2>
+        <h2>#{authorController.getAuthorFullNameByPk()}</h2>
         <div id="undername_line">
         </div>
         <h:commandButton value="Edit" type="submit">
@@ -32,10 +32,10 @@
 
 
     <h2>hello </h2>
-    <h2>#{authorcon.toString()}</h2>
-    <h2>#{authorcon.getAuthorName()}</h2>
+    <h2>#{authorController.toString()}</h2>
+    <h2>#{authorController.getAuthorName()}</h2>
 
-    <h:commandButton value="Confirm" action="#{authorcon.getAuthorName()}"/>
+    <h:commandButton value="Confirm" action="#{authorController.getAuthorName()}"/>
 
 </h:body>
 

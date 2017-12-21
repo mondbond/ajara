@@ -8,6 +8,6 @@ import javax.ejb.Stateful;
 public class AuthorHome extends AbstractHome<Author> {
 
     AuthorHome() {
-        super();
+        super(Author.class);
     }
 }

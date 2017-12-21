@@ -9,16 +9,17 @@ import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.faces.bean.ManagedBean;
 import java.util.List;
+import java.util.stream.Stream;
 
 @ManagedBean
 @Stateful
 public class AuthorManager {
 
     @EJB
-    AuthorFacade authorFacade;
+    private AuthorFacade authorFacade;
 
     @EJB
-    AuthorHome authorHome;
+    private AuthorHome authorHome;
 
     public Author getAuthorByPk(long pk) {
         return authorFacade.findByPk(pk);
@@ -30,5 +31,13 @@ public class AuthorManager {
 
     public void save(Author author) {
         authorHome.insert(author);
+    }
+
+    public void delete(long pk){
+        authorHome.deleteByPk(pk);
+    }
+
+    public void deleteList(List<Long> ids){
+        Stream.of(ids).flatMap(pk->ids.stream()).forEach(pk->delete(pk));
     }
 }
