@@ -28,30 +28,41 @@
                 <f:facet name="header">
                     <h:outputText value="All authors" />
                 </f:facet>
-
                 <rich:column>
                     <f:facet name="header">
                         <h:form>
-                        <h:commandLink action="#{authorController.sortByNumber}"> ID
-                            <f:param name="columnName" value="pk" />
-                        </h:commandLink>
+                            <h:commandLink action="#{authorController.sortBy}"> ID
+                                <f:param name="columnName" value="pk" />
+                            </h:commandLink>
                         </h:form>
                     </f:facet>
-                    <h:outputText value="#{author.id}">
-                        <f:convertNumber/>
-                    </h:outputText>
+                    <h:form>
+                        <h:commandLink value="1}" actionListener="#{authorController.toDetailPage(author.id)}">
+                        </h:commandLink>
+                    </h:form>
                 </rich:column>
-
                 <rich:column>
                     <f:facet name="header">First Name</f:facet>
                     <h:outputText value="#{author.firstName}"/>
                 </rich:column>
                 <rich:column>
-                    <f:facet name="header">Second Name</f:facet>
+                    <f:facet name="header">
+                        <h:form>
+                            <h:commandLink action="#{authorController.sortBy}"> SECOND NAME
+                                <f:param name="columnName" value="secondName" />
+                            </h:commandLink>
+                        </h:form>
+                    </f:facet>
                     <h:outputText value="#{author.secondName}"/>
                 </rich:column>
                 <rich:column>
-                    <f:facet name="header">Create date</f:facet>
+                    <f:facet name="header">
+                        <h:form>
+                            <h:commandLink action="#{authorController.sortBy}"> CREATE DATE
+                                <f:param name="columnName" value="createDate" />
+                            </h:commandLink>
+                        </h:form>
+                    </f:facet>
                     <h:outputText value="#{author.createDate}"/>
                 </rich:column>
                 <rich:column>
@@ -66,14 +77,12 @@
                 <f:facet name="footer">
                     <h:outputText value="Capitals and States Table" />
                 </f:facet>
-
             </rich:dataTable>
             <div>
                 <h:commandButton value="delete selected" action="#{authorController.deleteSelected}">
                     <p:ajax listener="#{authorController.deleteSelected()}"/>
                 </h:commandButton>
             </div>
-
         </div>
 
         <div id="add_author_form" class="board_style left margin">

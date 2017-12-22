@@ -16,6 +16,8 @@ public class AuthorController {
 
     private final String TAG = "Author";
 
+    private Author detailAuthor = null;
+
     //    for  creating
     private Author author = new Author();
 
@@ -35,13 +37,12 @@ public class AuthorController {
         mAuthors = (ArrayList<Author>) getAllAuthors();
     }
 
-    public String getAuthorName(){
-        return authorManager.getAuthorByPk(1).getFirstName();
+    public Author getAuthorByPk(long pk){
+        return authorManager.getAuthorByPk(pk);
     }
 
     public String getAuthorFullNameByPk(){
-        Author author = authorManager.getAuthorByPk((long)1);
-        return author.getFirstName() + " " + author.getSecondName();
+        return detailAuthor.getFirstName() + " " + detailAuthor.getSecondName();
     }
 
     private List<Author> getAllAuthors(){
@@ -68,16 +69,33 @@ public class AuthorController {
         }
     }
 
-    public String sortByNumber() {
+    public String sortBy() {
         Map<String,String> params =
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         sortingColumn = params.get("columnName");
         changeOrder(sortingColumn);
-
         return null;
     }
 
-    private void sort() {
+    private void sortBySecondName(){
+        if (mOderMap.get(sortingColumn)){
+            Collections.sort(mAuthors, new Comparator<Author>() {
+                @Override
+                public int compare(Author o1, Author o2) {
+                    return (int)(o1.getSecondName().compareTo(o2.getSecondName()));
+                }
+            });
+        } else {
+            Collections.sort(mAuthors, new Comparator<Author>() {
+                @Override
+                public int compare(Author o1, Author o2) {
+                    return (int)(o2.getSecondName().compareTo(o1.getSecondName()));
+                }
+            });
+        }
+    }
+
+    private void sortByPk() {
         if (mOderMap.get(sortingColumn)){
             Collections.sort(mAuthors, new Comparator<Author>() {
                 @Override
@@ -95,15 +113,56 @@ public class AuthorController {
         }
     }
 
+    private void sortByDate(){
+        if (mOderMap.get(sortingColumn)){
+            Collections.sort(mAuthors, new Comparator<Author>() {
+                @Override
+                public int compare(Author o1, Author o2) {
+                    return (int)(o1.getCreateDate().compareTo(o2.getCreateDate()));
+                }
+            });
+        } else {
+            Collections.sort(mAuthors, new Comparator<Author>() {
+                @Override
+                public int compare(Author o1, Author o2) {
+                    return o2.getCreateDate().compareTo(o1.getCreateDate());
+                }
+            });
+        }
+    }
+
+    private void sort() {
+        switch (sortingColumn){
+            case "pk":
+                sortByPk();
+                break;
+            case "secondName":
+                sortBySecondName();
+                break;
+            case "createDate":
+                sortByDate();
+                break;
+        }
+    }
+
     private void changeOrder(String columnName){
 
         System.out.println(mOderMap.toString());
-        if(mOderMap.containsKey(columnName)){
+        if(mOderMap.containsKey(columnName)) {
             mOderMap.put(columnName, !mOderMap.get(columnName));
         } else {
             mOderMap.put(columnName, true);
         }
     }
+
+//    redirect
+    public void toDetailPage(long pk) {
+        detailAuthor = getAuthorByPk(Long.valueOf(pk));
+        FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
+                .handleNavigation(FacesContext.getCurrentInstance(), null, "author_detail.xhtml");
+    }
+
+//    pagination
 
 //    getset
     public Author getAuthor() {
@@ -124,5 +183,13 @@ public class AuthorController {
 
     public void setAuthors(ArrayList<Author> mAuthors) {
         this.mAuthors = mAuthors;
+    }
+
+    public Author getDetailAuthor() {
+        return detailAuthor;
+    }
+
+    public void setDetailAuthor(Author detailAuthor) {
+        this.detailAuthor = detailAuthor;
     }
 }
