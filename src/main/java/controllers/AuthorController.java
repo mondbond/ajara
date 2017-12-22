@@ -2,6 +2,7 @@ package controllers;
 
 import data.entity.Author;
 import managers.AuthorManager;
+import model.AuthorDataModule;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -31,6 +32,9 @@ public class AuthorController {
 
     @EJB
     private AuthorManager authorManager;
+
+    @EJB
+    private AuthorDataModule authorDataModule;
 
     @PostConstruct
     void init(){
@@ -191,5 +195,9 @@ public class AuthorController {
 
     public void setDetailAuthor(Author detailAuthor) {
         this.detailAuthor = detailAuthor;
+    }
+
+    public AuthorDataModule getAuthorDataModule() {
+        return authorDataModule;
     }
 }

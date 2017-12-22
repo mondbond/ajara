@@ -24,7 +24,7 @@
         </div>
 
         <div id="authors_data" class="left margin">
-            <rich:dataTable value="#{authorController.getAuthors()}" var="author">
+            <rich:dataTable id="authors" value="#{authorController.authorDataModule}" var="author">
                 <f:facet name="header">
                     <h:outputText value="All authors" />
                 </f:facet>
@@ -72,12 +72,12 @@
                     </h:selectBooleanCheckbox>
                 </rich:column>
                 <f:facet name="pagenation">
-                    <rich:dataScroller />
-                </f:facet>
-                <f:facet name="footer">
-                    <h:outputText value="Capitals and States Table" />
+                    <h:form>
+                    <rich:dataScroller for="authors" maxPages="3" fastStep="2" />
+                    </h:form>
                 </f:facet>
             </rich:dataTable>
+
             <div>
                 <h:commandButton value="delete selected" action="#{authorController.deleteSelected}">
                     <p:ajax listener="#{authorController.deleteSelected()}"/>
