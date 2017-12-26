@@ -5,12 +5,19 @@
       <artifact name="ajara:war exploded" />
     </artifacts-to-build>
   </component>
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/../ajara/src/main/webapp/view/author_detail.xhtml" line="32" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="e01ceadc-326d-4b4a-8355-edaadf53b6db" name="Default" comment="pagination">
-      <change beforePath="" afterPath="$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModule.java" />
+    <list default="true" id="e01ceadc-326d-4b4a-8355-edaadf53b6db" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/../ajara/.idea/webContexts.xml" afterPath="$PROJECT_DIR$/../ajara/.idea/webContexts.xml" />
       <change beforePath="$PROJECT_DIR$/../ajara/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../ajara/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/../ajara/src/main/java/controllers/AuthorController.java" afterPath="$PROJECT_DIR$/../ajara/src/main/java/controllers/AuthorController.java" />
-      <change beforePath="$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractFacade.java" afterPath="$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractFacade.java" />
+      <change beforePath="$PROJECT_DIR$/../ajara/src/main/java/data/entity/Author.java" afterPath="$PROJECT_DIR$/../ajara/src/main/java/data/entity/Author.java" />
+      <change beforePath="$PROJECT_DIR$/../ajara/src/main/java/managers/AuthorManager.java" afterPath="$PROJECT_DIR$/../ajara/src/main/java/managers/AuthorManager.java" />
+      <change beforePath="$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModule.java" afterPath="$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModule.java" />
+      <change beforePath="$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractHome.java" afterPath="$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractHome.java" />
+      <change beforePath="$PROJECT_DIR$/../ajara/src/main/webapp/view/author_detail.xhtml" afterPath="$PROJECT_DIR$/../ajara/src/main/webapp/view/author_detail.xhtml" />
       <change beforePath="$PROJECT_DIR$/../ajara/src/main/webapp/view/author_manage.xhtml" afterPath="$PROJECT_DIR$/../ajara/src/main/webapp/view/author_manage.xhtml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -44,63 +51,7 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="AuthorDataModule.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModule.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="74">
-              <caret line="18" column="30" lean-forward="true" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="author_manage.xhtml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../ajara/src/main/webapp/view/author_manage.xhtml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="77" column="26" lean-forward="true" selection-start-line="77" selection-start-column="26" selection-end-line="77" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractFacade.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractFacade.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="41" column="28" lean-forward="true" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AuthorFacade.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/repository/AuthorFacade.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AuthorController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/controllers/AuthorController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="828">
-              <caret line="201" column="5" lean-forward="false" selection-start-line="201" selection-start-column="5" selection-end-line="201" selection-end-column="5" />
-              <folding>
-                <element signature="e#5654#5655#0" expanded="true" />
-                <element signature="e#5693#5694#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -108,10 +59,10 @@
         <option value="Jsp File" />
         <option value="facelets" />
         <option value="FxmlFile" />
-        <option value="Interface" />
         <option value="HTML File" />
         <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -131,6 +82,9 @@
       <find>todetail</find>
       <find>sort</find>
       <find>oracle</find>
+      <find>get</find>
+      <find>toDe</find>
+      <find>update</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -142,20 +96,12 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../ajara/src/main/webapp/view/author_manage.xhtml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../ajara/src/main/webapp/view/author_detail.xhtml" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/webapp/author_detail.html" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/beans.xml" />
-        <option value="$PROJECT_DIR$/src/main/webapp/index.xhtml" />
-        <option value="$PROJECT_DIR$/src/main/webapp/style.css" />
-        <option value="$PROJECT_DIR$/src/main/java/entity/Author.java" />
-        <option value="$PROJECT_DIR$/src/main/java/managers/AuthorManager.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/repository/AbstractFacade.java" />
         <option value="$PROJECT_DIR$/src/main/java/repository/AuthorFacade.java" />
         <option value="$PROJECT_DIR$/src/main/java/controllers/AuthorController.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/author_detail.xhtml" />
@@ -187,17 +133,26 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/managers/AuthorManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/controllers/AuthorController.java" />
-        <option value="$PROJECT_DIR$/../ajara/src/main/webapp/view/author_detail.xhtml" />
-        <option value="$PROJECT_DIR$/../ajara/src/main/java/util/Sort.java" />
-        <option value="$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractHome.java" />
-        <option value="$PROJECT_DIR$/../ajara/src/main/java/repository/AuthorDataModule.java" />
-        <option value="$PROJECT_DIR$/../ajara/pom.xml" />
-        <option value="$PROJECT_DIR$/../ajara/src/main/java/managers/AuthorManager.java" />
-        <option value="$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModel.java" />
-        <option value="$PROJECT_DIR$/../ajara/src/main/java/controllers/AuthorController.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/view/author_detail.xhtml" />
+        <option value="$PROJECT_DIR$/src/main/java/util/Sort.java" />
+        <option value="$PROJECT_DIR$/src/main/java/repository/AbstractHome.java" />
+        <option value="$PROJECT_DIR$/src/main/java/repository/AuthorDataModule.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/managers/AuthorManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/model/AuthorDataModel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/controllers/AuthorController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/model/AuthorDataModule.java" />
+        <option value="$PROJECT_DIR$/src/main/java/repository/AbstractFacade.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/view/author_manage.xhtml" />
+        <option value="$PROJECT_DIR$/../ajara/src/main/java/common/Sorting.java" />
+        <option value="$PROJECT_DIR$/../ajara/src/main/java/data/entity/Author.java" />
         <option value="$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModule.java" />
-        <option value="$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractFacade.java" />
         <option value="$PROJECT_DIR$/../ajara/src/main/webapp/view/author_manage.xhtml" />
+        <option value="$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractFacade.java" />
+        <option value="$PROJECT_DIR$/../ajara/src/main/java/managers/AuthorManager.java" />
+        <option value="$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractHome.java" />
+        <option value="$PROJECT_DIR$/../ajara/src/main/webapp/view/author_detail.xhtml" />
+        <option value="$PROJECT_DIR$/../ajara/src/main/java/controllers/AuthorController.java" />
       </list>
     </option>
   </component>
@@ -226,9 +181,9 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="345" />
-    <option name="y" value="-16" />
-    <option name="width" value="1224" />
+    <option name="x" value="285" />
+    <option name="y" value="102" />
+    <option name="width" value="1438" />
     <option name="height" value="855" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -247,10 +202,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView" />
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -335,6 +288,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -776,7 +731,10 @@
       <workItem from="1513843978555" duration="18814000" />
       <workItem from="1513870431368" duration="55000" />
       <workItem from="1513870535410" duration="222000" />
-      <workItem from="1513941949104" duration="14883000" />
+      <workItem from="1513941949104" duration="14946000" />
+      <workItem from="1514272699367" duration="664000" />
+      <workItem from="1514274001099" duration="172000" />
+      <workItem from="1514280061442" duration="25379000" />
     </task>
     <task id="LOCAL-00001" summary="added sort, multiple delete">
       <created>1513870661851</created>
@@ -792,15 +750,21 @@
       <option name="project" value="LOCAL" />
       <updated>1513958788550</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="pagination">
+      <created>1513963852374</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1513963852374</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="146645000" />
+    <option name="totallyTimeSpent" value="172923000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -821,10 +785,10 @@
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20380148" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4192186" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946146" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.228125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1359375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -846,22 +810,14 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added sort, multiple delete" />
     <MESSAGE value="added sort by date, name. links" />
-    <option name="LAST_COMMIT_MESSAGE" value="added sort by date, name. links" />
+    <MESSAGE value="pagination" />
+    <option name="LAST_COMMIT_MESSAGE" value="pagination" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/model/UserBean.java" />
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/domain/BookDao.java" />
-    <entry file="jar://$MAVEN_REPOSITORY$/com/oracle/ojdbc7/12.1.0/ojdbc7-12.1.0.jar!/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar!/META-INF/MANIFEST.MF">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -964,7 +920,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="37" lean-forward="false" selection-start-line="9" selection-start-column="37" selection-end-line="9" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1024,7 +979,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1032,7 +986,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1040,54 +993,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="10" lean-forward="false" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/util/Sort.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/repository/AuthorDataModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/webapp/view/author_detail.xhtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="33" lean-forward="false" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/repository/AuthorDataModule.java" />
     <entry file="file://$PROJECT_DIR$/../ajara/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
           <caret line="39" column="21" lean-forward="false" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/data/entity/Author.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="516">
-          <caret line="71" column="20" lean-forward="false" selection-start-line="71" selection-start-column="20" selection-end-line="71" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractHome.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="34" column="5" lean-forward="false" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -1100,67 +1013,152 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModel.java">
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModel.java" />
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/common/Pageble.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        <state relative-caret-position="34">
+          <caret line="2" column="24" lean-forward="false" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/managers/AuthorManager.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar!/javax/persistence/SequenceGenerator.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="43" column="0" lean-forward="true" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+        <state relative-caret-position="136">
+          <caret line="14" column="18" lean-forward="false" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
           <folding>
-            <element signature="e#440#441#0" expanded="false" />
-            <element signature="e#488#489#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="74">
-          <caret line="18" column="30" lean-forward="true" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/controllers/AuthorController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="828">
-          <caret line="201" column="5" lean-forward="false" selection-start-line="201" selection-start-column="5" selection-end-line="201" selection-end-column="5" />
-          <folding>
-            <element signature="e#5654#5655#0" expanded="true" />
-            <element signature="e#5693#5694#0" expanded="true" />
+            <marker date="1513172144745" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1513172144745" expanded="false" signature="141:294" ph="..." />
+            <marker date="1513172144745" expanded="true" signature="296:398" ph="@{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/repository/AuthorFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        <state relative-caret-position="170">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/common/Sorting.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="26" lean-forward="true" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/util/Sort.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractFacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="41" column="28" lean-forward="true" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="28" />
+        <state relative-caret-position="363">
+          <caret line="46" column="5" lean-forward="false" selection-start-line="46" selection-start-column="5" selection-end-line="46" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/webapp/view/author_detail.xhtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="32" column="26" lean-forward="true" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../ajara/src/main/webapp/view/author_manage.xhtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="77" column="26" lean-forward="true" selection-start-line="77" selection-start-column="26" selection-end-line="77" selection-end-column="26" />
+        <state relative-caret-position="-748">
+          <caret line="20" column="28" lean-forward="true" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/repository/AbstractHome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="26" column="32" lean-forward="false" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+          <folding>
+            <element signature="e#542#543#0" expanded="true" />
+            <element signature="e#583#584#0" expanded="true" />
+            <element signature="e#781#782#0" expanded="true" />
+            <element signature="e#824#825#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/model/AuthorDataModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="594">
+          <caret line="169" column="15" lean-forward="true" selection-start-line="169" selection-start-column="15" selection-end-line="169" selection-end-column="15" />
+          <folding>
+            <element signature="e#4690#4691#0" expanded="true" />
+            <element signature="e#4722#4723#0" expanded="true" />
+            <element signature="e#4767#4768#0" expanded="true" />
+            <element signature="e#4801#4802#0" expanded="true" />
+            <element signature="e#4846#4847#0" expanded="true" />
+            <element signature="e#4880#4881#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/data/entity/Author.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="32" lean-forward="false" selection-start-line="23" selection-start-column="32" selection-end-line="23" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#817#818#0" expanded="true" />
+            <element signature="e#842#843#0" expanded="true" />
+            <element signature="e#876#877#0" expanded="true" />
+            <element signature="e#904#905#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/managers/AuthorManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="40" column="5" lean-forward="true" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+          <folding>
+            <element signature="e#684#685#0" expanded="true" />
+            <element signature="e#725#726#0" expanded="true" />
+            <element signature="e#759#760#0" expanded="true" />
+            <element signature="e#800#801#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ajara/src/main/java/controllers/AuthorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding>
+            <element signature="e#1344#1345#0" expanded="true" />
+            <element signature="e#1398#1399#0" expanded="true" />
+            <element signature="e#2094#2095#0" expanded="true" />
+            <element signature="e#2152#2153#0" expanded="true" />
+            <element signature="e#3995#3996#0" expanded="true" />
+            <element signature="e#4034#4035#0" expanded="true" />
+            <element signature="e#4075#4076#0" expanded="true" />
+            <element signature="e#4109#4110#0" expanded="true" />
+            <element signature="e#4147#4148#0" expanded="true" />
+            <element signature="e#4174#4175#0" expanded="true" />
+            <element signature="e#4221#4222#0" expanded="true" />
+            <element signature="e#4253#4254#0" expanded="true" />
+            <element signature="e#4297#4298#0" expanded="true" />
+            <element signature="e#4330#4331#0" expanded="true" />
+            <element signature="e#4389#4390#0" expanded="true" />
+            <element signature="e#4433#4434#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

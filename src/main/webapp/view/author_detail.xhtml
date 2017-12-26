@@ -8,7 +8,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a4j="http://richfaces.org/a4j"
-      xmlns:rich="http://richfaces.org/rich">
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:p="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
     <title>Author page</title>
@@ -19,24 +20,26 @@
 <h:body>
 
     <div id="content_panel">
-        <h2>#{authorController.getAuthorFullNameByPk()}</h2>
+        <h2>#{authorController.detailAuthor.secondName}</h2>
         <div id="undername_line">
         </div>
-        <h:commandButton value="Edit" type="submit">
-        </h:commandButton>
+
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputText value="Name"/>
+                <h:inputText id="updateName" label="name" rendered="true" value="#{authorController.detailAuthor.firstName}"/>
+                <h:outputText value="Second name"/>
+                <h:inputText id="updateSecondName" label="name" rendered="true" value="#{authorController.detailAuthor.secondName}"/>
+            </h:panelGrid>
+        </h:form>
+
+        <a4j:commandButton value="Edit" type="submit">
+            <p:ajax listener="#{authorController.update()}"/>
+        </a4j:commandButton>
 
         <h:commandButton value="Delete" type="submit">
+            <p:ajax listener="#{authorController.deleteDetail()}"/>
         </h:commandButton>
-
     </div>
-
-
-    <h2>hello </h2>
-    <h2>#{authorController.toString()}</h2>
-    <h2>#{authorController.getDetailAuthor()}</h2>
-
-    <h:commandButton value="Confirm" action="#{authorController.getDetailAuthor()}"/>
-
 </h:body>
-
 </html>

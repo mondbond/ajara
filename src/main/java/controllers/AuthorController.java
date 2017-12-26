@@ -8,6 +8,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UICommand;
+import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import java.util.*;
 
@@ -16,6 +19,7 @@ import java.util.*;
 public class AuthorController {
 
     private final String TAG = "Author";
+    private final String COLUMN_NAME = "column_name";
 
     private Author detailAuthor = null;
 
@@ -30,6 +34,10 @@ public class AuthorController {
     private String sortingColumn = null;
     private HashMap<String, Boolean> mOderMap = new HashMap<>();
 
+//    editing
+    private HtmlInputText name;
+    private HtmlInputText secondName;
+
     @EJB
     private AuthorManager authorManager;
 
@@ -38,15 +46,11 @@ public class AuthorController {
 
     @PostConstruct
     void init(){
-        mAuthors = (ArrayList<Author>) getAllAuthors();
+//        mAuthors = (ArrayList<Author>) getAllAuthors();
     }
 
     public Author getAuthorByPk(long pk){
         return authorManager.getAuthorByPk(pk);
-    }
-
-    public String getAuthorFullNameByPk(){
-        return detailAuthor.getFirstName() + " " + detailAuthor.getSecondName();
     }
 
     private List<Author> getAllAuthors(){
@@ -59,10 +63,20 @@ public class AuthorController {
         author = new Author();
     }
 
+    public void update() {
+        detailAuthor.setFirstName(name.getValue().toString());
+        detailAuthor.setSecondName(secondName.getValue().toString());
+        authorManager.update(detailAuthor);
+    }
+
     public String deleteSelected() {
         authorManager.deleteList(selectedPks);
         selectedPks.clear();
         return null;
+    }
+
+    public void deleteDetail(){
+        authorManager.delete(detailAuthor.getId());
     }
 
     public void selectPk(long pk) {
@@ -73,85 +87,22 @@ public class AuthorController {
         }
     }
 
+    private UIComponent getUIComponent(String id) {
+        return FacesContext.getCurrentInstance().getViewRoot().findComponent(id) ;
+    }
+
+//    sort
     public String sortBy() {
         Map<String,String> params =
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         sortingColumn = params.get("columnName");
         changeOrder(sortingColumn);
+        authorDataModule.setSortField(sortingColumn, mOderMap.get(sortingColumn));
         return null;
-    }
-
-    private void sortBySecondName(){
-        if (mOderMap.get(sortingColumn)){
-            Collections.sort(mAuthors, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o1.getSecondName().compareTo(o2.getSecondName()));
-                }
-            });
-        } else {
-            Collections.sort(mAuthors, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o2.getSecondName().compareTo(o1.getSecondName()));
-                }
-            });
-        }
-    }
-
-    private void sortByPk() {
-        if (mOderMap.get(sortingColumn)){
-            Collections.sort(mAuthors, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o1.getId() - o2.getId());
-                }
-            });
-        } else {
-            Collections.sort(mAuthors, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o2.getId() - o1.getId());
-                }
-            });
-        }
-    }
-
-    private void sortByDate(){
-        if (mOderMap.get(sortingColumn)){
-            Collections.sort(mAuthors, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o1.getCreateDate().compareTo(o2.getCreateDate()));
-                }
-            });
-        } else {
-            Collections.sort(mAuthors, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return o2.getCreateDate().compareTo(o1.getCreateDate());
-                }
-            });
-        }
-    }
-
-    private void sort() {
-        switch (sortingColumn){
-            case "pk":
-                sortByPk();
-                break;
-            case "secondName":
-                sortBySecondName();
-                break;
-            case "createDate":
-                sortByDate();
-                break;
-        }
     }
 
     private void changeOrder(String columnName){
 
-        System.out.println(mOderMap.toString());
         if(mOderMap.containsKey(columnName)) {
             mOderMap.put(columnName, !mOderMap.get(columnName));
         } else {
@@ -166,8 +117,6 @@ public class AuthorController {
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "author_detail.xhtml");
     }
 
-//    pagination
-
 //    getset
     public Author getAuthor() {
         return author;
@@ -179,9 +128,6 @@ public class AuthorController {
 
     public ArrayList<Author> getAuthors() {
         mAuthors = (ArrayList<Author>) getAllAuthors();
-        if(sortingColumn!= null) {
-            sort();
-        }
         return mAuthors;
     }
 
@@ -199,5 +145,25 @@ public class AuthorController {
 
     public AuthorDataModule getAuthorDataModule() {
         return authorDataModule;
+    }
+
+    public String getColumnConstant() {
+        return COLUMN_NAME;
+    }
+
+    public HtmlInputText getName() {
+        return name;
+    }
+
+    public void setName(HtmlInputText name) {
+        this.name = name;
+    }
+
+    public HtmlInputText getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(HtmlInputText secondName) {
+        this.secondName = secondName;
     }
 }

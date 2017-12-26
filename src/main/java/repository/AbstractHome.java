@@ -33,4 +33,8 @@ public abstract class AbstractHome<T> {
         getSession().delete(object);
         getSession().flush();
     }
+
+    public void update(T object) {
+        getSession().update(object);
+    }
 }

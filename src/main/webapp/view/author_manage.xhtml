@@ -24,7 +24,8 @@
         </div>
 
         <div id="authors_data" class="left margin">
-            <rich:dataTable id="authors" value="#{authorController.authorDataModule}" var="author">
+            <rich:dataScroller for="authors" maxPages="5"/>
+            <rich:dataTable id="authors" value="#{authorController.authorDataModule}" var="author" rows="10">
                 <f:facet name="header">
                     <h:outputText value="All authors" />
                 </f:facet>
@@ -32,12 +33,12 @@
                     <f:facet name="header">
                         <h:form>
                             <h:commandLink action="#{authorController.sortBy}"> ID
-                                <f:param name="columnName" value="pk" />
+                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getPkColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="1}" actionListener="#{authorController.toDetailPage(author.id)}">
+                        <h:commandLink value="#{author.id}" actionListener="#{authorController.toDetailPage(author.id)}">
                         </h:commandLink>
                     </h:form>
                 </rich:column>
@@ -49,7 +50,7 @@
                     <f:facet name="header">
                         <h:form>
                             <h:commandLink action="#{authorController.sortBy}"> SECOND NAME
-                                <f:param name="columnName" value="secondName" />
+                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getNameColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>
@@ -59,7 +60,7 @@
                     <f:facet name="header">
                         <h:form>
                             <h:commandLink action="#{authorController.sortBy}"> CREATE DATE
-                                <f:param name="columnName" value="createDate" />
+                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getDateColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>
@@ -71,11 +72,6 @@
                         <p:ajax listener="#{authorController.selectPk(author.id)}"/>
                     </h:selectBooleanCheckbox>
                 </rich:column>
-                <f:facet name="pagenation">
-                    <h:form>
-                    <rich:dataScroller for="authors" maxPages="3" fastStep="2" />
-                    </h:form>
-                </f:facet>
             </rich:dataTable>
 
             <div>
@@ -99,7 +95,8 @@
                     <div>
                         <div>
                             <h:form>
-                                <h:commandButton value="Save Record" action="#{authorController.newAuthor}">
+                                <h:commandButton value="Save Record">
+                                    <p:ajax listener="#{authorController.newAuthor()}"/>
                                 </h:commandButton>
                             </h:form>
                         </div>

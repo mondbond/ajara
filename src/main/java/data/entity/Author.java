@@ -17,9 +17,9 @@ public class Author implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO, generator="purchase_seq")
-    @SequenceGenerator(name="purchase_seq", sequenceName="AJARA_SEQ")
-    private Long id;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="purchase_seq")
+    @SequenceGenerator(name="purchase_seq", allocationSize = 1, sequenceName="AJARA_SEQ")
+    private long id;
 
     @Column(name = "FIRST_NAME")
     private String firstName;

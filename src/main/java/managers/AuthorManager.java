@@ -11,7 +11,6 @@ import javax.faces.bean.ManagedBean;
 import java.util.List;
 import java.util.stream.Stream;
 
-@ManagedBean
 @Stateful
 public class AuthorManager {
 
@@ -31,6 +30,10 @@ public class AuthorManager {
 
     public void save(Author author) {
         authorHome.insert(author);
+    }
+
+    public void update(Author author) {
+        authorHome.update(author);
     }
 
     public void delete(long pk){
