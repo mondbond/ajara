@@ -4,9 +4,9 @@
     <root id="1"/>
     <schema id="2" parent="1" name="C##MOND">
       <ObjectId>106</ObjectId>
-      <IntrospectionTimestamp>2017-12-14.18:52:22</IntrospectionTimestamp>
-      <CreatedTimestamp>2017-12-14.18:31:26</CreatedTimestamp>
-      <ModifiedTimestamp>2017-12-14.18:31:26</ModifiedTimestamp>
+      <IntrospectionTimestamp>2017-12-27.20:10:18</IntrospectionTimestamp>
+      <CreatedTimestamp>2017-12-18.19:29:14</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-27.20:09:09</ModifiedTimestamp>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -121,45 +121,361 @@
     <schema id="39" parent="1" name="XS$NULL">
       <ObjectId>2147483638</ObjectId>
     </schema>
-    <table id="40" parent="2" name="AUTHOR">
-      <ObjectId>73350</ObjectId>
-      <CreatedTimestamp>2017-12-14.18:31:26</CreatedTimestamp>
-      <ModifiedTimestamp>2017-12-14.18:31:26</ModifiedTimestamp>
+    <sequence id="40" parent="2" name="AJARA_SEQ">
+      <ObjectId>73709</ObjectId>
+      <CreatedTimestamp>2017-12-26.16:50:05</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-26.16:50:05</ModifiedTimestamp>
+      <SequenceIdentity>1..999999999999999</SequenceIdentity>
+      <Ordered>1</Ordered>
+      <CacheSize>-2147483648</CacheSize>
+    </sequence>
+    <sequence id="41" parent="2" name="AUTHOR_SEQ">
+      <ObjectId>73711</ObjectId>
+      <CreatedTimestamp>2017-12-26.17:34:02</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-26.17:42:34</ModifiedTimestamp>
+      <SequenceIdentity>1..999999999999999</SequenceIdentity>
+      <CacheSize>200</CacheSize>
+    </sequence>
+    <sequence id="42" parent="2" name="REVIEW_SEQ">
+      <ObjectId>73732</ObjectId>
+      <CreatedTimestamp>2017-12-27.19:34:42</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-27.19:34:42</ModifiedTimestamp>
+      <SequenceIdentity>1..99999999999</SequenceIdentity>
+      <Ordered>1</Ordered>
+    </sequence>
+    <table id="43" parent="2" name="AUTHOR">
+      <ObjectId>73549</ObjectId>
+      <CreatedTimestamp>2017-12-20.21:38:27</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-20.21:38:27</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
-    <column id="41" parent="40" name="ID">
+    <table id="44" parent="2" name="BOOK">
+      <ObjectId>73735</ObjectId>
+      <CreatedTimestamp>2017-12-27.19:46:18</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-27.19:46:18</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="45" parent="2" name="DATABASECHANGELOG">
+      <ObjectId>73383</ObjectId>
+      <CreatedTimestamp>2017-12-18.19:33:55</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-18.19:33:55</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="46" parent="2" name="DATABASECHANGELOGLOCK">
+      <ObjectId>73381</ObjectId>
+      <CreatedTimestamp>2017-12-18.19:29:14</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-18.19:29:14</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="47" parent="2" name="JOIN_BOOK_AUTHOR">
+      <ObjectId>73746</ObjectId>
+      <CreatedTimestamp>2017-12-27.20:09:09</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-27.20:09:09</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="48" parent="2" name="REVIEW">
+      <ObjectId>73742</ObjectId>
+      <CreatedTimestamp>2017-12-27.19:55:51</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-27.19:55:51</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <column id="49" parent="43" name="ID">
       <Position>1</Position>
       <DataType>NUMBER(*)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="42" parent="40" name="FIRST_NAME">
+    <column id="50" parent="43" name="FIRST_NAME">
       <Position>2</Position>
-      <DataType>VARCHAR2(500)|0</DataType>
+      <DataType>VARCHAR2(100)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="43" parent="40" name="SECOND_NAME">
+    <column id="51" parent="43" name="SECOND_NAME">
       <Position>3</Position>
-      <DataType>VARCHAR2(500)|0</DataType>
+      <DataType>VARCHAR2(100)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="44" parent="40" name="CREATE_DATE">
+    <column id="52" parent="43" name="CREATE_DATE">
       <Position>4</Position>
-      <DataType>DATE|0</DataType>
+      <DataType>TIMESTAMP(6)|0</DataType>
       <NotNull>1</NotNull>
+      <DefaultExpression>sysdate </DefaultExpression>
     </column>
-    <index id="45" parent="40" name="AUTHOR_PK">
-      <ObjectId>73351</ObjectId>
-      <CreatedTimestamp>2017-12-14.18:31:26</CreatedTimestamp>
-      <ModifiedTimestamp>2017-12-14.18:31:26</ModifiedTimestamp>
+    <index id="53" parent="43" name="PK_AUTHOR">
+      <ObjectId>73550</ObjectId>
+      <CreatedTimestamp>2017-12-20.21:38:27</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-20.21:38:27</ModifiedTimestamp>
       <TablespaceName>USERS</TablespaceName>
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="46" parent="40" name="AUTHOR_PK">
-      <ModifiedTimestamp>2017-12-14.18:31:26</ModifiedTimestamp>
+    <key id="54" parent="43" name="PK_AUTHOR">
+      <ModifiedTimestamp>2017-12-20.21:38:27</ModifiedTimestamp>
       <ColNames>ID</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
-      <UnderlyingIndexName>AUTHOR_PK</UnderlyingIndexName>
+      <UnderlyingIndexName>PK_AUTHOR</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <trigger id="55" parent="43" name="AUTHOR_TRG">
+      <ObjectId>73548</ObjectId>
+      <DependsOnIds>1749,73711,142</DependsOnIds>
+      <CreatedTimestamp>2017-12-20.21:44:22</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-26.17:35:51</ModifiedTimestamp>
+      <Events>I</Events>
+      <Turn>before-row</Turn>
+    </trigger>
+    <column id="56" parent="44" name="ID">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="57" parent="44" name="ISBN">
+      <Position>2</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="58" parent="44" name="NAME">
+      <Position>3</Position>
+      <DataType>VARCHAR2(400)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="59" parent="44" name="PUBLISHER">
+      <Position>4</Position>
+      <DataType>VARCHAR2(100)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="60" parent="44" name="PUBLISH_YEAR">
+      <Position>5</Position>
+      <DataType>VARCHAR2(5)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="61" parent="44" name="CREATE_DATE">
+      <Position>6</Position>
+      <DataType>TIMESTAMP(6)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>sysdate </DefaultExpression>
+    </column>
+    <index id="62" parent="44" name="PK_BOOK">
+      <ObjectId>73736</ObjectId>
+      <CreatedTimestamp>2017-12-27.19:46:18</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-27.19:46:18</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="63" parent="44" name="SYS_C007425">
+      <ObjectId>73737</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-12-27.19:46:18</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-27.19:46:18</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ISBN</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="64" parent="44" name="PK_BOOK">
+      <ModifiedTimestamp>2017-12-27.19:46:18</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>PK_BOOK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <key id="65" parent="44" name="SYS_C007425">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-12-27.19:46:18</ModifiedTimestamp>
+      <ColNames>ISBN</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C007425</UnderlyingIndexName>
+    </key>
+    <column id="66" parent="45" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(63)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="67" parent="45" name="AUTHOR">
+      <Position>2</Position>
+      <DataType>VARCHAR2(63)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="68" parent="45" name="FILENAME">
+      <Position>3</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="69" parent="45" name="DATEEXECUTED">
+      <Position>4</Position>
+      <DataType>TIMESTAMP(6)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="70" parent="45" name="ORDEREXECUTED">
+      <Position>5</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="71" parent="45" name="EXECTYPE">
+      <Position>6</Position>
+      <DataType>VARCHAR2(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="72" parent="45" name="MD5SUM">
+      <Position>7</Position>
+      <DataType>VARCHAR2(35)|0</DataType>
+    </column>
+    <column id="73" parent="45" name="DESCRIPTION">
+      <Position>8</Position>
+      <DataType>VARCHAR2(255)|0</DataType>
+    </column>
+    <column id="74" parent="45" name="COMMENTS">
+      <Position>9</Position>
+      <DataType>VARCHAR2(255)|0</DataType>
+    </column>
+    <column id="75" parent="45" name="TAG">
+      <Position>10</Position>
+      <DataType>VARCHAR2(255)|0</DataType>
+    </column>
+    <column id="76" parent="45" name="LIQUIBASE">
+      <Position>11</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <index id="77" parent="45" name="PK_DATABASECHANGELOG">
+      <ObjectId>73384</ObjectId>
+      <CreatedTimestamp>2017-12-18.19:33:55</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-18.19:33:55</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID
+AUTHOR
+FILENAME</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="78" parent="45" name="PK_DATABASECHANGELOG">
+      <ModifiedTimestamp>2017-12-18.19:33:55</ModifiedTimestamp>
+      <ColNames>ID
+AUTHOR
+FILENAME</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>PK_DATABASECHANGELOG</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="79" parent="46" name="ID">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="80" parent="46" name="LOCKED">
+      <Position>2</Position>
+      <DataType>NUMBER(1)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="81" parent="46" name="LOCKGRANTED">
+      <Position>3</Position>
+      <DataType>TIMESTAMP(6)|0</DataType>
+    </column>
+    <column id="82" parent="46" name="LOCKEDBY">
+      <Position>4</Position>
+      <DataType>VARCHAR2(255)|0</DataType>
+    </column>
+    <index id="83" parent="46" name="PK_DATABASECHANGELOGLOCK">
+      <ObjectId>73382</ObjectId>
+      <CreatedTimestamp>2017-12-18.19:29:14</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-18.19:29:14</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="84" parent="46" name="PK_DATABASECHANGELOGLOCK">
+      <ModifiedTimestamp>2017-12-18.19:29:14</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>PK_DATABASECHANGELOGLOCK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="85" parent="47" name="ID">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="86" parent="47" name="AUTHOR_ID">
+      <Position>2</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="87" parent="47" name="BOOK_ID">
+      <Position>3</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="88" parent="47" name="PK_JOIN_BOOK_AUTHOR">
+      <ObjectId>73747</ObjectId>
+      <CreatedTimestamp>2017-12-27.20:09:09</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-27.20:09:09</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="89" parent="47" name="PK_JOIN_BOOK_AUTHOR">
+      <ModifiedTimestamp>2017-12-27.20:09:09</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>PK_JOIN_BOOK_AUTHOR</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="90" parent="47" name="AUTHOR_ID">
+      <ModifiedTimestamp>2017-12-27.20:09:09</ModifiedTimestamp>
+      <ColNames>AUTHOR_ID</ColNames>
+      <Deferrable>1</Deferrable>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefSchemaName>C##MOND</RefSchemaName>
+      <RefTableName>AUTHOR</RefTableName>
+      <RefKeyName>PK_AUTHOR</RefKeyName>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="91" parent="47" name="BOOK_ID">
+      <ModifiedTimestamp>2017-12-27.20:09:09</ModifiedTimestamp>
+      <ColNames>BOOK_ID</ColNames>
+      <Deferrable>1</Deferrable>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefSchemaName>C##MOND</RefSchemaName>
+      <RefTableName>BOOK</RefTableName>
+      <RefKeyName>PK_BOOK</RefKeyName>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="92" parent="48" name="ID">
+      <Position>1</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="93" parent="48" name="COMMENTER_NAME">
+      <Position>2</Position>
+      <DataType>VARCHAR2(100)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="94" parent="48" name="COMMENT">
+      <Position>3</Position>
+      <DataType>CLOB|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="95" parent="48" name="RATING">
+      <Position>4</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="96" parent="48" name="CREATE_DATE">
+      <Position>5</Position>
+      <DataType>TIMESTAMP(6)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>sysdate </DefaultExpression>
+    </column>
+    <index id="97" parent="48" name="PK_REVIEW">
+      <ObjectId>73745</ObjectId>
+      <CreatedTimestamp>2017-12-27.19:55:51</CreatedTimestamp>
+      <ModifiedTimestamp>2017-12-27.19:55:51</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="98" parent="48" name="PK_REVIEW">
+      <ModifiedTimestamp>2017-12-27.19:55:51</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>PK_REVIEW</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
   </database-model>

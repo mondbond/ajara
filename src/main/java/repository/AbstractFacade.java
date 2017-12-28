@@ -1,11 +1,8 @@
 package repository;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 abstract class AbstractFacade<T> {
@@ -19,30 +16,26 @@ abstract class AbstractFacade<T> {
         this.entity = entity;
     }
 
-    EntityManager getEntityManager() {
+    private EntityManager getEntityManager() {
         return entityManager;
     }
 
-    Session getSession() {
-        return (Session) getEntityManager().getDelegate();
-    }
-
     public T findByPk(long pk){
-        return getSession().get(entity, pk);
+        return getEntityManager().find(entity, pk);
     }
 
     public List<T> findAll(){
-        return getSession().createQuery("from " + entity.getName()).list();
+        return getEntityManager().createQuery("from " + entity.getName()).getResultList();
     }
 
     public List<T> getPagination(int skip, int limit) {
-        Query query = getSession().createQuery("from " + entity.getName());
+        Query query = getEntityManager().createQuery("from " + entity.getName());
         query.setFirstResult(skip);
         query.setMaxResults(limit);
-        return query.list();
+        return query.getResultList();
     }
 
     public int countAll() {
-        return ((Long) getSession().createCriteria(entity.getName()).setProjection(Projections.rowCount()).uniqueResult()).intValue();
+        return ((Long) getEntityManager().createQuery("SELECT count(*) from " + entity.getName()).getSingleResult()).intValue();
     }
 }

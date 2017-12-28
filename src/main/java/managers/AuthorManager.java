@@ -1,17 +1,17 @@
 package managers;
 
-
 import data.entity.Author;
 import repository.AuthorFacade;
 import repository.AuthorHome;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.faces.bean.ManagedBean;
 import java.util.List;
 import java.util.stream.Stream;
 
-@Stateful
+@Stateless
 public class AuthorManager {
 
     @EJB

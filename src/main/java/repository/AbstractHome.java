@@ -20,21 +20,16 @@ public abstract class AbstractHome<T> {
         return entityManager;
     }
 
-    Session getSession() {
-        return (Session) getEntityManager().getDelegate();
-    }
-
     public void insert(T object) {
-        getSession().save(object);
+        getEntityManager().persist(object);
     }
 
     public void deleteByPk(long pk) {
-        T object = getSession().load(entity, pk);
-        getSession().delete(object);
-        getSession().flush();
+        T object = getEntityManager().find(entity, pk);
+        getEntityManager().remove(object);
     }
 
     public void update(T object) {
-        getSession().update(object);
+        getEntityManager().merge(object);
     }
 }

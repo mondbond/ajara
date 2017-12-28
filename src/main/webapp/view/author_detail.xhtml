@@ -27,9 +27,11 @@
         <h:form>
             <h:panelGrid columns="2">
                 <h:outputText value="Name"/>
-                <h:inputText id="updateName" label="name" rendered="true" value="#{authorController.detailAuthor.firstName}"/>
+                <h:inputText id="updateName" label="name" rendered="true" value="#{authorController.detailAuthor.firstName}"
+                valueChangeListener="#{authorController.changeName}" onchange="submit()"/>
                 <h:outputText value="Second name"/>
-                <h:inputText id="updateSecondName" label="name" rendered="true" value="#{authorController.detailAuthor.secondName}"/>
+                <h:inputText id="updateSecondName" label="name" rendered="true" value="#{authorController.detailAuthor.secondName}"
+                             valueChangeListener="#{authorController.changeSecondName}" onchange="submit()"/>
             </h:panelGrid>
         </h:form>
 

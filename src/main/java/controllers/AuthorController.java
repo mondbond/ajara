@@ -3,6 +3,7 @@ package controllers;
 import data.entity.Author;
 import managers.AuthorManager;
 import model.AuthorDataModule;
+import org.richfaces.context.FullVisitContext;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -10,8 +11,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import java.util.*;
 
 @ManagedBean(name = "authorController")
@@ -35,8 +42,8 @@ public class AuthorController {
     private HashMap<String, Boolean> mOderMap = new HashMap<>();
 
 //    editing
-    private HtmlInputText name;
-    private HtmlInputText secondName;
+    private UIInput name;
+    private UIInput secondName;
 
     @EJB
     private AuthorManager authorManager;
@@ -59,20 +66,29 @@ public class AuthorController {
     }
 
     public void newAuthor() {
+        System.out.println("AAAAS" + author.toString());
         authorManager.save(new Author(author.getFirstName(), author.getSecondName(), new Date()));
         author = new Author();
     }
 
     public void update() {
-        detailAuthor.setFirstName(name.getValue().toString());
-        detailAuthor.setSecondName(secondName.getValue().toString());
+        detailAuthor.setFirstName(detailAuthor.getFirstName());
+        detailAuthor.setSecondName(detailAuthor.getSecondName());
         authorManager.update(detailAuthor);
     }
 
+    public void changeName(ValueChangeEvent e){
+        detailAuthor.setFirstName(((UIInput) e.getComponent()).getValue().toString());
+    }
+
+    public void changeSecondName(ValueChangeEvent e){
+        detailAuthor.setSecondName(((UIInput) e.getComponent()).getValue().toString());
+    }
+
     public String deleteSelected() {
-        authorManager.deleteList(selectedPks);
-        selectedPks.clear();
-        return null;
+    authorManager.deleteList(selectedPks);
+    selectedPks.clear();
+    return null;
     }
 
     public void deleteDetail(){
@@ -85,10 +101,6 @@ public class AuthorController {
         }else {
             selectedPks.add(pk);
         }
-    }
-
-    private UIComponent getUIComponent(String id) {
-        return FacesContext.getCurrentInstance().getViewRoot().findComponent(id) ;
     }
 
 //    sort
@@ -151,19 +163,19 @@ public class AuthorController {
         return COLUMN_NAME;
     }
 
-    public HtmlInputText getName() {
+    public UIInput getName() {
         return name;
     }
 
-    public void setName(HtmlInputText name) {
+    public void setName(UIInput name) {
         this.name = name;
     }
 
-    public HtmlInputText getSecondName() {
+    public UIInput getSecondName() {
         return secondName;
     }
 
-    public void setSecondName(HtmlInputText secondName) {
+    public void setSecondName(UIInput secondName) {
         this.secondName = secondName;
     }
 }
