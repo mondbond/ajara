@@ -1,11 +1,13 @@
 package data.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "REVIEW")
-public class Review {
+public @Data class Review {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="seq")

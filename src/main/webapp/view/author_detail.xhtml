@@ -42,6 +42,71 @@
         <h:commandButton value="Delete" type="submit">
             <p:ajax listener="#{authorController.deleteDetail()}"/>
         </h:commandButton>
+
+    <div id="authors_books" class="left margin">
+        <rich:dataTable id="author_books" value="#{authorController.detailAuthor.books}" var="book" rows="10">
+            <f:facet name="header">
+                <h:outputText value="All his books" />
+            </f:facet>
+            <rich:column>
+                <f:facet name="header">
+                    <h:form>
+                        <h:outputText value="All his books" />
+                    </h:form>
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="#{book.id}">
+                    </h:commandLink>
+                </h:form>
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">Name</f:facet>
+                <h:outputText value="#{book.name}"/>
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">
+                    <h:form>
+                        <h:commandLink action="#{authorController.sortBy}"> publisher
+                            <f:param value="pub" />
+                        </h:commandLink>
+                    </h:form>
+                </f:facet>
+                <h:outputText value="#{book.publisher}"/>
+            </rich:column>
+        </rich:dataTable>
+    </div>
+
+        <div id="add_books_form" class="board_style left margin">
+            <h:form >
+                <h:panelGrid>
+                    <div>
+                        <h:outputLabel value="Name:"/>
+                        <h:inputText value="#{bookController.newBook.name}"/>
+                    </div>
+                    <div>
+                        <h:outputLabel value="ISBN"/>
+                        <h:inputText value="#{bookController.newBook.isbn}"/>
+                    </div>
+                    <div>
+                        <h:outputLabel value="Publisher"/>
+                        <h:inputText value="#{bookController.newBook.publisher}"/>
+                    </div>
+                    <div>
+                        <h:outputLabel value="Year"/>
+                        <h:inputText value="#{bookController.newBook.publishYear}"/>
+                    </div>
+                    <div>
+                        <div>
+                            <h:form>
+                                <h:commandButton value="Save Record" action="#{bookController.createBook(authorController.detailAuthor)}">
+                                </h:commandButton>
+                            </h:form>
+                        </div>
+                    </div>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
     </div>
 </h:body>
 </html>

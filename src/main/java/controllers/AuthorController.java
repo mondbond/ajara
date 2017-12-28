@@ -66,7 +66,6 @@ public class AuthorController {
     }
 
     public void newAuthor() {
-        System.out.println("AAAAS" + author.toString());
         authorManager.save(new Author(author.getFirstName(), author.getSecondName(), new Date()));
         author = new Author();
     }
@@ -107,7 +106,7 @@ public class AuthorController {
     public String sortBy() {
         Map<String,String> params =
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        sortingColumn = params.get("columnName");
+        sortingColumn = params.get(COLUMN_NAME);
         changeOrder(sortingColumn);
         authorDataModule.setSortField(sortingColumn, mOderMap.get(sortingColumn));
         return null;

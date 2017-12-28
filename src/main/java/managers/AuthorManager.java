@@ -1,6 +1,7 @@
 package managers;
 
 import data.entity.Author;
+import org.ajax4jsf.model.ExtendedDataModel;
 import repository.AuthorFacade;
 import repository.AuthorHome;
 

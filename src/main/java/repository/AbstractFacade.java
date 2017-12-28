@@ -28,8 +28,9 @@ abstract class AbstractFacade<T> {
         return getEntityManager().createQuery("from " + entity.getName()).getResultList();
     }
 
-    public List<T> getPagination(int skip, int limit) {
-        Query query = getEntityManager().createQuery("from " + entity.getName());
+    public List<T> getPagination(int skip, int limit, String column, boolean isAsc) {
+        String sql = "from " + entity.getName() + " order by " + column + " " + ((isAsc)? "ASC": "DESC");
+        Query query = getEntityManager().createQuery(sql);
         query.setFirstResult(skip);
         query.setMaxResults(limit);
         return query.getResultList();

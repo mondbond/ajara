@@ -17,9 +17,9 @@ import java.util.List;
 @Stateful
 public class AuthorDataModule extends ExtendedDataModel<Author> {
 
-    public final String PK_COLUMN = "pk_column";
-    public final String NAME_COLUMN = "name_column";
-    public final String DATE_COLUMN = "date_column";
+    public final String PK_COLUMN = "ID";
+    public final String NAME_COLUMN = "FIRST_NAME";
+    public final String DATE_COLUMN = "CREATE_DATE";
 
     private Integer rowKey;
     private List<Author> list;
@@ -48,8 +48,8 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
     public void walk(FacesContext facesContext, DataVisitor dataVisitor, Range range, Object o) {
         int firstRow = ((SequenceRange) range).getFirstRow();
         int numberOfLines = ((SequenceRange) range).getRows();
-        this.list = dao.getPagination(firstRow, numberOfLines);
-        sort();
+        this.list = dao.getPagination(firstRow, numberOfLines, sortingColumn , isASC);
+//        sort();
 
         for (int i = 0; i < list.size(); i++) {
             dataVisitor.process(facesContext, i, o);
@@ -95,81 +95,81 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
         throw new UnsupportedOperationException();
     }
 
-    private void sort() {
-        if(sortingColumn == null) {
-            sortingColumn = "pk";
-        }
-        switch (sortingColumn){
-            case PK_COLUMN:
-                sortByPk();
-                break;
-            case NAME_COLUMN:
-                sortBySecondName();
-                break;
-            case DATE_COLUMN:
-                sortByDate();
-                break;
-        }
-    }
+//    private void sort() {
+//        if(sortingColumn == null) {
+//            sortingColumn = "pk";
+//        }
+//        switch (sortingColumn){
+//            case PK_COLUMN:
+//                sortByPk();
+//                break;
+//            case NAME_COLUMN:
+//                sortBySecondName();
+//                break;
+//            case DATE_COLUMN:
+//                sortByDate();
+//                break;
+//        }
+//    }
 
     public void setSortField(String sortField, boolean isASC) {
         this.isASC = isASC;
         sortingColumn = sortField;
     }
 
-    private void sortBySecondName(){
-        if (isASC){
-            Collections.sort(list, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o1.getSecondName().compareTo(o2.getSecondName()));
-                }
-            });
-        } else {
-            Collections.sort(list, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o2.getSecondName().compareTo(o1.getSecondName()));
-                }
-            });
-        }
-    }
-
-    private void sortByPk() {
-        if (isASC){
-            Collections.sort(list, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o1.getId() - o2.getId());
-                }
-            });
-        } else {
-            Collections.sort(list, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o2.getId() - o1.getId());
-                }
-            });
-        }
-    }
-
-    private void sortByDate(){
-        if (isASC){
-            Collections.sort(list, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return (int)(o1.getCreateDate().compareTo(o2.getCreateDate()));
-                }
-            });
-        } else {
-            Collections.sort(list, new Comparator<Author>() {
-                @Override
-                public int compare(Author o1, Author o2) {
-                    return o2.getCreateDate().compareTo(o1.getCreateDate());
-                }
-            });
-        }
-    }
+//    private void sortBySecondName(){
+//        if (isASC){
+//            Collections.sort(list, new Comparator<Author>() {
+//                @Override
+//                public int compare(Author o1, Author o2) {
+//                    return (int)(o1.getSecondName().compareTo(o2.getSecondName()));
+//                }
+//            });
+//        } else {
+//            Collections.sort(list, new Comparator<Author>() {
+//                @Override
+//                public int compare(Author o1, Author o2) {
+//                    return (int)(o2.getSecondName().compareTo(o1.getSecondName()));
+//                }
+//            });
+//        }
+//    }
+//
+//    private void sortByPk() {
+//        if (isASC){
+//            Collections.sort(list, new Comparator<Author>() {
+//                @Override
+//                public int compare(Author o1, Author o2) {
+//                    return (int)(o1.getId() - o2.getId());
+//                }
+//            });
+//        } else {
+//            Collections.sort(list, new Comparator<Author>() {
+//                @Override
+//                public int compare(Author o1, Author o2) {
+//                    return (int)(o2.getId() - o1.getId());
+//                }
+//            });
+//        }
+//    }
+//
+//    private void sortByDate(){
+//        if (isASC){
+//            Collections.sort(list, new Comparator<Author>() {
+//                @Override
+//                public int compare(Author o1, Author o2) {
+//                    return (int)(o1.getCreateDate().compareTo(o2.getCreateDate()));
+//                }
+//            });
+//        } else {
+//            Collections.sort(list, new Comparator<Author>() {
+//                @Override
+//                public int compare(Author o1, Author o2) {
+//                    return o2.getCreateDate().compareTo(o1.getCreateDate());
+//                }
+//            });
+//        }
+//    }
 
     public String getPkColumnConstant() {
         return PK_COLUMN;

@@ -11,8 +11,11 @@
         <!--<mapping-file>META-INF/mapping.xml</mapping-file>-->
         <jta-data-source>java:/OracleDS</jta-data-source>
         <class>data.entity.Author</class>
+        <class>data.entity.Book</class>
+        <class>data.entity.Review</class>
 
         <properties>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
             <!--<property name="hibernate.archive.autodetection" value="class" />-->
             <!--<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />-->
             <!--<property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />-->

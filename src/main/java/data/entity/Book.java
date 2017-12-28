@@ -1,17 +1,17 @@
 package data.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "BOOK")
-public class Book {
+public @Data class Book {
 
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="pp")
+    @SequenceGenerator(name="pp", allocationSize = 1, sequenceName="BOOK_SEQ")
     private Long id;
 
     @Column(name = "ISBN")
@@ -29,80 +29,9 @@ public class Book {
     @Column(name = "CREATE_DATE")
     private Date crateDate;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "JOIN_BOOK_AUTHOR",
             joinColumns = {@JoinColumn(name = "book_id")},
-            inverseJoinColumns = {@JoinColumn (name= "author_id")})
-    private Set<Author> authors = new HashSet<>();
-
-    public Set<Author> getAuthors(){
-      return authors;
-    }
-
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
-    }
-
-    public Book() { }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public int getPublishYear() {
-        return publishYear;
-    }
-
-    public void setPublishYear(int publishYear) {
-        this.publishYear = publishYear;
-    }
-
-    public Date getCrateDate() {
-        return crateDate;
-    }
-
-    public void setCrateDate(Date crateDate) {
-        this.crateDate = crateDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", isbn='" + isbn + '\'' +
-                ", name='" + name + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", publishYear=" + publishYear +
-                ", crateDate=" + crateDate +
-                ", authors=" + authors +
-                '}';
-    }
+            inverseJoinColumns = {@JoinColumn (name = "author_id")})
+    private List<Author> authors = new ArrayList<>();
 }
