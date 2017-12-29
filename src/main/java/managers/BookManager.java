@@ -1,5 +1,7 @@
 package managers;
 import data.entity.Book;
+import lombok.Getter;
+import model.BookDataModule;
 import repository.BookFacade;
 import repository.BookHome;
 
@@ -17,6 +19,9 @@ public class BookManager {
 
     @EJB
     private BookHome bookHome;
+
+    @EJB
+    private @Getter BookDataModule dataModule;
 
     public Book getBookByPk(long pk) {
         return bookFacade.findByPk(pk);

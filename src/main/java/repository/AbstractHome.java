@@ -12,7 +12,7 @@ public abstract class AbstractHome<T> {
     @PersistenceContext
     private EntityManager entityManager;
 
-    AbstractHome(Class<T> entity) {
+    public AbstractHome(Class<T> entity) {
         this.entity = entity;
     }
 

@@ -1,6 +1,8 @@
 package data.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,7 +10,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "AUTHOR")
-public @Data class Author implements Serializable {
+public class Author implements Serializable {
 
     public Author() {}
 
@@ -21,17 +23,17 @@ public @Data class Author implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="purchase_seq")
     @SequenceGenerator(name="purchase_seq", allocationSize = 1, sequenceName="AJARA_SEQ")
-    private long id;
+    private @Getter @Setter long id;
 
     @Column(name = "FIRST_NAME")
-    private String firstName;
+    private @Getter @Setter String firstName;
 
     @Column(name = "SECOND_NAME")
-    private String secondName;
+    private @Getter @Setter String secondName;
 
     @Column(name = "CREATE_DATE")
-    private Date createDate;
+    private @Getter @Setter Date createDate;
 
     @ManyToMany(mappedBy = "authors")
-    private List<Book> books = new ArrayList<>();
+    private @Getter @Setter List<Book> books = new ArrayList<>();
 }

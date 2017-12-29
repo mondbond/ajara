@@ -10,8 +10,6 @@ import repository.AuthorFacade;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.faces.context.FacesContext;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Stateful

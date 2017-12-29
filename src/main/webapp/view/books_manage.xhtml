@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich" xmlns:p="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Book page</title>
+    <link rel="stylesheet" type="text/css" href="../style/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../style/detail_author_style.css"/>
+</h:head>
+
+<h:body>
+
+    <div id="content_panel">
+        <h2>Manage books</h2>
+        <div id="undername_line">
+        </div>
+
+        <div id="authors_data" class="left margin">
+            <rich:dataScroller for="books" maxPages="5"/>
+            <rich:dataTable id="books" value="#{bookController.bookManager.dataModule}" var="book" rows="10">
+                <f:facet name="header">
+                    <h:outputText value="All books" />
+                </f:facet>
+                <rich:column>
+                    <f:facet name="header">
+                        <h:form>
+                            <h:commandLink action="#{bookController.sortBy}"> ID
+                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.bookManager.dataModule.getPkColumnConstant()}" />
+                            </h:commandLink>
+                        </h:form>
+                    </f:facet>
+                    <h:form>
+                        <h:commandLink value="#{book.id}" actionListener="#{bookController.toDetailPage(book.id)}">
+                        </h:commandLink>
+                    </h:form>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{book.name}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">
+                        <h:form>
+                            <h:commandLink action="#{bookController.sortBy}"> Author
+                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.bookManager.dataModule.getAuthorColumnConstant()}" />
+                            </h:commandLink>
+                        </h:form>
+                    </f:facet>
+                    <h:outputText value="#{book.authors}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">
+                        <h:form>
+                            <h:commandLink action="#{bookController.sortBy}"> Publisher
+                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.bookManager.dataModule.getPublisherColumnConstant()}" />
+                            </h:commandLink>
+                        </h:form>
+                    </f:facet>
+                    <h:outputText value="#{book.publisher}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">
+                        <h:form>
+                            <h:commandLink action="#{bookController.sortBy}"> CREATE DATE
+                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.bookManager.dataModule.getDateColumnConstant()}" />
+                            </h:commandLink>
+                        </h:form>
+                    </f:facet>
+                    <h:outputText value="#{book.crateDate}"/>
+                </rich:column>
+
+                <rich:column>
+                    <f:facet name="header">Select</f:facet>
+                    <h:selectBooleanCheckbox>
+                        <p:ajax listener="#{bookController.selectPk(book.id)}"/>
+                    </h:selectBooleanCheckbox>
+                </rich:column>
+            </rich:dataTable>
+
+            <div>
+                <h:commandButton value="delete selected" action="#{bookController.deleteSelected}">
+                    <p:ajax listener="#{bookController.deleteSelected()}"/>
+                </h:commandButton>
+            </div>
+        </div>
+    </div>
+</h:body>
+
+</html>

@@ -5,14 +5,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-abstract class AbstractFacade<T> {
+public abstract class AbstractFacade<T> {
 
     Class<T> entity;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    AbstractFacade(Class<T> entity) {
+    public AbstractFacade(Class<T> entity) {
         this.entity = entity;
     }
 

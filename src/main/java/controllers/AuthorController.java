@@ -3,20 +3,12 @@ package controllers;
 import data.entity.Author;
 import managers.AuthorManager;
 import model.AuthorDataModule;
-import org.richfaces.context.FullVisitContext;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UICommand;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import java.util.*;
@@ -26,7 +18,7 @@ import java.util.*;
 public class AuthorController {
 
     private final String TAG = "Author";
-    private final String COLUMN_NAME = "column_name";
+    private final String COLUMN_NAME = "column_name_authors";
 
     private Author detailAuthor = null;
 
@@ -40,10 +32,6 @@ public class AuthorController {
 //    sorting
     private String sortingColumn = null;
     private HashMap<String, Boolean> mOderMap = new HashMap<>();
-
-//    editing
-    private UIInput name;
-    private UIInput secondName;
 
     @EJB
     private AuthorManager authorManager;
@@ -85,13 +73,14 @@ public class AuthorController {
     }
 
     public String deleteSelected() {
-    authorManager.deleteList(selectedPks);
-    selectedPks.clear();
+        authorManager.deleteList(selectedPks);
+        selectedPks.clear();
     return null;
     }
 
     public void deleteDetail(){
         authorManager.delete(detailAuthor.getId());
+//        add redirect
     }
 
     public void selectPk(long pk) {
@@ -160,21 +149,5 @@ public class AuthorController {
 
     public String getColumnConstant() {
         return COLUMN_NAME;
-    }
-
-    public UIInput getName() {
-        return name;
-    }
-
-    public void setName(UIInput name) {
-        this.name = name;
-    }
-
-    public UIInput getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(UIInput secondName) {
-        this.secondName = secondName;
     }
 }

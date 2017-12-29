@@ -2,7 +2,6 @@ package repository;
 
 import data.entity.Book;
 
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 
 @Stateless
