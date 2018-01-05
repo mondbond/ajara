@@ -28,10 +28,17 @@
             <h:panelGrid columns="2">
                 <h:outputText value="Name"/>
                 <h:inputText id="updateName" label="name" rendered="true" value="#{authorController.detailAuthor.firstName}"
-                valueChangeListener="#{authorController.changeName}" onchange="submit()"/>
+                             valueChangeListener="#{authorController.changeName}" onchange="submit()" validatorMessage="Minimum 3, maximum 50 characters">
+                    <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}" />
+                </h:inputText>
+                <h:message for="updateName" style="color:red" />
+
                 <h:outputText value="Second name"/>
                 <h:inputText id="updateSecondName" label="name" rendered="true" value="#{authorController.detailAuthor.secondName}"
-                             valueChangeListener="#{authorController.changeSecondName}" onchange="submit()"/>
+                             valueChangeListener="#{authorController.changeSecondName}" onchange="submit()" validatorMessage="Minimum 3, maximum 50 characters">
+                    <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,100}" />
+                </h:inputText>
+                <h:message for="updateSecondName" style="color:red" />
             </h:panelGrid>
         </h:form>
 
@@ -81,19 +88,31 @@
                 <h:panelGrid>
                     <div>
                         <h:outputLabel value="Name:"/>
-                        <h:inputText value="#{bookController.newBook.name}"/>
+                        <h:inputText id="inputBookName" value="#{bookController.newBook.name}" validatorMessage="Name must contain minimum 3 maximum 50 characters">
+                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,100}" />
+                        </h:inputText>
+                        <h:message for="inputBookName" style="color:red" />
                     </div>
                     <div>
                         <h:outputLabel value="ISBN"/>
-                        <h:inputText value="#{bookController.newBook.isbn}"/>
+                        <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}" validatorMessage="ISBN must have minimum 10, maximum 18 numbers">
+                        <f:validateRegex pattern="[0-9]{10,18}" />
+                    </h:inputText>
+                        <h:message for="inputBookIsbn" style="color:red" />
                     </div>
                     <div>
                         <h:outputLabel value="Publisher"/>
-                        <h:inputText value="#{bookController.newBook.publisher}"/>
+                        <h:inputText id="inputBookPublisher" value="#{bookController.newBook.publisher}" validatorMessage="Name must contain minimum 3 maximum 50 characters">
+                        <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}}" />
+                    </h:inputText>
+                        <h:message for="inputBookPublisher" style="color:red" />
                     </div>
                     <div>
                         <h:outputLabel value="Year"/>
-                        <h:inputText value="#{bookController.newBook.publishYear}"/>
+                        <h:inputText id="inputBookYear" value="#{bookController.newBook.publishYear}" validatorMessage="Year must contain only 4 numbers">
+                        <f:validateRegex pattern="[0-9]{4}" />
+                    </h:inputText>
+                        <h:message for="inputBookPublisher" style="color:red" />
                     </div>
                     <div>
                         <div>

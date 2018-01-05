@@ -1,0 +1,31 @@
+package managers;
+
+import data.entity.Book;
+import data.entity.Reviews;
+import repository.BookFacade;
+import repository.ReviewFacade;
+import repository.ReviewHome;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
+@Stateless
+public class ReviewManager {
+
+    @EJB
+    ReviewFacade reviewFacade;
+
+    @EJB
+    ReviewHome reviewHome;
+
+    @EJB
+    BookFacade bookFacade;
+
+    public void createReview(Reviews review){
+        reviewHome.insert(review);
+    }
+
+    public Book getBookById(long pk){
+        return bookFacade.findByPk(pk);
+    }
+}

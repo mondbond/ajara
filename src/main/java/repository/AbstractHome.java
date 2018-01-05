@@ -21,7 +21,9 @@ public abstract class AbstractHome<T> {
     }
 
     public void insert(T object) {
-        getEntityManager().persist(object);
+//        ((Session) getEntityManager().getDelegate()).save(object);
+        getEntityManager().merge(object);
+        getEntityManager().flush();
     }
 
     public void deleteByPk(long pk) {

@@ -20,6 +20,7 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
     public final String NAME_COLUMN = "NAME";
     public final String AUTHOR_COLUMN = "AUTHOR";
     public final String PUBLISHER_COLUMN = "PUBLISHER";
+    public final String RATING_COLUMN = "RATING";
     public final String DATE_COLUMN = "CREATE_DATE";
 
     private Integer rowKey;
@@ -113,6 +114,10 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
 
     public String getPublisherColumnConstant() {
         return PUBLISHER_COLUMN;
+    }
+
+    public String getRatingColumnConstant() {
+        return RATING_COLUMN;
     }
 
     public String getDateColumnConstant() {

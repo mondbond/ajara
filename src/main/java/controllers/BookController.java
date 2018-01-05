@@ -107,6 +107,10 @@ public class BookController {
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "book_detail.xhtml");
     }
 
+    public Author getGeneralAuthor(Book book){
+        return book.getAuthors().get(0);
+    }
+
     public String getColumnConstant() {
         return COLUMN_NAME;
     }

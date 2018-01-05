@@ -86,11 +86,18 @@
                 <h:panelGrid>
                     <div>
                         <h:outputLabel value="Name:"/>
-                        <h:inputText value="#{authorController.author.firstName}"/>
+                        <h:inputText id="inputAuthorName" value="#{authorController.author.firstName}" validatorMessage="Minimum 3, maximum 50 characters">
+                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,100}" />
+                        </h:inputText>
+                        <h:message for="inputAuthorName" style="color:red" />
                     </div>
                     <div>
                         <h:outputLabel value="Second Name:"/>
-                        <h:inputText value="#{authorController.author.secondName}"/>
+                        <h:inputText id="inputAuthorSecondName" value="#{authorController.author.secondName}" validatorMessage="Minimum 3, maximum 50 characters">
+                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,100}" />
+                        </h:inputText>
+                        <h:message for="inputAuthorSecondName" style="color:red" />
+
                     </div>
                     <div>
                         <div>

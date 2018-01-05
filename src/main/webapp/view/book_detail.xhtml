@@ -20,9 +20,107 @@
 <h:body>
 
     <div id="content_panel">
-        <h2>#{bookController.getByPk(1).name}</h2>
+        <h2>#{bookController.detailBook.name}</h2>
         <div id="undername_line">
         </div>
+
+        <div id="book_info" class="board_style left margin">
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="Name"/>
+                    <h:inputText id="updateName" label="name" rendered="true" value="#{bookController.detailBook.name}"
+                                 valueChangeListener="#{bookController.changeName}" onchange="submit()" validatorMessage="Name must contain minimum 3 maximum 50 characters">
+                        <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}" />
+                    </h:inputText>
+                    <h:message for="updateName" style="color:red" />
+
+                    <h:outputText value="AUTHOR"/>
+                    <h:outputText value="#{bookController.detailBook.authors}"/>
+
+                    <h:outputText value="ISBN"/>
+                    <h:outputText value="#{bookController.detailBook.isbn}"/>
+
+                    <h:outputText value="Publisher"/>
+                    <h:inputText id="updatePublisher" label="name" rendered="true" value="#{bookController.detailBook.publisher}"
+                                 valueChangeListener="#{bookController.changePublisher}" onchange="submit()" validatorMessage="Name must contain minimum 3 maximum 50 characters">
+                        <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}" />
+                    </h:inputText>
+                    <h:message for="updatePublisher" style="color:red" />
+
+
+                    <h:outputText value="YEAR"/>
+                    <h:outputText value="#{bookController.detailBook.publishYear}"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+        <a4j:commandButton value="Edit" type="submit">
+            <p:ajax listener="#{bookController.update()}"/>
+        </a4j:commandButton>
+
+        <h:commandButton value="Delete" type="submit">
+            <p:ajax listener="#{bookController.deleteDetail()}"/>
+        </h:commandButton>
+
+        <div id="add_review" class="board_style left margin">
+            <h:form >
+                <h:panelGrid>
+                    <div>
+                        <h:outputLabel value="Name:"/>
+                        <h:inputText id="inputReviewName" value="#{reviewController.newReview.commenterName}" validatorMessage="Name must have minimum 3 maximum 80 characters">
+                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,80}" />
+                        </h:inputText>
+                        <h:message for="inputReviewName" style="color:red" />
+                    </div>
+                    <div>
+                        <h:outputLabel value="Rating:"/>
+                        <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}">
+                        </h:inputText>
+                        <h:message for="inputReviewRating" style="color:red" />
+                    </div>
+                    <div>
+                        <h:outputLabel value="Comment:"/>
+                        <h:inputText value="#{reviewController.newReview.com}"/>
+                    </div>
+                    <div>
+                        <div>
+                            <h:form>
+                                <h:commandButton value="Save Record" action="#{reviewController.createReview(bookController.detailBook)}">
+                                </h:commandButton>
+                            </h:form>
+                        </div>
+                    </div>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+        <div id="comments_form">
+            <h:form id="form">
+                <h:panelGrid columns="1" style="width: 640px">
+                    <a4j:outputPanel id="panel" layout="block">
+                        <a4j:repeat value="#{reviewController.getReviews(bookController.detailBook)}" var="review" rows="15" id="repeat">
+                            <rich:panel styleClass="panel">
+                                <f:facet name="header">
+                                    <h:panelGroup>
+                                        <h:outputText value="#{review.commenterName}" style="font-weight:bold; margin-left: 4px" />
+                                    </h:panelGroup>
+                                </f:facet>
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="Rating:" style="font-weight:bold" />
+                                    <h:outputText value="#{review.rating}" />
+                                    <h:outputText value="Comment:" style="font-weight:bold" />
+                                    <h:outputText value="#{review.com}" />
+                                </h:panelGrid>
+                            </rich:panel>
+                        </a4j:repeat>
+                    </a4j:outputPanel>
+                    <a4j:outputPanel layout="block">
+                        <rich:dataScroller for="repeat" render="panel" fastStep="3"/>
+                    </a4j:outputPanel>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
 
     </div>
 </h:body>
