@@ -12,6 +12,13 @@ import java.util.*;
 //@AllArgsConstructor
 @Entity
 @Table(name = "BOOK")
+@NamedQueries({
+        @NamedQuery(name = "Book.eq.ratinq",
+                query = "select b from Book b WHERE b.avgRating between ?1 and ?2"),
+        @NamedQuery(name = "Book.count.eq.ratinq",
+//                query = "select count(b) from Book b WHERE b.avgRating between ?1 and ?2")
+                query = "select count(b) from Book b WHERE b.avgRating between 2 and 4")
+})
 public class Book implements Serializable {
 
     @Id

@@ -39,11 +39,6 @@ public class AuthorController {
     @EJB
     private AuthorDataModule authorDataModule;
 
-    @PostConstruct
-    void init(){
-//        mAuthors = (ArrayList<Author>) getAllAuthors();
-    }
-
     public Author getAuthorByPk(long pk){
         return authorManager.getAuthorByPk(pk);
     }
@@ -112,6 +107,7 @@ public class AuthorController {
 
 //    redirect
     public void toDetailPage(long pk) {
+        System.out.println("DETE" + pk);
         detailAuthor = getAuthorByPk(Long.valueOf(pk));
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "author_detail.xhtml");

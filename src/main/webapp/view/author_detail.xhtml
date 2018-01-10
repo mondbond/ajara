@@ -18,12 +18,10 @@
 </h:head>
 
 <h:body>
-
     <div id="content_panel">
         <h2>#{authorController.detailAuthor.secondName}</h2>
         <div id="undername_line">
         </div>
-
         <h:form>
             <h:panelGrid columns="2">
                 <h:outputText value="Name"/>
@@ -46,8 +44,8 @@
             <p:ajax listener="#{authorController.update()}"/>
         </a4j:commandButton>
 
-        <h:commandButton value="Delete" type="submit">
-            <p:ajax listener="#{authorController.deleteDetail()}"/>
+        <h:commandButton value="Delete">
+            <rich:componentControl target="popup_delete_author" operation="show" />
         </h:commandButton>
 
     <div id="authors_books" class="left margin">
@@ -83,6 +81,20 @@
         </rich:dataTable>
     </div>
 
+    <h:commandButton value="Add book by this author">
+        <rich:componentControl target="popup_add_book" operation="show" />
+    </h:commandButton>
+
+    <rich:popupPanel id="popup_add_book" modal="false" autosized="true" resizeable="false">
+        <f:facet name="header">
+            <h:outputText value="Add book" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup_add_book')}.hide(); return false;" style="color: inherit">
+                X
+            </h:outputLink>
+        </f:facet>
+
         <div id="add_books_form" class="board_style left margin">
             <h:form >
                 <h:panelGrid>
@@ -96,22 +108,28 @@
                     <div>
                         <h:outputLabel value="ISBN"/>
                         <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}" validatorMessage="ISBN must have minimum 10, maximum 18 numbers">
-                        <f:validateRegex pattern="[0-9]{10,18}" />
-                    </h:inputText>
+                            <f:validateRegex pattern="[0-9]{10,18}" />
+                        </h:inputText>
                         <h:message for="inputBookIsbn" style="color:red" />
                     </div>
+
+                    <div>
+                        <h:outputLabel value="Authors"/>
+                        <h:inputText/>
+                    </div>
+
                     <div>
                         <h:outputLabel value="Publisher"/>
                         <h:inputText id="inputBookPublisher" value="#{bookController.newBook.publisher}" validatorMessage="Name must contain minimum 3 maximum 50 characters">
-                        <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}}" />
-                    </h:inputText>
+                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}}" />
+                        </h:inputText>
                         <h:message for="inputBookPublisher" style="color:red" />
                     </div>
                     <div>
                         <h:outputLabel value="Year"/>
                         <h:inputText id="inputBookYear" value="#{bookController.newBook.publishYear}" validatorMessage="Year must contain only 4 numbers">
-                        <f:validateRegex pattern="[0-9]{4}" />
-                    </h:inputText>
+                            <f:validateRegex pattern="[0-9]{4}" />
+                        </h:inputText>
                         <h:message for="inputBookPublisher" style="color:red" />
                     </div>
                     <div>
@@ -125,7 +143,30 @@
                 </h:panelGrid>
             </h:form>
         </div>
-
+    </rich:popupPanel>
     </div>
+
+    <rich:popupPanel id="popup_delete_author" modal="false" autosized="true" resizeable="false" style="width: 300px;height: 200px">
+        <f:facet name="header">
+            <h:outputText value="Add book" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup_delete_author')}.hide(); return false;" style="color: inherit">
+                X
+            </h:outputLink>
+        </f:facet>
+
+        <div>
+            <p>Are you shure ?</p>
+            <h:commandButton value="Delete" type="submit">
+                <p:ajax listener="#{authorController.deleteDetail()}"/>
+            </h:commandButton>
+
+            <h:commandButton value="CANCEL" action="#{authorController.deleteSelected}" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;">
+            </h:commandButton>
+
+        </div>
+    </rich:popupPanel>
+
 </h:body>
 </html>

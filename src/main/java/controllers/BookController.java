@@ -4,6 +4,7 @@ import data.entity.Author;
 import data.entity.Book;
 import lombok.Getter;
 import lombok.Setter;
+import managers.AuthorManager;
 import managers.BookManager;
 
 import javax.ejb.EJB;
@@ -13,10 +14,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @ManagedBean
 @SessionScoped
@@ -24,9 +22,11 @@ public class BookController {
 
     private final String COLUMN_NAME = "column_name_books";
 
-
     @EJB
     private @Getter BookManager bookManager;
+
+    @EJB
+    private @Getter AuthorManager authorManager;
 
     private @Setter @Getter Book newBook = new Book();
     private @Getter @Setter Book detailBook = new Book();
@@ -36,12 +36,9 @@ public class BookController {
     private HashMap<String, Boolean> mOderMap = new HashMap<>();
     private ArrayList<Long> selectedPks = new ArrayList<>();
 
-    public BookController() { }
+    private @Getter @Setter List <Author> autocompleteAuthors = new ArrayList<>();
 
-    public Book getByPk(long pk){
-        Book book = bookManager.getBookByPk(1);
-        return book;
-    }
+    public BookController() { }
 
     public void createBook(Author author){
         ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
@@ -53,8 +50,6 @@ public class BookController {
     }
 
     public void update() {
-//        detailBook.setName(detailBook.getName());
-//        detailBook.setPublisher(detailBook.getPublisher());
         bookManager.update(detailBook);
     }
 
@@ -105,6 +100,15 @@ public class BookController {
         detailBook = bookManager.getBookByPk(Long.valueOf(pk));
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "book_detail.xhtml");
+    }
+
+    public List<Long> getBookCountByRating(){
+        return bookManager.getCountByRating();
+    }
+
+    //    query
+    public List<Author> getAutocomplete(String prefix ) {
+        return authorManager.getAutocompleteBySecondName(prefix);
     }
 
     public Author getGeneralAuthor(Book book){

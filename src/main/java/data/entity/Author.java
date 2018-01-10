@@ -15,6 +15,8 @@ import java.util.*;
 
 @Entity
 @Table(name = "AUTHOR")
+@NamedQuery(name = "Author.by.secondName.like",
+            query = "select a from Author a WHERE a.secondName LIKE ?1")
 public class Author implements Serializable {
 
     public Author() {}

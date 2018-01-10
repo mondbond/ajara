@@ -24,7 +24,6 @@ public class ReviewController {
     public void createReview(Book book){
         newReview.setBook(reviewManager.getBookById(book.getId()));
         newReview.setDate(new Date());
-//        book.getReviews().add(newReview);
         reviewManager.createReview(newReview);
     }
 

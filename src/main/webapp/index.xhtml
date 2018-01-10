@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Created by IntelliJ IDEA.
-  User: ibahr
-  Date: 13.12.2017
-  Time: 13:24
--->
+
 <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,6 +27,13 @@
             <a href="view/author_manage.xhtml">author page</a>
         </div>
 
+        <div id="rating_books">
+            <rich:list value="#{bookController.bookCountByRating}" var="count">
+                <h:form>
+                    <h:outputLabel value="#{count}"/>
+                </h:form>
+            </rich:list>
+        </div>
         <div id="books_div">
             <a href="view/books_manage.xhtml">books page</a>
         </div>

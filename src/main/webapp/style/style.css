@@ -27,6 +27,10 @@ body{
     margin: 10px;
 }
 
+.padding{
+    padding: 10px;
+}
+
 /*link*/
 a, a:link, a:visited, a:active {
     color: #c3062a;
@@ -59,4 +63,9 @@ a, a:link, a:visited, a:active {
 /*general style*/
 .board_style{
     border: 2px solid #c3062a;
+}
+
+.table_size {
+    width: 600px !important;
+    height: 500px !important;
 }

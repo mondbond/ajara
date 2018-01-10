@@ -47,7 +47,6 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
         int firstRow = ((SequenceRange) range).getFirstRow();
         int numberOfLines = ((SequenceRange) range).getRows();
         this.list = dao.getPagination(firstRow, numberOfLines, sortingColumn , isASC);
-//        sort();
 
         for (int i = 0; i < list.size(); i++) {
             dataVisitor.process(facesContext, i, o);

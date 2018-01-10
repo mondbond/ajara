@@ -8,3 +8,8 @@
     width: available;
     background-color: #c3062a;
 }
+
+#authors_data {
+    width: 500px;
+    height: 600px;
+}

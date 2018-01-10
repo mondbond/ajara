@@ -18,7 +18,6 @@
 </h:head>
 
 <h:body>
-
     <div id="content_panel">
         <h2>#{bookController.detailBook.name}</h2>
         <div id="undername_line">
@@ -35,7 +34,12 @@
                     <h:message for="updateName" style="color:red" />
 
                     <h:outputText value="AUTHOR"/>
-                    <h:outputText value="#{bookController.detailBook.authors}"/>
+
+                    <rich:list value="#{bookController.detailBook.authors}" var="author" iterationStatusVar="">
+                        <h:form>
+                            <h:commandLink value="#{author.secondName}" actionListener="#{authorController.toDetailPage(author.id)}"/>
+                        </h:form>
+                    </rich:list>
 
                     <h:outputText value="ISBN"/>
                     <h:outputText value="#{bookController.detailBook.isbn}"/>
@@ -47,7 +51,6 @@
                     </h:inputText>
                     <h:message for="updatePublisher" style="color:red" />
 
-
                     <h:outputText value="YEAR"/>
                     <h:outputText value="#{bookController.detailBook.publishYear}"/>
                 </h:panelGrid>
@@ -58,8 +61,8 @@
             <p:ajax listener="#{bookController.update()}"/>
         </a4j:commandButton>
 
-        <h:commandButton value="Delete" type="submit">
-            <p:ajax listener="#{bookController.deleteDetail()}"/>
+        <h:commandButton value="Delete">
+            <rich:componentControl target="popup_delete_book" operation="show" />
         </h:commandButton>
 
         <div id="add_review" class="board_style left margin">
@@ -120,8 +123,28 @@
                 </h:panelGrid>
             </h:form>
         </div>
-
-
     </div>
+
+    <rich:popupPanel id="popup_delete_book" modal="false" autosized="true" resizeable="false" style="width: 300px;height: 200px">
+        <f:facet name="header">
+            <h:outputText value="Add book" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup_delete_book')}.hide(); return false;" style="color: inherit">
+                X
+            </h:outputLink>
+        </f:facet>
+
+        <div>
+            <p>Are you shure ?</p>
+            <h:commandButton value="Delete" type="submit">
+                <p:ajax listener="#{bookController.deleteDetail()}"/>
+            </h:commandButton>
+
+            <h:commandButton value="CANCEL" action="#{authorController.deleteSelected}" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;">
+            </h:commandButton>
+
+        </div>
+    </rich:popupPanel>
 </h:body>
 </html>

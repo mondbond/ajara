@@ -44,4 +44,8 @@ public class AuthorManager {
     public void deleteList(List<Long> ids){
         Stream.of(ids).flatMap(pk->ids.stream()).forEach(pk->delete(pk));
     }
+
+    public List<Author> getAutocompleteBySecondName(String characters){
+        return authorFacade.getAutocompleteBySecondName(characters);
+    }
 }

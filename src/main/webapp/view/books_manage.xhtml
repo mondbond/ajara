@@ -25,7 +25,7 @@
 
         <div id="authors_data" class="left margin">
             <rich:dataScroller for="books" maxPages="5"/>
-            <rich:dataTable id="books" value="#{bookController.bookManager.dataModule}" var="book" rows="10">
+            <rich:dataTable id="books" value="#{bookController.bookManager.dataModule}" var="book" rows="10" style="width: 500px;height: 600px">
                 <f:facet name="header">
                     <h:outputText value="All books" />
                 </f:facet>
@@ -55,7 +55,13 @@
                             </h:commandLink>
                         </h:form>
                     </f:facet>
-                    <h:outputText value="#{book.authors}"/>
+
+                    <rich:list value="#{book.authors}" var="author">
+                        <h:form>
+                            <h:commandLink value="#{author.id}" actionListener="#{authorController.toDetailPage(author.id)}"/>
+                        </h:form>
+                    </rich:list>
+
                 </rich:column>
 
                 <rich:column>
@@ -100,12 +106,33 @@
             </rich:dataTable>
 
             <div>
-                <h:commandButton value="delete selected" action="#{bookController.deleteSelected}">
-                    <p:ajax listener="#{bookController.deleteSelected()}"/>
+                <h:commandButton value="Delete selected">
+                    <rich:componentControl target="popup_delete_books" operation="show" />
                 </h:commandButton>
             </div>
         </div>
     </div>
+
+    <rich:popupPanel id="popup_delete_books" modal="false" autosized="true" resizeable="false" style="width: 300px;height: 200px">
+        <f:facet name="header">
+            <h:outputText value="Add author" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup_delete_books')}.hide(); return false;" style="color: inherit">
+                X
+            </h:outputLink>
+        </f:facet>
+
+        <div class="center_text">
+            <p>Are you shure ?</p>
+            <h:commandButton value="OK" action="#{bookController.deleteSelected}">
+                <p:ajax listener="#{bookController.deleteSelected()}"/>
+            </h:commandButton>
+            <h:commandButton value="CANCEL" action="#{authorController.deleteSelected}" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;"/>
+        </div>
+    </rich:popupPanel>
+
+
 </h:body>
 
 </html>
