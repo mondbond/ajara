@@ -2,8 +2,7 @@ package rest;
 
 import data.entity.Author;
 import data.entity.Book;
-import repository.AuthorFacade;
-import repository.AuthorHome;
+import managers.AuthorManager;
 import rest.dto.AuthorDto;
 
 import javax.ejb.EJB;
@@ -18,16 +17,13 @@ import java.util.stream.Collectors;
 public class AuthorRest {
 
     @EJB
-    private AuthorFacade authorFacade; // TODO: use manager
-
-    @EJB
-    private AuthorHome authorHome; // TODO: use manager
+    private AuthorManager authorManager;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/")
     public Response getAllAuthors() {
-        List<Author> list = authorFacade.findAll();
+        List<Author> list = authorManager.getAllAuthors();
         return Response.status(200).entity(list).build();
     }
 
@@ -35,7 +31,7 @@ public class AuthorRest {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{pk}")
     public AuthorDto getAuthorByPk(@PathParam(value = "pk") Long pk){
-        Author author =  authorFacade.findByPk(pk);
+        Author author =  authorManager.getAuthorByPk(pk);
         return  new AuthorDto(author.getId(), author.getFirstName(),
                 author.getSecondName(), author.getCreateDate(),
                 author.getBooks().stream()
@@ -43,30 +39,30 @@ public class AuthorRest {
                         .collect(Collectors.toList()));
     }
 
-    @GET // TODO: Replace with @DELETE
-    @Path("/delete/{pk}") // TODO: Avoid using verbs
+    @DELETE
+    @Path("/{pk}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response deleteByPk(@PathParam(value = "pk") Long pk) {
-        authorHome.deleteByPk(pk);
+        authorManager.delete(pk);
         return Response.status(200).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Path("/add/")
+    @Path("/")
     public Response createAuthor(@FormParam("name") String name,
                                  @FormParam("second_name") String secondName) {
-        authorHome.insert(new Author(name, secondName, new Date()));
+        authorManager.save(new Author(name, secondName, new Date()));
         return Response.status(200).build();
     }
 
-    @POST // TODO: Replace with @PUT
-    @Path("/update")
+    @PUT
+    @Path("/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void updateAuthor(@FormParam("pk") Long id,
                              @FormParam("name") String name,
                              @FormParam("second_name") String secondName) {
-        Author author = authorFacade.findByPk(id);
-        authorHome.update(author);
+        Author author = authorManager.getAuthorByPk(id);
+        authorManager.update(author);
     }
 }

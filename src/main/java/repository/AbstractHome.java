@@ -1,37 +1,41 @@
 package repository;
 
-import org.hibernate.Session;
+import lombok.Getter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
 public abstract class AbstractHome<T> {
 
     Class<T> entity;
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private @Getter EntityManager entityManager;
 
     public AbstractHome(Class<T> entity) {
         this.entity = entity;
     }
 
-    EntityManager getEntityManager() {
-        return entityManager;
-    }
-
     public void insert(T object) {
 //        ((Session) getEntityManager().getDelegate()).save(object);
-        getEntityManager().merge(object); // TODO: use persist
-        getEntityManager().flush(); // TODO: Why flush???
+        entityManager.persist(object);
     }
 
     public void deleteByPk(long pk) {
-        T object = getEntityManager().find(entity, pk);
-        getEntityManager().remove(object);
+        T object = entityManager.find(entity, pk);
+        entityManager.remove(object);
+    }
+
+    public void deleteList(List<Long> list) {
+//        Query query = entityManager.createQuery("DELETE FROM " + entity.getName() + " WHERE ID IN (:list)");
+        Query query = entityManager.createQuery("DELETE FROM " + entity.getName() +" WHERE id IN (:list)");
+        query.setParameter("list", list);
+        query.executeUpdate();
     }
 
     public void update(T object) {
-        getEntityManager().merge(object);
+        entityManager.merge(object);
     }
 }

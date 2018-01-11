@@ -13,6 +13,6 @@ public class AuthorFacade extends AbstractFacade<Author> {
     }
 
     public List<Author> getAutocompleteBySecondName(String characters){
-        return (List<Author>) getEntityManager().createNamedQuery("Author.by.secondName.like").setParameter(1, characters).getResultList();
+        return (List<Author>) getEntityManager().createNamedQuery(Author.QUERY_LIKE_SECOND_NAME).setParameter(1, characters).getResultList();
     }
 }

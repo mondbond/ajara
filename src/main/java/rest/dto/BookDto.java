@@ -1,5 +1,6 @@
 package rest.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Builder
 public class BookDto implements Serializable {
 
     public BookDto(Long id, String isbn, String name, String publisher, int publishYear, Float avgRating, Date crateDate, List<Long> authors) {

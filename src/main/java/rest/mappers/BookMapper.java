@@ -11,10 +11,17 @@ public class BookMapper implements Function<Book,BookDto> {
 
     @Override
     public BookDto apply(Book book) {
-        return new BookDto(book.getId(), book.getIsbn(), book.getName(), book.getPublisher(), // TODO: replace with builder
-                book.getPublishYear(), book.getAvgRating(), book.getCrateDate(),
-                book.getAuthors().stream()
+        return BookDto.builder()
+                .id(book.getId())
+                .isbn(book.getIsbn())
+                .name(book.getName())
+                .publisher(book.getPublisher())
+                .publishYear(book.getPublishYear())
+                .avgRating(book.getAvgRating())
+                .crateDate(book.getCrateDate())
+                .authors(book.getAuthors().stream()
                         .map(Author::getId)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()))
+                .build();
     }
 }

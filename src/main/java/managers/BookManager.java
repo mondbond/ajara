@@ -1,14 +1,10 @@
 package managers;
 import data.entity.Book;
-import lombok.Getter;
-import model.BookDataModule;
 import repository.BookFacade;
 import repository.BookHome;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -22,8 +18,7 @@ public class BookManager {
     @EJB
     private BookHome bookHome;
 
-    @EJB
-    private @Getter BookDataModule dataModule; //TODO: remove this field and inject directly into controller
+ //TODO: remove this field and inject directly into controller (?)
 
     public Book getBookByPk(long pk) {
         return bookFacade.findByPk(pk);
@@ -46,7 +41,7 @@ public class BookManager {
     }
 
     public void deleteList(List<Long> ids){
-        Stream.of(ids).flatMap(pk->ids.stream()).forEach(pk->delete(pk));
+        bookHome.deleteList(ids);
     }
 
     public List<Book> filterByRating(int rating) {

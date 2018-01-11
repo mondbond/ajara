@@ -23,7 +23,7 @@ public class ReviewController {
 
     public void createReview(Book book){
         newReview.setBook(reviewManager.getBookById(book.getId()));
-        newReview.setDate(new Date());
+        newReview.setCreateDate(new Date());
         reviewManager.createReview(newReview);
     }
 

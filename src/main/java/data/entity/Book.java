@@ -1,15 +1,22 @@
 package data.entity;
 
-import com.fasterxml.jackson.annotation.*;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 @Entity
 @Table(name = "BOOK")
 @NamedQueries({
@@ -21,42 +28,45 @@ import java.util.*;
 })
 public class Book implements Serializable {
 
+    public static final String QUERY_BY_RATING = "Book.eq.ratinq";
+    public static final String QUERY_COUNT_BY_RATING = "Book.count.eq.ratinq";
+
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="pp")
-    @SequenceGenerator(name="pp", allocationSize = 1, sequenceName="BOOK_SEQ")
-    private @Getter @Setter Long id;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="book_id_sequence")
+    @SequenceGenerator(name="book_id_sequence", allocationSize = 1, sequenceName="BOOK_SEQ")
+    private Long id;
 
     @Column(name = "ISBN")
     @Pattern(regexp = "[0-9]{10,18}", message = "ISBN must have minimum 10, maximum 18 numbers")
-    private @Getter @Setter String isbn;
+    private String isbn;
 
     @Column(name = "NAME")
     @Pattern(regexp = "[a-zA-Z0-9_.-]{3,50}", message = "Name must contain minimum 3 maximum 50 characters")
-    private @Getter @Setter String name;
+    private String name;
 
     @Column(name = "PUBLISHER")
     @Pattern(regexp = "[a-zA-Z0-9_.-]{3,50}", message = "PUBLISHER must contain minimum 3 maximum 50 characters")
-    private @Getter @Setter String publisher;
+    private String publisher;
 
     @Column(name = "PUBLISH_YEAR")
-    @Pattern(regexp = "[0-9]{4}", message = "Year must contain only 4 numbers") // TODO: Replace with @Range
-    private @Getter @Setter int publishYear;
+    @Range(min = 1000, max = 2017)
+    private int publishYear;
 
     @Column(name = "AVG_RATING")
-    private @Getter @Setter Float avgRating;
+    private Float avgRating;
 
     @Column(name = "CREATE_DATE")
-    private @Getter @Setter Date crateDate; // TODO: createDate
+    private Date crateDate; // TODO: createDate
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "JOIN_BOOK_AUTHOR",
             joinColumns = {@JoinColumn(name = "book_id")},
             inverseJoinColumns = {@JoinColumn (name = "author_id")})
-    private @Getter @Setter List<Author> authors = new ArrayList<>();
+    private List<Author> authors = new ArrayList<>();
 
     @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
-    private @Getter @Setter List<Reviews> reviews;
+    private List<Reviews> reviews;
 
     @Override
     public String toString() {

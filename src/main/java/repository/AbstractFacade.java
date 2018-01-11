@@ -21,22 +21,22 @@ public abstract class AbstractFacade<T> {
     }
 
     public T findByPk(long pk){
-        return getEntityManager().find(entity, pk);
-    } // TODO: use field instead of getter
+        return entityManager.find(entity, pk);
+    }
 
     public List<T> findAll(){
-        return getEntityManager().createQuery("from " + entity.getName()).getResultList();
+        return entityManager.createQuery("from " + entity.getName()).getResultList();
     }
 
     public List<T> getPagination(int skip, int limit, String column, boolean isAsc) {
-        String sql = "from " + entity.getName() + " order by " + column + " " + ((isAsc)? "ASC": "DESC"); // TODO: rename variable
-        Query query = getEntityManager().createQuery(sql);
+        String sqlString = "from " + entity.getName() + " order by " + column + " " + ((isAsc)? "ASC": "DESC");
+        Query query = entityManager.createQuery(sqlString);
         query.setFirstResult(skip);
         query.setMaxResults(limit);
         return query.getResultList();
     }
 
     public int countAll() {
-        return ((Long) getEntityManager().createQuery("SELECT count(*) from " + entity.getName()).getSingleResult()).intValue();
+        return ((Long) entityManager.createQuery("SELECT count(*) from " + entity.getName()).getSingleResult()).intValue();
     }
 }

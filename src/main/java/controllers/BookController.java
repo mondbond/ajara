@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import managers.AuthorManager;
 import managers.BookManager;
+import model.BookDataModule;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIInput;
@@ -27,6 +27,10 @@ public class BookController {
 
     @EJB
     private @Getter AuthorManager authorManager;
+
+    @EJB
+    private @Getter
+    BookDataModule dataModule;
 
     private @Setter @Getter Book newBook = new Book();
     private @Getter @Setter Book detailBook = new Book();
@@ -80,7 +84,7 @@ public class BookController {
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         sortingColumn = params.get(COLUMN_NAME);
         changeOrder(sortingColumn);
-        bookManager.getDataModule().setSortField(sortingColumn, mOderMap.get(sortingColumn));
+        dataModule.setSortField(sortingColumn, mOderMap.get(sortingColumn));
         return null;
     }
 

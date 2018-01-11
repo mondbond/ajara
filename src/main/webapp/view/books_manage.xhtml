@@ -25,7 +25,7 @@
 
         <div id="authors_data" class="left margin">
             <rich:dataScroller for="books" maxPages="5"/>
-            <rich:dataTable id="books" value="#{bookController.bookManager.dataModule}" var="book" rows="10" style="width: 500px;height: 600px">
+            <rich:dataTable id="books" value="#{bookController.dataModule}" var="book" rows="10" style="width: 500px;height: 600px">
                 <f:facet name="header">
                     <h:outputText value="All books" />
                 </f:facet>
@@ -33,7 +33,7 @@
                     <f:facet name="header">
                         <h:form>
                             <h:commandLink action="#{bookController.sortBy}"> ID
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.bookManager.dataModule.getPkColumnConstant()}" />
+                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPkColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>
@@ -51,7 +51,7 @@
                     <f:facet name="header">
                         <h:form>
                             <h:commandLink action="#{bookController.sortBy}"> Author
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.bookManager.dataModule.getAuthorColumnConstant()}" />
+                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getAuthorColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>
@@ -68,7 +68,7 @@
                     <f:facet name="header">
                         <h:form>
                             <h:commandLink action="#{bookController.sortBy}"> Publisher
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.bookManager.dataModule.getPublisherColumnConstant()}" />
+                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPublisherColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>
@@ -79,7 +79,7 @@
                     <f:facet name="header">
                         <h:form>
                             <h:commandLink action="#{bookController.sortBy}"> Rating
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.bookManager.dataModule.getRatingColumnConstant()}" />
+                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>
@@ -90,7 +90,7 @@
                     <f:facet name="header">
                         <h:form>
                             <h:commandLink action="#{bookController.sortBy}"> CREATE DATE
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.bookManager.dataModule.getDateColumnConstant()}" />
+                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getDateColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>

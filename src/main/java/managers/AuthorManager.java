@@ -1,16 +1,12 @@
 package managers;
 
 import data.entity.Author;
-import org.ajax4jsf.model.ExtendedDataModel;
 import repository.AuthorFacade;
 import repository.AuthorHome;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
-import javax.faces.bean.ManagedBean;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Stateless
 public class AuthorManager {
@@ -42,7 +38,8 @@ public class AuthorManager {
     }
 
     public void deleteList(List<Long> ids){
-        ids.forEach(this::delete); // TODO: replace with query
+        authorHome.deleteList(ids);
+//        ids.forEach(this::delete); // TODO: replace with query (?)
 //        Stream.of(ids).flatMap(pk->ids.stream()).forEach(pk->delete(pk));
     }
 

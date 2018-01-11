@@ -1,7 +1,5 @@
 package rest;
 
-import data.entity.Reviews;
-import repository.AuthorFacade;
 import repository.BookFacade;
 import repository.ReviewFacade;
 import rest.dto.ReviewDto;
@@ -12,10 +10,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Path("/review")
 public class ReviewRest {
@@ -31,7 +27,7 @@ public class ReviewRest {
     @Path("/{bookId}")
     public List<ReviewDto> getReviewsByPk(@PathParam("bookId") String bookId){
        return bookFacade.findByPk(Long.parseLong(bookId)).getReviews().stream()
-               .map(r -> new ReviewDto(r.getId(), r.getCommenterName(), r.getCom(), r.getRating(), r.getDate()))
+               .map(r -> new ReviewDto(r.getId(), r.getCommenterName(), r.getCom(), r.getRating(), r.getCreateDate()))
                .collect(Collectors.toList());
     }
 }
