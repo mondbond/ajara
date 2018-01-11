@@ -15,22 +15,22 @@ import java.util.*;
 
 @Entity
 @Table(name = "AUTHOR")
-@NamedQuery(name = "Author.by.secondName.like",
+@NamedQuery(name = "Author.by.secondName.like", // TODO: Extract to public constant
             query = "select a from Author a WHERE a.secondName LIKE ?1")
 public class Author implements Serializable {
 
-    public Author() {}
+    public Author() {} // TODO: replace with lombok annotation
 
-    public Author(String firstName, String secondName, Date createDate) {
+    public Author(String firstName, String secondName, Date createDate) { // TODO: replace with lombok annotation
         this.firstName = firstName;
         this.secondName = secondName;
         this.createDate = createDate;
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="purchase_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="purchase_seq") // TODO: rename generator
     @SequenceGenerator(name="purchase_seq", allocationSize = 1, sequenceName="AJARA_SEQ")
-    private @Getter @Setter long id;
+    private @Getter @Setter long id; // TODO: Move getter setter to class level and remove from all fields
 
     @Column(name = "FIRST_NAME")
     @Pattern(regexp = "[a-zA-Z0-9_.-]{3,100}", message = "Name must contain minimum 3 maximum 100 characters")
@@ -41,7 +41,7 @@ public class Author implements Serializable {
     private @Getter @Setter String secondName;
 
     @Column(name = "AVG_RATING")
-    private @Getter @Setter Float avgRating;
+    private @Getter @Setter Float avgRating; // TODO: Rename to averageRating
 
     @Column(name = "CREATE_DATE")
     private @Getter @Setter Date createDate;
@@ -51,7 +51,7 @@ public class Author implements Serializable {
     private @Getter @Setter List<Book> books = new ArrayList<>();
 
     @Override
-    public String toString() {
+    public String toString() { // TODO: replace with lombok or ToStringBuilder
         return "Author{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +

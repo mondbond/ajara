@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class AbstractFacade<T> {
 
-    Class<T> entity;
+    private Class<T> entity;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -22,14 +22,14 @@ public abstract class AbstractFacade<T> {
 
     public T findByPk(long pk){
         return getEntityManager().find(entity, pk);
-    }
+    } // TODO: use field instead of getter
 
     public List<T> findAll(){
         return getEntityManager().createQuery("from " + entity.getName()).getResultList();
     }
 
     public List<T> getPagination(int skip, int limit, String column, boolean isAsc) {
-        String sql = "from " + entity.getName() + " order by " + column + " " + ((isAsc)? "ASC": "DESC");
+        String sql = "from " + entity.getName() + " order by " + column + " " + ((isAsc)? "ASC": "DESC"); // TODO: rename variable
         Query query = getEntityManager().createQuery(sql);
         query.setFirstResult(skip);
         query.setMaxResults(limit);

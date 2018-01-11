@@ -42,7 +42,8 @@ public class AuthorManager {
     }
 
     public void deleteList(List<Long> ids){
-        Stream.of(ids).flatMap(pk->ids.stream()).forEach(pk->delete(pk));
+        ids.forEach(this::delete); // TODO: replace with query
+//        Stream.of(ids).flatMap(pk->ids.stream()).forEach(pk->delete(pk));
     }
 
     public List<Author> getAutocompleteBySecondName(String characters){

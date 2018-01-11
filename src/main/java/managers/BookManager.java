@@ -23,7 +23,7 @@ public class BookManager {
     private BookHome bookHome;
 
     @EJB
-    private @Getter BookDataModule dataModule;
+    private @Getter BookDataModule dataModule; //TODO: remove this field and inject directly into controller
 
     public Book getBookByPk(long pk) {
         return bookFacade.findByPk(pk);

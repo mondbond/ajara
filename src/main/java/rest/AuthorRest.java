@@ -1,6 +1,7 @@
 package rest;
 
 import data.entity.Author;
+import data.entity.Book;
 import repository.AuthorFacade;
 import repository.AuthorHome;
 import rest.dto.AuthorDto;
@@ -17,10 +18,10 @@ import java.util.stream.Collectors;
 public class AuthorRest {
 
     @EJB
-    AuthorFacade authorFacade;
+    private AuthorFacade authorFacade; // TODO: use manager
 
     @EJB
-    AuthorHome authorHome;
+    private AuthorHome authorHome; // TODO: use manager
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -38,12 +39,12 @@ public class AuthorRest {
         return  new AuthorDto(author.getId(), author.getFirstName(),
                 author.getSecondName(), author.getCreateDate(),
                 author.getBooks().stream()
-                        .map(b -> b.getId())
+                        .map(Book::getId)
                         .collect(Collectors.toList()));
     }
 
-    @GET
-    @Path("/delete/{pk}")
+    @GET // TODO: Replace with @DELETE
+    @Path("/delete/{pk}") // TODO: Avoid using verbs
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response deleteByPk(@PathParam(value = "pk") Long pk) {
         authorHome.deleteByPk(pk);
@@ -59,7 +60,7 @@ public class AuthorRest {
         return Response.status(200).build();
     }
 
-    @POST
+    @POST // TODO: Replace with @PUT
     @Path("/update")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void updateAuthor(@FormParam("pk") Long id,

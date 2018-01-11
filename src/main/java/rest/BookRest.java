@@ -1,8 +1,5 @@
 package rest;
 
-import data.entity.Author;
-import data.entity.Book;
-import repository.AuthorFacade;
 import repository.BookFacade;
 import rest.dto.BookDto;
 import rest.mappers.BookMapper;
@@ -13,7 +10,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,10 +17,10 @@ import java.util.stream.Stream;
 @Path("/book")
 public class BookRest {
 
-    BookMapper bm = new BookMapper();
+    private BookMapper bm = new BookMapper();
 
     @EJB
-    BookFacade bookFacade;
+    private BookFacade bookFacade;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

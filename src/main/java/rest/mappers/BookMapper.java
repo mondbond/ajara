@@ -11,7 +11,7 @@ public class BookMapper implements Function<Book,BookDto> {
 
     @Override
     public BookDto apply(Book book) {
-        return new BookDto(book.getId(), book.getIsbn(), book.getName(), book.getPublisher(),
+        return new BookDto(book.getId(), book.getIsbn(), book.getName(), book.getPublisher(), // TODO: replace with builder
                 book.getPublishYear(), book.getAvgRating(), book.getCrateDate(),
                 book.getAuthors().stream()
                         .map(Author::getId)

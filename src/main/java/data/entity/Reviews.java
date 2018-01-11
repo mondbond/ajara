@@ -32,7 +32,7 @@ public class Reviews implements Serializable {
     private int rating;
 
     @Column(name = "CREATE_DATE")
-    private Date date;
+    private Date date; // TODO: rename to createDate
 
     @JsonIgnore
     @ManyToOne
