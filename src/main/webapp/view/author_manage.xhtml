@@ -18,48 +18,74 @@
 
 <h:body>
 
-    <div id="content_panel">
-        <h2>Manage authors</h2>
+    <ui:include src="../template/navigate_menu.xhtml" />
+
+    <div class="content_panel">
+        <div class="left">
+            <h2>Manage authors</h2>
+        </div>
+
+        <h:commandButton value="Delete selected" style="margin-left: 200px" styleClass="margin">
+            <rich:componentControl target="popup_delete_authors" operation="show" />
+        </h:commandButton>
+
+        <h:commandButton value="Add authoor" styleClass="margin">
+            <rich:componentControl target="popup_add" operation="show" />
+        </h:commandButton>
+
         <div id="undername_line">
         </div>
 
-        <div id="authors_data" class="left margin" >
-            <rich:dataScroller for="authors" maxPages="5"/>
-            <rich:dataTable id="authors" value="#{authorController.authorDataModule}" var="author" rows="10" style="width: 500px;height: 600px">
+        <div id="authors_data" class="left margin center_h">
+            <rich:dataTable id="authors" value="#{authorController.authorDataModule}" var="author" rows="10" styleClass="table_size">
                 <f:facet name="header">
-                    <h:outputText value="All authors" />
+                    <h:form>
+                        <rich:dataScroller for="authors" maxPages="5"/>
+                    </h:form>
+                </f:facet>
+                <f:facet name="header">
+                    <h:form>
+                        <h:outputText value="All authors" />
+                    </h:form>
                 </f:facet>
                 <rich:column>
                     <f:facet name="header">
                         <h:form>
-                            <h:commandLink action="#{authorController.sortBy}"> ID
+                            <h:commandLink action="#{authorController.sortBy}"> id
                                 <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getPkColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="#{author.id}" actionListener="#{authorController.toDetailPage(author.id)}">
-                        </h:commandLink>
+                        <h:commandLink value="#{author.id}" actionListener="#{authorController.toDetailPage(author.id)}"/>
                     </h:form>
                 </rich:column>
                 <rich:column>
-                    <f:facet name="header">First Name</f:facet>
+                    <f:facet name="header">
+                        <h:form>
+                            <h:commandLink action="#{authorController.sortBy}"> First name
+                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getNameColumnConstant()}" />
+                            </h:commandLink>
+                        </h:form>
+                    </f:facet>
                     <h:outputText value="#{author.firstName}"/>
                 </rich:column>
                 <rich:column>
                     <f:facet name="header">
                         <h:form>
-                            <h:commandLink action="#{authorController.sortBy}"> SECOND NAME
-                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getNameColumnConstant()}" />
+                            <h:commandLink action="#{authorController.sortBy}"> Second name
+                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getSecondNameColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
                     </f:facet>
-                    <h:outputText value="#{author.secondName}"/>
+                    <h:form>
+                        <h:commandLink value="#{author.secondName}" actionListener="#{authorController.toDetailPage(author.id)}"/>
+                    </h:form>
                 </rich:column>
                 <rich:column>
                     <f:facet name="header">
                         <h:form>
-                            <h:commandLink action="#{authorController.sortBy}"> CREATE DATE
+                            <h:commandLink action="#{authorController.sortBy}"> Create date
                                 <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getDateColumnConstant()}" />
                             </h:commandLink>
                         </h:form>
@@ -73,18 +99,14 @@
                     </h:selectBooleanCheckbox>
                 </rich:column>
             </rich:dataTable>
-
-            <div>
-                <h:commandButton value="Delete selecte">
-                    <rich:componentControl target="popup_delete_authors" operation="show" />
-                </h:commandButton>
-            </div>
         </div>
     </div>
 
-    <rich:popupPanel id="popup_delete_authors" modal="false" autosized="true" resizeable="false" style="width: 300px;height: 200px">
+    <!--popups-->
+
+    <rich:popupPanel id="popup_delete_authors" modal="false" autosized="true" resizeable="false" styleClass="dialog_size center_text">
         <f:facet name="header">
-            <h:outputText value="Add author" />
+            <h:outputText value="Delete authors" />
         </f:facet>
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;" style="color: inherit">
@@ -94,19 +116,15 @@
 
         <div class="center_text">
             <p>Are you shure ?</p>
-            <h:commandButton value="OK" action="#{authorController.deleteSelected}" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;">
+
+            <h:commandButton value="OK" action="#{authorController.deleteSelected}">
                     <p:ajax listener="#{authorController.deleteSelected()}" />
             </h:commandButton>
-            <h:commandButton value="CANCEL" action="#{authorController.deleteSelected}" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;"/>
+            <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;"/>
         </div>
     </rich:popupPanel>
 
-
-    <h:commandButton value="Add authoor">
-        <rich:componentControl target="popup_add" operation="show" />
-    </h:commandButton>
-
-    <rich:popupPanel id="popup_add" modal="false" autosized="true" resizeable="false">
+    <rich:popupPanel id="popup_add" modal="false" autosized="true" resizeable="false" styleClass="dialog_size center_text">
         <f:facet name="header">
             <h:outputText value="Add author" />
         </f:facet>
@@ -115,7 +133,7 @@
                 X
             </h:outputLink>
         </f:facet>
-        <div id="add_author_form" class="board_style left margin">
+        <div id="add_author_form" class="board_style">
             <h:form >
                 <h:panelGrid>
                     <div>

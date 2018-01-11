@@ -1,5 +1,5 @@
 package managers;
-import data.entity.Book;
+import entity.Book;
 import repository.BookFacade;
 import repository.BookHome;
 
@@ -41,6 +41,8 @@ public class BookManager {
     }
 
     public void deleteList(List<Long> ids){
+        System.out.println("WTF DELETE B" + ids.toString() );
+
         bookHome.deleteList(ids);
     }
 

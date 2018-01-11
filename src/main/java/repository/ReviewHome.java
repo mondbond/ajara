@@ -1,6 +1,6 @@
 package repository;
 
-import data.entity.Reviews;
+import entity.Reviews;
 
 import javax.ejb.Stateless;
 

@@ -1,7 +1,7 @@
 package rest;
 
-import data.entity.Author;
-import data.entity.Book;
+import entity.Author;
+import entity.Book;
 import managers.AuthorManager;
 import rest.dto.AuthorDto;
 

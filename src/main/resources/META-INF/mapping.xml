@@ -6,8 +6,8 @@ http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
                  version="1.0">
     <description>mapping</description>
     <package>data.entity</package>
-    <entity class="data.entity.Author" name="Author"/>
-    <entity class="data.entity.Book" name="Book"/>
+    <entity class="entity.Author" name="Author"/>
+    <entity class="entity.Book" name="Book"/>
     <entity class="data.entity.Review" name="Review">
 
     </entity>

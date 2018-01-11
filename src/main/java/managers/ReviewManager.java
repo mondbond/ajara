@@ -1,7 +1,7 @@
 package managers;
 
-import data.entity.Book;
-import data.entity.Reviews;
+import entity.Book;
+import entity.Reviews;
 import repository.BookFacade;
 import repository.ReviewFacade;
 import repository.ReviewHome;

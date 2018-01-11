@@ -17,15 +17,16 @@
 </h:head>
 
 <h:body>
+    <ui:include src="../template/navigate_menu.xhtml" />
 
-    <div id="content_panel">
+    <div class="content_panel">
         <h2>Manage books</h2>
         <div id="undername_line">
         </div>
 
         <div id="authors_data" class="left margin">
             <rich:dataScroller for="books" maxPages="5"/>
-            <rich:dataTable id="books" value="#{bookController.dataModule}" var="book" rows="10" style="width: 500px;height: 600px">
+            <rich:dataTable id="books" value="#{bookController.dataModule}" var="book" rows="10" styleClass="table_size">
                 <f:facet name="header">
                     <h:outputText value="All books" />
                 </f:facet>
@@ -128,11 +129,8 @@
             <h:commandButton value="OK" action="#{bookController.deleteSelected}">
                 <p:ajax listener="#{bookController.deleteSelected()}"/>
             </h:commandButton>
-            <h:commandButton value="CANCEL" action="#{authorController.deleteSelected}" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;"/>
+            <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_books')}.hide(); return false;"/>
         </div>
     </rich:popupPanel>
-
-
 </h:body>
-
 </html>

@@ -1,7 +1,7 @@
 package controllers;
 
-import data.entity.Book;
-import data.entity.Reviews;
+import entity.Book;
+import entity.Reviews;
 import lombok.Getter;
 import lombok.Setter;
 import managers.ReviewManager;

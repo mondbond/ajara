@@ -1,7 +1,7 @@
 package rest.mappers;
 
-import data.entity.Author;
-import data.entity.Book;
+import entity.Author;
+import entity.Book;
 import rest.dto.BookDto;
 
 import java.util.function.Function;

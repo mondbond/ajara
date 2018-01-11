@@ -18,7 +18,9 @@
 </h:head>
 
 <h:body>
-    <div id="content_panel">
+    <ui:include src="../template/navigate_menu.xhtml" />
+
+    <div class="content_panel">
         <h2>#{bookController.detailBook.name}</h2>
         <div id="undername_line">
         </div>
@@ -141,7 +143,7 @@
                 <p:ajax listener="#{bookController.deleteDetail()}"/>
             </h:commandButton>
 
-            <h:commandButton value="CANCEL" action="#{authorController.deleteSelected}" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;">
+            <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;">
             </h:commandButton>
 
         </div>

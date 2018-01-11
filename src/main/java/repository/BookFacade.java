@@ -1,6 +1,6 @@
 package repository;
 
-import data.entity.Book;
+import entity.Book;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import java.util.List;

@@ -1,6 +1,6 @@
 package managers;
 
-import data.entity.Author;
+import entity.Author;
 import repository.AuthorFacade;
 import repository.AuthorHome;
 
@@ -27,6 +27,7 @@ public class AuthorManager {
 
     public void save(Author author) {
         authorHome.insert(author);
+        System.out.println("WTF CREATE" + author.toString() );
     }
 
     public void update(Author author) {
@@ -39,6 +40,8 @@ public class AuthorManager {
 
     public void deleteList(List<Long> ids){
         authorHome.deleteList(ids);
+        System.out.println("WTF DELETE" + ids.toString() );
+
 //        ids.forEach(this::delete); // TODO: replace with query (?)
 //        Stream.of(ids).flatMap(pk->ids.stream()).forEach(pk->delete(pk));
     }

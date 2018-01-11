@@ -1,10 +1,10 @@
-#content_panel {
-    margin-top: 200px;
-    margin-left: 40vh;
+.content_panel {
+    margin-top: 50px;
+    margin-left: 20vh;
 }
 
 #undername_line {
-    height: 3px;
+    height: 2px;
     width: available;
     background-color: #c3062a;
 }
@@ -12,4 +12,9 @@
 #authors_data {
     width: 500px;
     height: 600px;
+}
+
+.table_size {
+    width: 900px !important;
+    height: 500px !important;
 }

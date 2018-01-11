@@ -1,6 +1,6 @@
 package model;
 
-import data.entity.Author;
+import entity.Author;
 import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
@@ -17,6 +17,7 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
 
     public final String PK_COLUMN = "ID";
     public final String NAME_COLUMN = "FIRST_NAME";
+    public final String SECOND_NAME_COLUMN = "SECOND_NAME";
     public final String DATE_COLUMN = "CREATE_DATE";
 
     private Integer rowKey;
@@ -25,7 +26,7 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
 
     private boolean isASC;
 //    sorting
-    private String sortingColumn = null;
+    private String sortingColumn = DATE_COLUMN;
     @EJB
     private  AuthorFacade dao;
 
@@ -174,6 +175,10 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
 
     public String getNameColumnConstant() {
         return NAME_COLUMN;
+    }
+
+    public String getSecondNameColumnConstant() {
+        return SECOND_NAME_COLUMN;
     }
 
     public String getDateColumnConstant() {

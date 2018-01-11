@@ -1,6 +1,6 @@
 package model;
 
-import data.entity.Book;
+import entity.Book;
 import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
@@ -29,7 +29,7 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
 
     private boolean isASC;
     //    sorting
-    private String sortingColumn = null;
+    private String sortingColumn = DATE_COLUMN;
     @EJB
     private BookFacade dao;
 
@@ -51,7 +51,6 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
         int numberOfLines = ((SequenceRange) range).getRows();
         this.list = dao.getPagination(firstRow, numberOfLines, sortingColumn , isASC);
 
-        System.out.println("ASSA" + list.toString());
         for (int i = 0; i < list.size(); i++) {
             dataVisitor.process(facesContext, i, o);
         }

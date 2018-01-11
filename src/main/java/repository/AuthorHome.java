@@ -1,6 +1,6 @@
 package repository;
 
-import data.entity.Author;
+import entity.Author;
 
 import javax.ejb.Stateless;
 

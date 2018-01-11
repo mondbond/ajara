@@ -1,20 +1,20 @@
 package controllers;
 
-import data.entity.Author;
+import entity.Author;
+import lombok.Getter;
 import managers.AuthorManager;
 import model.AuthorDataModule;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import java.util.*;
 
 @ManagedBean(name = "authorController")
-@SessionScoped
+@ViewScoped
 public class AuthorController {
 
     private final String TAG = "Author";
@@ -37,7 +37,7 @@ public class AuthorController {
     private AuthorManager authorManager;
 
     @EJB
-    private AuthorDataModule authorDataModule;
+    private @Getter AuthorDataModule authorDataModule;
 
     public Author getAuthorByPk(long pk){
         return authorManager.getAuthorByPk(pk);
@@ -107,7 +107,6 @@ public class AuthorController {
 
 //    redirect
     public void toDetailPage(long pk) {
-        System.out.println("DETE" + pk);
         detailAuthor = getAuthorByPk(Long.valueOf(pk));
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "author_detail.xhtml");

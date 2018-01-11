@@ -1,7 +1,7 @@
 package controllers;
 
-import data.entity.Author;
-import data.entity.Book;
+import entity.Author;
+import entity.Book;
 import lombok.Getter;
 import lombok.Setter;
 import managers.AuthorManager;

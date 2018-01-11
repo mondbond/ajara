@@ -10,8 +10,8 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <!--<mapping-file>META-INF/mapping.xml</mapping-file>-->
         <jta-data-source>java:/OracleDS</jta-data-source>
-        <class>data.entity.Author</class>
-        <class>data.entity.Book</class>
+        <class>entity.Author</class>
+        <class>entity.Book</class>
         <class>data.entity.Review</class>
 
         <properties>
