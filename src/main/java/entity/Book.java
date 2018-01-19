@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -14,17 +13,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static entity.Book.QUERY_BY_RATING;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
 @Entity
 @Table(name = "BOOK")
 @NamedQueries({
-        @NamedQuery(name = "Book.eq.ratinq",
+        @NamedQuery(name = QUERY_BY_RATING,
                 query = "select b from Book b WHERE b.avgRating between ?1 and ?2"),
-        @NamedQuery(name = "Book.count.eq.ratinq",
-//                query = "select count(b) from Book b WHERE b.avgRating between cast(?1 as integer) and cast(?2 as integer)")
-                query = "select count(b) from Book b WHERE b.avgRating between 2 and 4")
+        @NamedQuery(name = Book.QUERY_COUNT_BY_RATING,
+                query = "select count(*) from Book b WHERE b.avgRating between ?1 and ?2"),
+//                query = "select count(b) from Book b WHERE b.avgRating between 2 and 5")
 })
 public class Book implements Serializable {
 
@@ -49,7 +50,7 @@ public class Book implements Serializable {
     private String publisher;
 
     @Column(name = "PUBLISH_YEAR")
-    @Range(min = 1000, max = 2017)
+//    @Range(min = 1000, max = 2017)
     private int publishYear;
 
     @Column(name = "AVG_RATING")

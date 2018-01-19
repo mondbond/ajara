@@ -54,4 +54,7 @@ public class Author implements Serializable {
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
+    public String fullName() {
+        return secondName + " " + firstName ;
+    }
 }

@@ -27,77 +27,50 @@
 
         <div id="book_info" class="board_style left margin">
             <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputText value="Name"/>
-                    <h:inputText id="updateName" label="name" rendered="true" value="#{bookController.detailBook.name}"
-                                 valueChangeListener="#{bookController.changeName}" onchange="submit()" validatorMessage="Name must contain minimum 3 maximum 50 characters">
-                        <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}" />
-                    </h:inputText>
+                <h:panelGrid columns="3" >
+                    <h:outputText value="Name" for="updateName"/>
+                    <h:inputText id="updateName" value="#{bookController.detailBook.name}"/>
                     <h:message for="updateName" style="color:red" />
 
-                    <h:outputText value="AUTHOR"/>
+                    <h:outputText value="ISBN" for="updateIsbn"/>
+                    <h:outputText id="updateIsbn" value="#{bookController.detailBook.isbn}"/>
+                    <h:message for="updateIsbn" style="color:red" />
 
-                    <rich:list value="#{bookController.detailBook.authors}" var="author" iterationStatusVar="">
-                        <h:form>
-                            <h:commandLink value="#{author.secondName}" actionListener="#{authorController.toDetailPage(author.id)}"/>
-                        </h:form>
-                    </rich:list>
-
-                    <h:outputText value="ISBN"/>
-                    <h:outputText value="#{bookController.detailBook.isbn}"/>
-
-                    <h:outputText value="Publisher"/>
-                    <h:inputText id="updatePublisher" label="name" rendered="true" value="#{bookController.detailBook.publisher}"
-                                 valueChangeListener="#{bookController.changePublisher}" onchange="submit()" validatorMessage="Name must contain minimum 3 maximum 50 characters">
-                        <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}" />
-                    </h:inputText>
+                    <h:outputText value="Publisher" for="updatePublisher"/>
+                    <h:inputText id="updatePublisher" value="#{bookController.detailBook.publisher}"/>
                     <h:message for="updatePublisher" style="color:red" />
 
-                    <h:outputText value="YEAR"/>
-                    <h:outputText value="#{bookController.detailBook.publishYear}"/>
-                </h:panelGrid>
-            </h:form>
-        </div>
+                    <h:outputText value="YEAR" for="updateYear"/>
+                    <h:outputText id="updateYear" value="#{bookController.detailBook.publishYear}"/>
+                    <h:message for="updateYear" style="color:red" />
 
-        <a4j:commandButton value="Edit" type="submit">
-            <p:ajax listener="#{bookController.update()}"/>
-        </a4j:commandButton>
+                    <h:commandButton value="Edit" action="#{bookController.update()}"/>
 
-        <h:commandButton value="Delete">
-            <rich:componentControl target="popup_delete_book" operation="show" />
-        </h:commandButton>
+                    <h:commandButton value="Delete">
+                        <rich:componentControl target="popup_delete_book" operation="show" />
+                    </h:commandButton>
+            </h:panelGrid>
+        </h:form>
+    </div>
 
-        <div id="add_review" class="board_style left margin">
-            <h:form >
-                <h:panelGrid>
-                    <div>
-                        <h:outputLabel value="Name:"/>
-                        <h:inputText id="inputReviewName" value="#{reviewController.newReview.commenterName}" validatorMessage="Name must have minimum 3 maximum 80 characters">
-                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,80}" />
-                        </h:inputText>
-                        <h:message for="inputReviewName" style="color:red" />
-                    </div>
-                    <div>
-                        <h:outputLabel value="Rating:"/>
-                        <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}">
-                        </h:inputText>
-                        <h:message for="inputReviewRating" style="color:red" />
-                    </div>
-                    <div>
-                        <h:outputLabel value="Comment:"/>
-                        <h:inputText value="#{reviewController.newReview.com}"/>
-                    </div>
-                    <div>
-                        <div>
-                            <h:form>
-                                <h:commandButton value="Save Record" action="#{reviewController.createReview(bookController.detailBook)}">
-                                </h:commandButton>
-                            </h:form>
-                        </div>
-                    </div>
-                </h:panelGrid>
-            </h:form>
-        </div>
+    <div id="add_review" class="board_style left margin">
+        <h:form >
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Name:" for="inputReviewName"/>
+                <h:inputText id="inputReviewName" value="#{reviewController.newReview.commenterName}"/>
+                <h:message for="inputReviewName" style="color:red" />
+
+                <h:outputLabel value="Rating:" for="inputReviewRating"/>
+                <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}"/>
+                <h:message for="inputReviewRating" style="color:red" />
+
+                <h:outputLabel value="Comment:"/>
+                <h:inputText value="#{reviewController.newReview.com}"/>
+
+                <h:commandButton value="Save Record" action="#{reviewController.createReview(bookController.detailBook)}"/>
+        </h:panelGrid>
+        </h:form>
+    </div>
 
         <div id="comments_form">
             <h:form id="form">
@@ -145,7 +118,6 @@
 
             <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;">
             </h:commandButton>
-
         </div>
     </rich:popupPanel>
 </h:body>

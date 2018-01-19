@@ -21,8 +21,9 @@ public class BookFacade extends AbstractFacade<Book> {
 
     public Long getCountByRating(Long rating){
         Query query = getEntityManager().createNamedQuery(Book.QUERY_COUNT_BY_RATING);
-//        query.setParameter(1, new Float(4));
-//        query.setParameter(2,  new Float(2));
+        query.setParameter(1, new Float(rating));
+        query.setParameter(2,  new Float(rating - 1));
         return (Long) query.getSingleResult();
     }
+
 }

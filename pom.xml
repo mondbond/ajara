@@ -26,13 +26,20 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>javax.ejb</groupId>
             <artifactId>ejb-api</artifactId>
             <version>3.0</version>
             <scope>provided</scope>
         </dependency>
 
-        <!--jsf-->
+        <!--jsp-->
         <dependency>
             <groupId>javax.faces</groupId>
             <artifactId>jsf-api</artifactId>
@@ -43,7 +50,7 @@
         <dependency>
             <groupId>org.richfaces</groupId>
             <artifactId>richfaces</artifactId>
-            <version>4.5.11.Final</version>
+            <version>4.5.12.Final</version>
         </dependency>
 
         <!--hibernate-->

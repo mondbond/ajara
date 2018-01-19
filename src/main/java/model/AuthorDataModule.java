@@ -47,6 +47,8 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
     public void walk(FacesContext facesContext, DataVisitor dataVisitor, Range range, Object o) {
         int firstRow = ((SequenceRange) range).getFirstRow();
         int numberOfLines = ((SequenceRange) range).getRows();
+
+        System.out.println("ASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
         this.list = dao.getPagination(firstRow, numberOfLines, sortingColumn , isASC);
 
         for (int i = 0; i < list.size(); i++) {
@@ -69,8 +71,7 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
 
     @Override
     public Author getRowData() {
-        Author author = list.get(rowKey);
-        return author;
+        return list.get(rowKey);
     }
 
     @Override
@@ -93,81 +94,10 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
         throw new UnsupportedOperationException();
     }
 
-//    private void sort() {
-//        if(sortingColumn == null) {
-//            sortingColumn = "pk";
-//        }
-//        switch (sortingColumn){
-//            case PK_COLUMN:
-//                sortByPk();
-//                break;
-//            case NAME_COLUMN:
-//                sortBySecondName();
-//                break;
-//            case DATE_COLUMN:
-//                sortByDate();
-//                break;
-//        }
-//    }
-
     public void setSortField(String sortField, boolean isASC) {
         this.isASC = isASC;
         sortingColumn = sortField;
     }
-
-//    private void sortBySecondName(){
-//        if (isASC){
-//            Collections.sort(list, new Comparator<Author>() {
-//                @Override
-//                public int compare(Author o1, Author o2) {
-//                    return (int)(o1.getSecondName().compareTo(o2.getSecondName()));
-//                }
-//            });
-//        } else {
-//            Collections.sort(list, new Comparator<Author>() {
-//                @Override
-//                public int compare(Author o1, Author o2) {
-//                    return (int)(o2.getSecondName().compareTo(o1.getSecondName()));
-//                }
-//            });
-//        }
-//    }
-//
-//    private void sortByPk() {
-//        if (isASC){
-//            Collections.sort(list, new Comparator<Author>() {
-//                @Override
-//                public int compare(Author o1, Author o2) {
-//                    return (int)(o1.getId() - o2.getId());
-//                }
-//            });
-//        } else {
-//            Collections.sort(list, new Comparator<Author>() {
-//                @Override
-//                public int compare(Author o1, Author o2) {
-//                    return (int)(o2.getId() - o1.getId());
-//                }
-//            });
-//        }
-//    }
-//
-//    private void sortByDate(){
-//        if (isASC){
-//            Collections.sort(list, new Comparator<Author>() {
-//                @Override
-//                public int compare(Author o1, Author o2) {
-//                    return (int)(o1.getCreateDate().compareTo(o2.getCreateDate()));
-//                }
-//            });
-//        } else {
-//            Collections.sort(list, new Comparator<Author>() {
-//                @Override
-//                public int compare(Author o1, Author o2) {
-//                    return o2.getCreateDate().compareTo(o1.getCreateDate());
-//                }
-//            });
-//        }
-//    }
 
     public String getPkColumnConstant() {
         return PK_COLUMN;

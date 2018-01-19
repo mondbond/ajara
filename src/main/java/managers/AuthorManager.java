@@ -21,13 +21,16 @@ public class AuthorManager {
         return authorFacade.findByPk(pk);
     }
 
+    public List<Author> getAuthorsByPk(List<Long> pk) {
+        return (List<Author>) authorFacade.findByPks(pk);
+    }
+
     public List<Author> getAllAuthors() {
         return authorFacade.findAll();
     }
 
     public void save(Author author) {
         authorHome.insert(author);
-        System.out.println("WTF CREATE" + author.toString() );
     }
 
     public void update(Author author) {
@@ -40,13 +43,12 @@ public class AuthorManager {
 
     public void deleteList(List<Long> ids){
         authorHome.deleteList(ids);
-        System.out.println("WTF DELETE" + ids.toString() );
-
 //        ids.forEach(this::delete); // TODO: replace with query (?)
 //        Stream.of(ids).flatMap(pk->ids.stream()).forEach(pk->delete(pk));
     }
 
     public List<Author> getAutocompleteBySecondName(String characters){
+        System.out.println("!@@@@" + authorFacade.getAutocompleteBySecondName(characters).toString());
         return authorFacade.getAutocompleteBySecondName(characters);
     }
 }

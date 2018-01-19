@@ -30,8 +30,8 @@ public abstract class AbstractHome<T> {
 
     public void deleteList(List<Long> list) {
 //        Query query = entityManager.createQuery("DELETE FROM " + entity.getName() + " WHERE ID IN (:list)");
-        Query query = entityManager.createQuery("DELETE FROM " + entity.getName() +" WHERE id IN (:list)");
-        query.setParameter("list", list);
+        Query query = entityManager.createQuery("DELETE FROM " + entity.getName() + " o WHERE o.id IN (?1)");
+        query.setParameter(1, list);
         query.executeUpdate();
     }
 

@@ -8,7 +8,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a4j="http://richfaces.org/a4j"
-      xmlns:rich="http://richfaces.org/rich" xmlns:p="http://xmlns.jcp.org/jsf/core">
+      xmlns:rich="http://richfaces.org/rich" xmlns:p="http://xmlns.jcp.org/jsf/core"
+      xmlns:a4g="http://java.sun.com/jsf/facelets">
 
 <h:head>
     <title>Author page</title>
@@ -29,7 +30,7 @@
             <rich:componentControl target="popup_delete_authors" operation="show" />
         </h:commandButton>
 
-        <h:commandButton value="Add authoor" styleClass="margin">
+        <h:commandButton value="Add author" style="margin-left: 200px" styleClass="margin">
             <rich:componentControl target="popup_add" operation="show" />
         </h:commandButton>
 
@@ -102,6 +103,13 @@
         </div>
     </div>
 
+    <h:form id="herform">
+        <rich:autocomplete id="her" value="a" attached="false" autocompleteMethod="#{authorController.autocomplate}" var="author" mode="cachedAjax"
+                           layout="list" >
+            <h:outputText value="#{author.secondName} " style="font-weight:bold"/>
+        </rich:autocomplete>
+    </h:form>
+
     <!--popups-->
 
     <rich:popupPanel id="popup_delete_authors" modal="false" autosized="true" resizeable="false" styleClass="dialog_size center_text">
@@ -136,29 +144,17 @@
         <div id="add_author_form" class="board_style">
             <h:form >
                 <h:panelGrid>
-                    <div>
-                        <h:outputLabel value="Name:"/>
-                        <h:inputText id="inputAuthorName" value="#{authorController.author.firstName}" validatorMessage="Minimum 3, maximum 50 characters">
-                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,100}" />
-                        </h:inputText>
-                        <h:message for="inputAuthorName" style="color:red" />
-                    </div>
-                    <div>
-                        <h:outputLabel value="Second Name:"/>
-                        <h:inputText id="inputAuthorSecondName" value="#{authorController.author.secondName}" validatorMessage="Minimum 3, maximum 50 characters">
-                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,100}" />
-                        </h:inputText>
-                        <h:message for="inputAuthorSecondName" style="color:red" />
+                    <h:outputLabel for="inputAuthorName" value="Name:"/>
+                    <h:inputText id="inputAuthorName" value="#{authorController.author.firstName}" validatorMessage="Minimum 3, maximum 50 characters">
+                    </h:inputText>
+                    <h:message for="inputAuthorName" style="color:red" />
 
-                    </div>
-                    <div>
-                        <div>
-                            <h:form>
-                                <h:commandButton value="Save Record" action="#{authorController.newAuthor}">
-                                </h:commandButton>
-                            </h:form>
-                        </div>
-                    </div>
+                    <h:outputLabel for="inputAuthorSecondName" value="Second Name:"/>
+                    <h:inputText id="inputAuthorSecondName" value="#{authorController.author.secondName}" validatorMessage="Minimum 3, maximum 50 characters">
+                    </h:inputText>
+                    <h:message for="inputAuthorSecondName" style="color:red" />
+
+                    <h:commandButton value="Save Record" action="#{authorController.newAuthor}"/>
                 </h:panelGrid>
             </h:form>
         </div>

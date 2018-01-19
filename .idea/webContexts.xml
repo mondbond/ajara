@@ -4,6 +4,7 @@
     <option name="state">
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/author_detail.xhtml" value="file://$PROJECT_DIR$/src/main/webapp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/view/author_manage.xhtml" value="file://$PROJECT_DIR$/src/main/webapp/view" />
         <entry key="file://$PROJECT_DIR$/../ajara/src/main/webapp/view/author_manage.xhtml" value="file://$PROJECT_DIR$/../ajara/src/main/webapp/view" />
       </map>
     </option>

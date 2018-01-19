@@ -24,6 +24,13 @@ public abstract class AbstractFacade<T> {
         return entityManager.find(entity, pk);
     }
 
+    public List<T> findByPks(List<Long> list){
+        Query query = entityManager.createQuery("from " + entity.getName() +" t where t.id in (:list)");
+        query.setParameter("list", 1136);
+        System.out.println("!inser" + list.toString());
+        return query.getResultList();
+    }
+
     public List<T> findAll(){
         return entityManager.createQuery("from " + entity.getName()).getResultList();
     }

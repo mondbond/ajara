@@ -21,46 +21,37 @@
     <ui:include src="../template/navigate_menu.xhtml" />
 
     <div class="content_panel">
-        <h2>#{authorController.detailAuthor.secondName}</h2>
+        <h2>#{authorController.detailAuthor.fullName()}</h2>
         <div id="undername_line">
         </div>
-        <h:form>
-            <h:panelGrid columns="2">
-                <h:outputText value="Name"/>
-                <h:inputText id="updateName" label="name" rendered="true" value="#{authorController.detailAuthor.firstName}"
-                             valueChangeListener="#{authorController.changeName}" onchange="submit()" validatorMessage="Minimum 3, maximum 50 characters">
-                    <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}" />
+        <h:form id="author_edit_form" styleClass="margin board_style" style="width: min-content" >
+            <h:panelGrid columns="3">
+                <h:outputText value="Name" for="updateName"/>
+                <h:inputText id="updateName" value="#{authorController.detailAuthor.firstName}">
                 </h:inputText>
                 <h:message for="updateName" style="color:red" />
 
-                <h:outputText value="Second name"/>
-                <h:inputText id="updateSecondName" label="name" rendered="true" value="#{authorController.detailAuthor.secondName}"
-                             valueChangeListener="#{authorController.changeSecondName}" onchange="submit()" validatorMessage="Minimum 3, maximum 50 characters">
-                    <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,100}" />
+                <h:outputText value="Second name" for="updateSecondName"/>
+                <h:inputText id="updateSecondName" value="#{authorController.detailAuthor.secondName}">
                 </h:inputText>
                 <h:message for="updateSecondName" style="color:red" />
             </h:panelGrid>
+
+            <h:commandButton value="Edit" action="#{authorController.update}" styleClass="margin">
+            </h:commandButton>
+
+            <h:commandButton value="Delete" styleClass="margin">
+                <rich:componentControl target="popup_delete_author" operation="show" />
+            </h:commandButton>
         </h:form>
 
-        <a4j:commandButton value="Edit" type="submit">
-            <p:ajax listener="#{authorController.update()}"/>
-        </a4j:commandButton>
-
-        <h:commandButton value="Delete">
-            <rich:componentControl target="popup_delete_author" operation="show" />
-        </h:commandButton>
-
-    <div id="authors_books" class="left margin">
-        <rich:dataTable id="author_books" value="#{authorController.detailAuthor.books}" var="book" rows="10">
+    <div id="authors_books" class="left margin" >
+        <rich:dataTable id="author_books" value="#{authorController.detailAuthor.books}" var="book" rows="10" styleClass="table_size">
             <f:facet name="header">
                 <h:outputText value="All his books" />
             </f:facet>
             <rich:column>
-                <f:facet name="header">
-                    <h:form>
-                        <h:outputText value="All his books" />
-                    </h:form>
-                </f:facet>
+                <f:facet name="header"> ID</f:facet>
                 <h:form>
                     <h:commandLink value="#{book.id}">
                     </h:commandLink>
@@ -70,16 +61,58 @@
                 <f:facet name="header">Name</f:facet>
                 <h:outputText value="#{book.name}"/>
             </rich:column>
+
             <rich:column>
                 <f:facet name="header">
                     <h:form>
-                        <h:commandLink action="#{authorController.sortBy}"> publisher
-                            <f:param value="pub" />
+                        <h:commandLink action="#{bookController.sortBy}"> Publisher
+                            <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPublisherColumnConstant()}" />
                         </h:commandLink>
                     </h:form>
                 </f:facet>
                 <h:outputText value="#{book.publisher}"/>
             </rich:column>
+
+            <rich:column>
+                <f:facet name="header">
+                     ISBN
+                </f:facet>
+                <h:outputText value="#{book.isbn}"/>
+            </rich:column>
+
+            <rich:column>
+                <f:facet name="header">
+                    <h:form>
+                        <h:commandLink action="#{bookController.sortBy}"> Year
+                            <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getYearColumnConstant()}" />
+                        </h:commandLink>
+                    </h:form>
+                </f:facet>
+                <h:outputText value="#{book.publishYear}"/>
+            </rich:column>
+
+            <rich:column>
+                <f:facet name="header">
+                    <h:form>
+                        <h:commandLink action="#{bookController.sortBy}"> Rating
+                            <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
+                        </h:commandLink>
+                    </h:form>
+                </f:facet>
+                <h:outputText value="#{book.avgRating}"/>
+            </rich:column>
+
+            <rich:column>
+                <f:facet name="header">
+                    <h:form>
+                        <h:commandLink action="#{bookController.sortBy}"> CREATE DATE
+                            <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getDateColumnConstant()}" />
+                        </h:commandLink>
+                    </h:form>
+                </f:facet>
+                <h:outputText value="#{book.crateDate}"/>
+            </rich:column>
+
         </rich:dataTable>
     </div>
 
@@ -98,50 +131,35 @@
         </f:facet>
 
         <div id="add_books_form" class="board_style left margin">
-            <h:form >
+            <h:form id="add_book_by_author" >
                 <h:panelGrid>
                     <div>
-                        <h:outputLabel value="Name:"/>
+                        <h:outputLabel value="Name:" for="inputBookName"/>
                         <h:inputText id="inputBookName" value="#{bookController.newBook.name}" validatorMessage="Name must contain minimum 3 maximum 50 characters">
-                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,100}" />
                         </h:inputText>
                         <h:message for="inputBookName" style="color:red" />
                     </div>
                     <div>
-                        <h:outputLabel value="ISBN"/>
+                        <h:outputLabel value="ISBN" for="inputBookIsbn"/>
                         <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}" validatorMessage="ISBN must have minimum 10, maximum 18 numbers">
-                            <f:validateRegex pattern="[0-9]{10,18}" />
                         </h:inputText>
                         <h:message for="inputBookIsbn" style="color:red" />
                     </div>
-
                     <div>
-                        <h:outputLabel value="Authors"/>
-                        <h:inputText/>
-                    </div>
-
-                    <div>
-                        <h:outputLabel value="Publisher"/>
+                        <h:outputLabel value="Publisher" for="inputBookPublisher"/>
                         <h:inputText id="inputBookPublisher" value="#{bookController.newBook.publisher}" validatorMessage="Name must contain minimum 3 maximum 50 characters">
-                            <f:validateRegex pattern="[a-zA-Z0-9_.-]{3,50}}" />
                         </h:inputText>
                         <h:message for="inputBookPublisher" style="color:red" />
                     </div>
                     <div>
-                        <h:outputLabel value="Year"/>
+                        <h:outputLabel value="Year" for="inputBookYear"/>
                         <h:inputText id="inputBookYear" value="#{bookController.newBook.publishYear}" validatorMessage="Year must contain only 4 numbers">
-                            <f:validateRegex pattern="[0-9]{4}" />
                         </h:inputText>
                         <h:message for="inputBookPublisher" style="color:red" />
                     </div>
-                    <div>
-                        <div>
-                            <h:form>
-                                <h:commandButton value="Save Record" action="#{bookController.createBook(authorController.detailAuthor)}">
-                                </h:commandButton>
-                            </h:form>
-                        </div>
-                    </div>
+                        <h:commandButton value="Save Record" action="#{bookController.createBook(authorController.detailAuthor)}">
+                            <!--<p:ajax listener="#{bookController.createBook(authorController.detailAuthor)}"/>-->
+                        </h:commandButton>
                 </h:panelGrid>
             </h:form>
         </div>
