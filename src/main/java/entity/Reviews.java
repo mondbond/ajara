@@ -46,7 +46,6 @@ public class Reviews implements Serializable, HasDate {
     @JoinColumn(name = "ID_BOOK")
     private Book book;
 
-
     @Override
     public void setDate(Date date) {
         createDate = date;

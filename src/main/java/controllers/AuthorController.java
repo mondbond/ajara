@@ -129,6 +129,7 @@ public class AuthorController {
      * @param pk authors pk
      * */
     public void toDetailPage(long pk) {
+        LOGGER.info("toDetailPage:(pk = [{}])", pk);
         detailAuthor = authorManager.getAuthorByPk(pk);
         try {
             FacesContext ctx = FacesContext.getCurrentInstance();

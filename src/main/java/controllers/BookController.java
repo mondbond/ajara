@@ -93,11 +93,12 @@ public class BookController {
     /**
      * Get list of authors book by authors pk
      * @param pk authors pk
-     * @return authors books
+     * @return BookDataModel instance with filtered by author
      * */
-    public List<Book> getBooksByAuthorPk(Long pk){
+    public BookDataModule getBooksByAuthorPk(Long pk){
         LOGGER.info("getBooksByAuthorPk:(pk = [{}]", pk);
-        return authorManager.getAuthorByPk(pk).getBooks();
+        dataModule.setFilteredAuthor(authorManager.getAuthorByPk(pk));
+        return dataModule;
     }
 
     /**

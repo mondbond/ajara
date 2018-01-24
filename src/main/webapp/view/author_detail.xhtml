@@ -28,30 +28,33 @@
         </div>
 
     <div id="authors_books" class="left margin center_text" >
+        <h:form>
         <rich:dataTable id="author_books" value="#{bookController.getBooksByAuthorPk(authorController.detailAuthor.id)}" var="book" rows="10" styleClass="table_size">
             <f:facet name="header">
                 <h:outputText value="All his books" />
             </f:facet>
             <rich:column>
-                <f:facet name="header"> ID</f:facet>
-                <h:form>
-                    <h:commandLink value="#{book.id}"/>
-                </h:form>
+                <f:facet name="header">
+                    <h:commandLink action="#{bookController.sortBy}"> Id
+                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPkColumnConstant()}" />
+                    </h:commandLink>
+                </f:facet>
+                    <h:commandLink value="#{book.id}" actionListener="#{bookController.toDetailPage(book.id)}"/>
             </rich:column>
             <rich:column>
-                <f:facet name="header">Name</f:facet>
-                <h:form>
+                <f:facet name="header">
+                    <h:commandLink action="#{bookController.sortBy}"> Name
+                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getNameColumnConstant()}" />
+                    </h:commandLink>
+                </f:facet>
                     <h:commandLink value="#{book.name}" actionListener="#{bookController.toDetailPage(book.id)}"/>
-                </h:form>
             </rich:column>
 
             <rich:column>
                 <f:facet name="header">
-                    <h:form>
-                        <h:commandLink action="#{bookController.sortBy}"> Publisher
-                            <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPublisherColumnConstant()}" />
-                        </h:commandLink>
-                    </h:form>
+                    <h:commandLink action="#{bookController.sortBy}"> Publisher
+                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPublisherColumnConstant()}" />
+                    </h:commandLink>
                 </f:facet>
                 <h:outputText value="#{book.publisher}"/>
             </rich:column>
@@ -65,37 +68,35 @@
 
             <rich:column>
                 <f:facet name="header">
-                    <h:form>
-                        <h:commandLink action="#{bookController.sortBy}"> Year
-                            <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getYearColumnConstant()}" />
-                        </h:commandLink>
-                    </h:form>
+                    <h:commandLink action="#{bookController.sortBy}"> Year
+                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getYearColumnConstant()}" />
+                    </h:commandLink>
                 </f:facet>
                 <h:outputText value="#{book.publishYear}"/>
             </rich:column>
 
             <rich:column>
                 <f:facet name="header">
-                    <h:form>
-                        <h:commandLink action="#{bookController.sortBy}"> Rating
-                            <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
-                        </h:commandLink>
-                    </h:form>
+                    <h:commandLink action="#{bookController.sortBy}"> Rating
+                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
+                    </h:commandLink>
                 </f:facet>
                 <h:outputText value="#{book.avgRating}"/>
             </rich:column>
 
             <rich:column>
                 <f:facet name="header">
-                    <h:form>
-                        <h:commandLink action="#{bookController.sortBy}"> CREATE DATE
-                            <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getDateColumnConstant()}" />
-                        </h:commandLink>
-                    </h:form>
+                    <h:commandLink action="#{bookController.sortBy}"> CREATE DATE
+                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getDateColumnConstant()}" />
+                    </h:commandLink>
                 </f:facet>
                 <h:outputText value="#{book.createDate}"/>
             </rich:column>
+            <f:facet name="footer">
+                <rich:dataScroller renderIfSinglePage="true" lastPageMode="full" for="author_books" maxPages="5" stepControls="auto" value="#{authorController.authorDataModule}"/>
+            </f:facet>
         </rich:dataTable>
+        </h:form>
     </div>
 
     <h:form id="author_edit_form" styleClass="margin board_style left" style="width:300px" >

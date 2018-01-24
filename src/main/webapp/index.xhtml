@@ -27,7 +27,7 @@
         <div class="margin" style="display: inline-block;width: 600px;">
             <div id="author_div" class="left">
                 <a href="view/author_manage.xhtml">
-                    <img src="img/newAuthor.png" alt=""/>
+                    <img src="img/author.png" alt=""/>
                 </a>
             </div>
 
@@ -42,11 +42,11 @@
             <h3>Our books by rating:</h3>
             <h:form>
                 <ul style="list-style-type: none;" class="big_font">
-                    <li><h:commandLink action="#{bookController.toBookManageByRating(5)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(5)}</li>
-                    <li><h:commandLink action="#{bookController.toBookManageByRating(4)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(4)}</li>
-                    <li><h:commandLink action="#{bookController.toBookManageByRating(3)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(3)}</li>
-                    <li><h:commandLink action="#{bookController.toBookManageByRating(2)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(2)}</li>
-                    <li><h:commandLink action="#{bookController.toBookManageByRating(1)}"><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(1)}</li>
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(5)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/></h:commandLink> #{bookController.getBookCountByRating(5)}</li>
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(4)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.getBookCountByRating(4)}</li>
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(3)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.getBookCountByRating(3)}</li>
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(2)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.getBookCountByRating(2)}</li>
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(1)}"><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.getBookCountByRating(1)}</li>
                 </ul>
             </h:form>
         </div>

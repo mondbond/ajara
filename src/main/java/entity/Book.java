@@ -28,8 +28,7 @@ import static entity.Book.QUERY_BY_RATING;
         @NamedQuery(name = QUERY_BY_RATING,
                 query = "select b from Book b WHERE b.avgRating between ?1 and ?2"),
         @NamedQuery(name = Book.QUERY_COUNT_BY_RATING,
-                query = "select count(*) from Book b WHERE b.avgRating between ?1 and ?2"),
-//                query = "select count(b) from Book b WHERE b.avgRating between 2 and 5")
+                query = "select count(*) from Book b WHERE b.avgRating between ?1 and ?2")
 })
 public class Book implements Serializable, HasDate {
 

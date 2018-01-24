@@ -28,10 +28,8 @@
         </div>
 
         <div id="authors_data" class="left margin center_text">
+            <h:form>
             <rich:dataTable id="authors" value="#{authorController.authorDataModule}" var="newAuthor" rows="10" styleClass="table_size">
-                <f:facet name="header">
-                    <rich:dataScroller renderIfSinglePage="true" lastPageMode="full" for="authors" maxPages="5" stepControls="auto" value="#{authorController.authorDataModule}"/>
-                </f:facet>
                 <f:facet name="header">
                     <h:form>
                         <h:outputText value="All authors" />
@@ -40,48 +38,36 @@
 
                 <rich:column>
                     <f:facet name="header">
-                        <h:form>
-                            <h:commandLink action="#{authorController.sortBy}"> id
-                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getPkColumnConstant()}" />
-                            </h:commandLink>
-                        </h:form>
+                        <h:commandLink action="#{authorController.sortBy}" > id
+                            <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getPkColumnConstant()}" />
+                        </h:commandLink>
                     </f:facet>
-                    <h:form>
                         <h:commandLink value="#{newAuthor.id}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
-                    </h:form>
                 </rich:column>
 
                 <rich:column>
                     <f:facet name="header">
-                        <h:form>
-                            <h:commandLink action="#{authorController.sortBy}"> First name
-                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getNameColumnConstant()}" />
-                            </h:commandLink>
-                        </h:form>
+                        <h:commandLink action="#{authorController.sortBy}"> First name
+                            <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getNameColumnConstant()}" />
+                        </h:commandLink>
                     </f:facet>
                     <h:outputText value="#{newAuthor.firstName}"/>
                 </rich:column>
 
                 <rich:column>
                     <f:facet name="header">
-                        <h:form>
-                            <h:commandLink action="#{authorController.sortBy}"> Second name
-                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getSecondNameColumnConstant()}" />
-                            </h:commandLink>
-                        </h:form>
+                        <h:commandLink action="#{authorController.sortBy}"> Second name
+                            <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getSecondNameColumnConstant()}" />
+                        </h:commandLink>
                     </f:facet>
-                    <h:form>
                         <h:commandLink value="#{newAuthor.secondName}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
-                    </h:form>
                 </rich:column>
 
                 <rich:column>
                     <f:facet name="header">
-                        <h:form>
-                            <h:commandLink action="#{authorController.sortBy}"> Create date
-                                <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getDateColumnConstant()}" />
-                            </h:commandLink>
-                        </h:form>
+                        <h:commandLink action="#{authorController.sortBy}"> Create date
+                            <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getDateColumnConstant()}" />
+                        </h:commandLink>
                     </f:facet>
                     <h:outputText value="#{newAuthor.createDate}"/>
                 </rich:column>
@@ -92,15 +78,11 @@
                         <p:ajax listener="#{authorController.selectPk(newAuthor.id)}"/>
                     </h:selectBooleanCheckbox>
                 </rich:column>
-
                 <f:facet name="footer">
-                    <rich:dataScroller pageIndexVar="pageIndex" pagesVar="pages" for="authors" value="#{authorController.authorDataModule}">
-                        <f:facet name="pages">
-                            <h:outputText value="#{pageIndex} / #{pages}" />
-                        </f:facet>
-                    </rich:dataScroller>
+                    <rich:dataScroller renderIfSinglePage="true" lastPageMode="full" for="authors" maxPages="5" stepControls="auto" value="#{authorController.authorDataModule}"/>
                 </f:facet>
             </rich:dataTable>
+            </h:form>
         </div>
 
         <div class="padding margin board_style left" style="width: 100px;height: 80px">
@@ -149,11 +131,11 @@
             <h:form >
                 <h:panelGrid>
                     <h:outputLabel for="inputAuthorName" value="Name:"/>
-                    <h:inputText id="inputAuthorName" value="#{authorController.insertNewAuthor.firstName}"/>
+                    <h:inputText id="inputAuthorName" value="#{authorController.newAuthor.firstName}"/>
                     <h:message for="inputAuthorName" style="color:red" />
 
                     <h:outputLabel for="inputAuthorSecondName" value="Second Name:"/>
-                    <h:inputText id="inputAuthorSecondName" value="#{authorController.insertNewAuthor.secondName}"/>
+                    <h:inputText id="inputAuthorSecondName" value="#{authorController.newAuthor.secondName}"/>
                     <h:message for="inputAuthorSecondName" style="color:red" />
 
                     <h:commandButton value="Save Record" action="#{authorController.insertNewAuthor}"/>
