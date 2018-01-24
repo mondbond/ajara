@@ -33,7 +33,7 @@ public class BookRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{bookId}")
-    public BookDto getAllBooks(@PathParam("bookId") Long bookId) {
+    public BookDto getAllBooks(@PathParam("bookId") Long bookId) { //TODO: Confusing method name. Should be getBook
         return Stream.of(bookFacade.findByPk(bookId)).map(bm).findFirst().get();
     }
 }
