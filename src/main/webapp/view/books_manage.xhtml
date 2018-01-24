@@ -11,7 +11,7 @@
       xmlns:rich="http://richfaces.org/rich" xmlns:p="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
-    <title>Book page</title>
+    <title>Books</title>
     <link rel="stylesheet" type="text/css" href="../style/style.css"/>
     <link rel="stylesheet" type="text/css" href="../style/detail_author_style.css"/>
 </h:head>
@@ -20,16 +20,13 @@
     <ui:include src="../template/navigate_menu.xhtml" />
 
     <div class="content_panel">
+
         <h2>Manage books</h2>
-
-
-        <h:commandButton value="Add book" styleClass="margin">
-            <rich:componentControl target="popup_add_book" operation="show" />
-        </h:commandButton>
 
         <div id="undername_line">
         </div>
-        <div id="authors_data" class="left margin">
+
+        <div id="books_data" class="left margin center_text" >
             <rich:dataTable id="books" value="#{bookController.dataModule}" var="book" rows="10" styleClass="table_size">
                 <f:facet name="header">
                     <rich:dataScroller for="books" maxPages="5"/>
@@ -48,13 +45,15 @@
                         </h:form>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="#{book.id}" actionListener="#{bookController.toDetailPage(book.id)}">
-                        </h:commandLink>
+                        <h:commandLink value="#{book.id}" actionListener="#{bookController.toDetailPage(book.id)}"/>
                     </h:form>
                 </rich:column>
+
                 <rich:column>
                     <f:facet name="header">Name</f:facet>
-                    <h:outputText value="#{book.name}"/>
+                    <h:form>
+                        <h:commandLink value="#{book.name}" actionListener="#{bookController.toDetailPage(book.id)}"/>
+                    </h:form>
                 </rich:column>
 
                 <rich:column>
@@ -66,12 +65,11 @@
                         </h:form>
                     </f:facet>
 
-                    <rich:list value="#{book.authors}" var="author">
+                    <rich:list value="#{book.authors}" var="newAuthor">
                         <h:form>
-                            <h:commandLink value="#{author.fullName()}" actionListener="#{authorController.toDetailPage(author.id)}"/>
+                            <h:commandLink value="#{newAuthor.fullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
                         </h:form>
                     </rich:list>
-
                 </rich:column>
 
                 <rich:column>
@@ -104,7 +102,7 @@
                             </h:commandLink>
                         </h:form>
                     </f:facet>
-                    <h:outputText value="#{book.crateDate}"/>
+                    <h:outputText value="#{book.createDate}"/>
                 </rich:column>
 
                 <rich:column>
@@ -114,19 +112,30 @@
                     </h:selectBooleanCheckbox>
                 </rich:column>
             </rich:dataTable>
+        </div>
 
-            <div>
-                <h:commandButton value="Delete selected">
-                    <rich:componentControl target="popup_delete_books" operation="show" />
-                </h:commandButton>
-            </div>
+        <div class="padding margin board_style left" style="width: 250px;height: 110px">
+            <h:commandButton value="Add book" styleClass="margin">
+                <rich:componentControl target="popup_add_book" operation="show" />
+            </h:commandButton>
+
+            <h:commandButton value="Delete selected" styleClass="margin">
+                <rich:componentControl target="popup_delete_books" operation="show" />
+            </h:commandButton>
+
+            <h:form id="superform">
+                <rich:autocomplete id="her" value="#{bookController.authorA}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                                   layout="list" styleClass="margin left">
+                    <a4j:ajax event="selectitem" />
+                    <h:outputText value="#{newAuthor.fullName()}"  style="font-weight:bold"/>
+                </rich:autocomplete>
+
+                <h:commandButton action="#{bookController.filterByAuthor}" value="Filter" styleClass="margin left" style="display: inline-block"/>
+            </h:form>
         </div>
     </div>
 
-
     <!--popups-->
-
-
 
     <rich:popupPanel id="popup_add_book" modal="true" autosized="true" resizeable="false">
         <f:facet name="header">
@@ -165,13 +174,13 @@
                     <div>
                         <h:outputLabel value="Authors"/>
                         <h:selectManyListbox value="#{bookController.authorsForBook}" style="height:200px;">
-                            <f:selectItems value="#{bookController.autocomplete()}" var='author' itemValue="${author.id}" itemLabel="#{author.fullName()}"/>
+                            <f:selectItems value="#{bookController.autocompleteAll()}" var='newAuthor' itemValue="${newAuthor.id}" itemLabel="#{newAuthor.fullName()}"/>
                         </h:selectManyListbox>
                     </div>
 
                     <div>
                         <h:form>
-                            <h:commandButton value="Save Record" action="#{bookController.createBook}"/>
+                            <h:commandButton value="Save Record" action="#{bookController.insertNewBook}"/>
                         </h:form>
                     </div>
                 </h:panelGrid>
@@ -191,8 +200,10 @@
 
         <div class="center_text">
             <p>Are you shure ?</p>
-            <h:commandButton value="OK" action="#{bookController.deleteSelected}" onclick="#{rich:component('popup_delete_books')}.hide(); return false;">
-            </h:commandButton>
+            <h:form>
+                <h:commandButton value="OK" action="#{bookController.deleteSelected}"/>
+            </h:form>
+
             <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_books')}.hide(); return false;"/>
         </div>
     </rich:popupPanel>

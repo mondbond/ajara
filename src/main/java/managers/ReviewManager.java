@@ -2,8 +2,9 @@ package managers;
 
 import entity.Book;
 import entity.Reviews;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repository.BookFacade;
-import repository.ReviewFacade;
 import repository.ReviewHome;
 
 import javax.ejb.EJB;
@@ -11,9 +12,7 @@ import javax.ejb.Stateless;
 
 @Stateless
 public class ReviewManager {
-
-    @EJB
-    ReviewFacade reviewFacade;
+    final Logger logger = LoggerFactory.getLogger(ReviewManager.class);
 
     @EJB
     ReviewHome reviewHome;

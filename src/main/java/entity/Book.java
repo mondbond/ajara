@@ -1,10 +1,13 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import entity.listeners.CreateDateListener;
+import entity.listeners.HasDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -19,6 +22,7 @@ import static entity.Book.QUERY_BY_RATING;
 @AllArgsConstructor
 @Getter @Setter
 @Entity
+@EntityListeners({CreateDateListener.class})
 @Table(name = "BOOK")
 @NamedQueries({
         @NamedQuery(name = QUERY_BY_RATING,
@@ -27,7 +31,7 @@ import static entity.Book.QUERY_BY_RATING;
                 query = "select count(*) from Book b WHERE b.avgRating between ?1 and ?2"),
 //                query = "select count(b) from Book b WHERE b.avgRating between 2 and 5")
 })
-public class Book implements Serializable {
+public class Book implements Serializable, HasDate {
 
     public static final String QUERY_BY_RATING = "Book.eq.ratinq";
     public static final String QUERY_COUNT_BY_RATING = "Book.count.eq.ratinq";
@@ -38,7 +42,7 @@ public class Book implements Serializable {
     private Long id;
 
     @Column(name = "ISBN")
-    @Pattern(regexp = "[0-9]{10,18}", message = "ISBN must have minimum 10, maximum 18 numbers")
+    @Pattern(regexp = "[0-9]{10,18}", message = "ISBN must contain minimum 10, maximum 18 numbers")
     private String isbn;
 
     @Column(name = "NAME")
@@ -50,14 +54,14 @@ public class Book implements Serializable {
     private String publisher;
 
     @Column(name = "PUBLISH_YEAR")
-//    @Range(min = 1000, max = 2017)
-    private int publishYear;
+    @Range(min = 1000, max = 2018, message = "Write year between 1000 and 2018")
+    private Integer publishYear;
 
     @Column(name = "AVG_RATING")
     private Float avgRating;
 
     @Column(name = "CREATE_DATE")
-    private Date crateDate; // TODO: createDate
+    private Date createDate;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
@@ -66,11 +70,16 @@ public class Book implements Serializable {
             inverseJoinColumns = {@JoinColumn (name = "author_id")})
     private List<Author> authors = new ArrayList<>();
 
-    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "book", orphanRemoval = true)
     private List<Reviews> reviews;
 
     @Override
     public String toString() {
         return "Book";
+    }
+
+    @Override
+    public void setDate(Date date) {
+        createDate = date;
     }
 }

@@ -1,7 +1,10 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import entity.listeners.CreateDateListener;
+import entity.listeners.HasDate;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,9 +15,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners({CreateDateListener.class})
 @Table(name = "REVIEWS")
 @Data
-public class Reviews implements Serializable {
+public class Reviews implements Serializable, HasDate {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="review_id_sequence")
@@ -30,8 +34,9 @@ public class Reviews implements Serializable {
     private String com;
 
     @Column(name = "RATING")
+    @Range(min = 0, max = 5, message = "Rating should be between 0 and 5")
     @NotNull
-    private int rating;
+    private Integer rating;
 
     @Column(name = "CREATE_DATE")
     private Date createDate;
@@ -40,5 +45,11 @@ public class Reviews implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ID_BOOK")
     private Book book;
+
+
+    @Override
+    public void setDate(Date date) {
+        createDate = date;
+    }
 }
 

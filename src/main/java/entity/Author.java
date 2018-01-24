@@ -1,6 +1,8 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import entity.listeners.CreateDateListener;
+import entity.listeners.HasDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,18 +19,18 @@ import java.util.List;
 @AllArgsConstructor
 @Getter @Setter
 @Entity
+@EntityListeners({CreateDateListener.class})
 @Table(name = "AUTHOR")
 @NamedQuery(name = "Author.by.secondName.like",
             query = "select a from Author a WHERE a.secondName LIKE ?1")
-public class Author implements Serializable {
+public class Author implements Serializable, HasDate {
 
     public static final String QUERY_LIKE_SECOND_NAME = "Author.by.secondName.like";
 
 //    lombok has no annotation for including only necessary fields
-    public Author(String firstName, String secondName, Date createDate) {
+    public Author(String firstName, String secondName) {
         this.firstName = firstName;
         this.secondName = secondName;
-        this.createDate = createDate;
     }
 
     @Id
@@ -51,10 +53,15 @@ public class Author implements Serializable {
     private Date createDate;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Book> books = new ArrayList<>();
 
     public String fullName() {
         return secondName + " " + firstName ;
+    }
+
+    @Override
+    public void setDate(Date date) {
+        createDate = date;
     }
 }

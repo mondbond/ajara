@@ -12,14 +12,14 @@ import java.util.List;
 @Builder
 public class BookDto implements Serializable {
 
-    public BookDto(Long id, String isbn, String name, String publisher, int publishYear, Float avgRating, Date crateDate, List<Long> authors) {
+    public BookDto(Long id, String isbn, String name, String publisher, int publishYear, Float avgRating, Date createDate, List<Long> authors) {
         this.id = id;
         this.isbn = isbn;
         this.name = name;
         this.publisher = publisher;
         this.publishYear = publishYear;
         this.avgRating = avgRating;
-        this.crateDate = crateDate;
+        this.createDate = createDate;
         this.authors = authors;
     }
 
@@ -36,7 +36,7 @@ public class BookDto implements Serializable {
     private @Getter @Setter Float avgRating;
 
     private @Getter @Setter
-    Date crateDate;
+    Date createDate;
 
     private @Getter @Setter
     List<Long> authors = new ArrayList<>();

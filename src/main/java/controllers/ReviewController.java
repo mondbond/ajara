@@ -5,29 +5,41 @@ import entity.Reviews;
 import lombok.Getter;
 import lombok.Setter;
 import managers.ReviewManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import java.util.Date;
 import java.util.List;
 
 @ManagedBean
 @SessionScoped
 public class ReviewController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorController.class);
 
     private @Setter @Getter Reviews newReview = new Reviews();
 
     @EJB
-    ReviewManager reviewManager;
+    private ReviewManager reviewManager;
 
+    /**
+     * Create review entity with pointed book
+     * @param book Book of review relate to
+     * */
     public void createReview(Book book){
+        LOGGER.info("IN createReview(book = [{}])", book);
         newReview.setBook(reviewManager.getBookById(book.getId()));
-        newReview.setCreateDate(new Date());
         reviewManager.createReview(newReview);
     }
 
+    /**
+     * Get reviews by book
+     * @param book book of what reviews are you need
+     * @return list of reviews
+     * */
     public List<Reviews> getReviews(Book book) {
+        LOGGER.info("IN getReviews(book = [{}])", book);
         return reviewManager.getBookById(book.getId()).getReviews();
     }
 }

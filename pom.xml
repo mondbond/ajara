@@ -19,11 +19,11 @@
     <dependencies>
 
         <!--ee-->
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>1.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>javax.persistence</groupId>-->
+            <!--<artifactId>persistence-api</artifactId>-->
+            <!--<version>1.0</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -71,7 +71,7 @@
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
-            <version>1.0.1.Final</version>
+            <version>5.0.1.Final</version>
             <scope>provided</scope>
         </dependency>
 
@@ -130,6 +130,19 @@
             <version>2.6.0</version>
         </dependency>
 
+        <!--log-->
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.10.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.6-jre</version>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>org.apache.maven.plugins</groupId>-->
             <!--<artifactId>maven-dependency-plugin</artifactId>-->

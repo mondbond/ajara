@@ -12,43 +12,32 @@
       xmlns:a4g="http://java.sun.com/jsf/facelets">
 
 <h:head>
-    <title>Author page</title>
+    <title>Authors</title>
     <link rel="stylesheet" type="text/css" href="../style/style.css"/>
     <link rel="stylesheet" type="text/css" href="../style/detail_author_style.css"/>
 </h:head>
 
 <h:body>
-
     <ui:include src="../template/navigate_menu.xhtml" />
 
     <div class="content_panel">
-        <div class="left">
-            <h2>Manage authors</h2>
-        </div>
 
-        <h:commandButton value="Delete selected" style="margin-left: 200px" styleClass="margin">
-            <rich:componentControl target="popup_delete_authors" operation="show" />
-        </h:commandButton>
-
-        <h:commandButton value="Add author" style="margin-left: 200px" styleClass="margin">
-            <rich:componentControl target="popup_add" operation="show" />
-        </h:commandButton>
+        <h2>Manage authors</h2>
 
         <div id="undername_line">
         </div>
 
-        <div id="authors_data" class="left margin center_h">
-            <rich:dataTable id="authors" value="#{authorController.authorDataModule}" var="author" rows="10" styleClass="table_size">
+        <div id="authors_data" class="left margin center_text">
+            <rich:dataTable id="authors" value="#{authorController.authorDataModule}" var="newAuthor" rows="10" styleClass="table_size">
                 <f:facet name="header">
-                    <h:form>
-                        <rich:dataScroller for="authors" maxPages="5"/>
-                    </h:form>
+                    <rich:dataScroller renderIfSinglePage="true" lastPageMode="full" for="authors" maxPages="5" stepControls="auto" value="#{authorController.authorDataModule}"/>
                 </f:facet>
                 <f:facet name="header">
                     <h:form>
                         <h:outputText value="All authors" />
                     </h:form>
                 </f:facet>
+
                 <rich:column>
                     <f:facet name="header">
                         <h:form>
@@ -58,9 +47,10 @@
                         </h:form>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="#{author.id}" actionListener="#{authorController.toDetailPage(author.id)}"/>
+                        <h:commandLink value="#{newAuthor.id}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
                     </h:form>
                 </rich:column>
+
                 <rich:column>
                     <f:facet name="header">
                         <h:form>
@@ -69,8 +59,9 @@
                             </h:commandLink>
                         </h:form>
                     </f:facet>
-                    <h:outputText value="#{author.firstName}"/>
+                    <h:outputText value="#{newAuthor.firstName}"/>
                 </rich:column>
+
                 <rich:column>
                     <f:facet name="header">
                         <h:form>
@@ -80,9 +71,10 @@
                         </h:form>
                     </f:facet>
                     <h:form>
-                        <h:commandLink value="#{author.secondName}" actionListener="#{authorController.toDetailPage(author.id)}"/>
+                        <h:commandLink value="#{newAuthor.secondName}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
                     </h:form>
                 </rich:column>
+
                 <rich:column>
                     <f:facet name="header">
                         <h:form>
@@ -91,24 +83,36 @@
                             </h:commandLink>
                         </h:form>
                     </f:facet>
-                    <h:outputText value="#{author.createDate}"/>
+                    <h:outputText value="#{newAuthor.createDate}"/>
                 </rich:column>
+
                 <rich:column>
                     <f:facet name="header">Select</f:facet>
                     <h:selectBooleanCheckbox>
-                        <p:ajax listener="#{authorController.selectPk(author.id)}"/>
+                        <p:ajax listener="#{authorController.selectPk(newAuthor.id)}"/>
                     </h:selectBooleanCheckbox>
                 </rich:column>
+
+                <f:facet name="footer">
+                    <rich:dataScroller pageIndexVar="pageIndex" pagesVar="pages" for="authors" value="#{authorController.authorDataModule}">
+                        <f:facet name="pages">
+                            <h:outputText value="#{pageIndex} / #{pages}" />
+                        </f:facet>
+                    </rich:dataScroller>
+                </f:facet>
             </rich:dataTable>
         </div>
-    </div>
 
-    <h:form id="herform">
-        <rich:autocomplete id="her" value="a" attached="false" autocompleteMethod="#{authorController.autocomplate}" var="author" mode="cachedAjax"
-                           layout="list" >
-            <h:outputText value="#{author.secondName} " style="font-weight:bold"/>
-        </rich:autocomplete>
-    </h:form>
+        <div class="padding margin board_style left" style="width: 100px;height: 80px">
+            <h:commandButton value="Delete selected" styleClass="margin">
+                <rich:componentControl target="popup_delete_authors" operation="show" />
+            </h:commandButton>
+
+            <h:commandButton value="Add newAuthor" styleClass="margin">
+                <rich:componentControl target="popup_add" operation="show" />
+            </h:commandButton>
+        </div>
+    </div>
 
     <!--popups-->
 
@@ -124,17 +128,17 @@
 
         <div class="center_text">
             <p>Are you shure ?</p>
+            <h:form>
+                <h:commandButton value="OK" action="#{authorController.deleteSelected}" styleClass="margin"/>
+            </h:form>
 
-            <h:commandButton value="OK" action="#{authorController.deleteSelected}">
-                    <p:ajax listener="#{authorController.deleteSelected()}" />
-            </h:commandButton>
-            <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;"/>
+            <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;" styleClass="margin"/>
         </div>
     </rich:popupPanel>
 
     <rich:popupPanel id="popup_add" modal="false" autosized="true" resizeable="false" styleClass="dialog_size center_text">
         <f:facet name="header">
-            <h:outputText value="Add author" />
+            <h:outputText value="Add newAuthor" />
         </f:facet>
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('popup_add')}.hide(); return false;" style="color: inherit">
@@ -145,16 +149,14 @@
             <h:form >
                 <h:panelGrid>
                     <h:outputLabel for="inputAuthorName" value="Name:"/>
-                    <h:inputText id="inputAuthorName" value="#{authorController.author.firstName}" validatorMessage="Minimum 3, maximum 50 characters">
-                    </h:inputText>
+                    <h:inputText id="inputAuthorName" value="#{authorController.insertNewAuthor.firstName}"/>
                     <h:message for="inputAuthorName" style="color:red" />
 
                     <h:outputLabel for="inputAuthorSecondName" value="Second Name:"/>
-                    <h:inputText id="inputAuthorSecondName" value="#{authorController.author.secondName}" validatorMessage="Minimum 3, maximum 50 characters">
-                    </h:inputText>
+                    <h:inputText id="inputAuthorSecondName" value="#{authorController.insertNewAuthor.secondName}"/>
                     <h:message for="inputAuthorSecondName" style="color:red" />
 
-                    <h:commandButton value="Save Record" action="#{authorController.newAuthor}"/>
+                    <h:commandButton value="Save Record" action="#{authorController.insertNewAuthor}"/>
                 </h:panelGrid>
             </h:form>
         </div>

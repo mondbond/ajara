@@ -1,5 +1,7 @@
 package rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repository.BookFacade;
 import rest.dto.BookDto;
 import rest.mappers.BookMapper;
@@ -16,7 +18,7 @@ import java.util.stream.Stream;
 
 @Path("/book")
 public class BookRest {
-
+    final Logger logger = LoggerFactory.getLogger(BookRest.class);
     private BookMapper bm = new BookMapper();
 
     @EJB

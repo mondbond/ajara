@@ -1,6 +1,8 @@
 package managers;
 
 import entity.Author;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repository.AuthorFacade;
 import repository.AuthorHome;
 
@@ -10,6 +12,7 @@ import java.util.List;
 
 @Stateless
 public class AuthorManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorManager.class);
 
     @EJB
     private AuthorFacade authorFacade;
@@ -43,12 +46,9 @@ public class AuthorManager {
 
     public void deleteList(List<Long> ids){
         authorHome.deleteList(ids);
-//        ids.forEach(this::delete); // TODO: replace with query (?)
-//        Stream.of(ids).flatMap(pk->ids.stream()).forEach(pk->delete(pk));
     }
 
     public List<Author> getAutocompleteBySecondName(String characters){
-        System.out.println("!@@@@" + authorFacade.getAutocompleteBySecondName(characters).toString());
         return authorFacade.getAutocompleteBySecondName(characters);
     }
 }

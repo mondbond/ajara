@@ -1,45 +1,41 @@
 package controllers;
 
 import entity.Author;
+import lombok.Getter;
+import lombok.Setter;
 import managers.AuthorManager;
 import model.AuthorDataModule;
-import org.richfaces.component.AbstractAutocomplete;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
+import javax.faces.FacesException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @ManagedBean(name = "authorController")
 @SessionScoped
 public class AuthorController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorController.class);
 
-//    @ManagedProperty(value="#{commonUtil}")
-//    private CommonUtil util;
+    private final String COLUMN_NAME = "column_name_author_key";
 
-    private final String TAG = "Author";
-    private final String COLUMN_NAME = "column_name_authors";
+    private @Getter @Setter Author detailAuthor = new Author();
 
-    private Author detailAuthor = new Author();
-
-    private AbstractAutocomplete inputAuthor = null;
-    private UIComponent authorInput;
-
-    //    for  creating
-    private Author author = new Author();
+    //    create
+    private @Getter @Setter Author newAuthor = new Author();
 
     //    for multiple selection
-    private ArrayList<Long> selectedPks = new ArrayList<>();
-    private ArrayList<Author> mAuthors = new ArrayList<>();
+    private @Getter @Setter ArrayList<Long> selectedToDeletePks = new ArrayList<>();
 
-//    sorting
+    //    sorting
     private String sortingColumn = null;
     private HashMap<String, Boolean> mOderMap = new HashMap<>();
 
@@ -47,75 +43,79 @@ public class AuthorController {
     private AuthorManager authorManager;
 
     @EJB
-    private AuthorDataModule authorDataModule;
+    private @Getter AuthorDataModule authorDataModule;
 
-    private List<Author> getAllAuthors(){
-        mAuthors = (ArrayList<Author>) authorManager.getAllAuthors();
-        return mAuthors;
+    /**
+     * Inserting new author to database
+     * */
+    public String insertNewAuthor() {
+        authorManager.save(new Author(newAuthor.getFirstName(), newAuthor.getSecondName()));
+        LOGGER.info("IN insertNewAuthor(author = [{}])", newAuthor);
+        newAuthor = new Author();
+        try {
+            reload();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "author_manage.xhtml";
     }
 
-    public void newAuthor() {
-        authorManager.save(new Author(author.getFirstName(), author.getSecondName(), new Date()));
-        author = new Author();
-    }
-
+    /**
+     * Updating detail author to database
+     * */
     public String update() throws IOException {
-//        Map<String, String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        detailAuthor.setSecondName( map.get("author_edit_form:updateSecondName"));
-//        detailAuthor.setFirstName(map.get("author_edit_form:updateName"));
-
+        LOGGER.info("IN update(author = [{}])", detailAuthor);
         authorManager.update(detailAuthor);
-
         reload();
         return "author_detail.xhtml";
     }
 
-    public void changeName(ValueChangeEvent e){
-        detailAuthor.setFirstName(((UIInput) e.getComponent()).getValue().toString());
-    }
-
-    public void changeSecondName(ValueChangeEvent e){
-        detailAuthor.setSecondName(((UIInput) e.getComponent()).getValue().toString());
-    }
-
+    /**
+     * Delete selected authors
+     * */
     public String deleteSelected() {
-        authorManager.deleteList(selectedPks);
-        selectedPks.clear();
+        LOGGER.info("deleteSelected:(deletedList = [{}])", selectedToDeletePks);
+        authorManager.deleteList(selectedToDeletePks);
+        selectedToDeletePks.clear();
     return null;
     }
 
+    /**
+     * Delete detail author and redirecting to manage page
+     * */
     public void deleteDetail() throws IOException {
+        LOGGER.info("deleteDetail:(deleted = [{}])", detailAuthor);
         authorManager.delete(detailAuthor.getId());
         detailAuthor = new Author();
-
         redirectToManagePage();
-//        add redirect
     }
 
+    /**
+     * Adding and removing selected author to delete list
+     * @param pk pk of selected author
+     * */
     public void selectPk(long pk) {
-        if(selectedPks.contains(pk)){
-            selectedPks.remove(pk);
+        if(selectedToDeletePks.contains(pk)){
+            selectedToDeletePks.remove(pk);
         }else {
-            selectedPks.add(pk);
+            selectedToDeletePks.add(pk);
         }
     }
 
-    public List<Author> autocomplate(FacesContext context, UIComponent component, Object input) {
-        System.out.println("!WWWWWWW "  + " " + ((String )input).toString());
-//        return authors;
-        return authorManager.getAutocompleteBySecondName(((String )input).toString());
-    }
-
-//    sort
+    /**
+     * Sorting authors by params from RequestParameterMap
+     * */
     public String sortBy() {
-        Map<String,String> params =
-                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         sortingColumn = params.get(COLUMN_NAME);
         changeOrder(sortingColumn);
         authorDataModule.setSortField(sortingColumn, mOderMap.get(sortingColumn));
         return null;
     }
 
+    /**
+     * Handle order changing in author table
+     * */
     private void changeOrder(String columnName){
         if(mOderMap.containsKey(columnName)) {
             mOderMap.put(columnName, !mOderMap.get(columnName));
@@ -124,80 +124,49 @@ public class AuthorController {
         }
     }
 
-//    redirect
+    /**
+     * Redirect to detail author page by pk. Set detailAuthor var
+     * @param pk authors pk
+     * */
     public void toDetailPage(long pk) {
-        detailAuthor = authorManager.getAuthorByPk(Long.valueOf(pk));
-        FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
-                .handleNavigation(FacesContext.getCurrentInstance(), null, "author_detail.xhtml");
+        detailAuthor = authorManager.getAuthorByPk(pk);
+        try {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+
+            ExternalContext extContext = ctx.getExternalContext();
+            String url = extContext.encodeActionURL(ctx.getApplication().
+                    getViewHandler().getActionURL(ctx, "/view/author_detail.xhtml"));
+
+            extContext.redirect(url);
+        } catch (IOException e) {
+            throw new FacesException(e);
+        }
     }
 
-    public void reload() throws IOException {
+    private void reload() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
 
-    public void redirectToManagePage() throws IOException {
-        FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
-                .handleNavigation(FacesContext.getCurrentInstance(), null, "author_manage.xhtml");
+    /**
+     * Redirect to manage author page
+     * */
+    private void redirectToManagePage() throws IOException {
+        try {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+
+            ExternalContext extContext = ctx.getExternalContext();
+            String url = extContext.encodeActionURL(ctx.getApplication().
+                    getViewHandler().getActionURL(ctx, "/view/author_manage.xhtml"));
+
+            extContext.redirect(url);
+        } catch (IOException e) {
+            throw new FacesException(e);
+        }
     }
 
-    public void changeAuthorInput(ValueChangeEvent e){
-        System.out.println("!ttttt1 " + e.toString() );
-        System.out.println("!ttttt " + authorInput );
-    }
-
-    public void ajaxListener() {
-//        System.out.println(event); // Look, (new) value is already set.
-        System.out.println("!ttttt "  );
-    }
-
-//    getset
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
-    public ArrayList<Author> getAuthors() {
-        mAuthors = (ArrayList<Author>) getAllAuthors();
-        return mAuthors;
-    }
-
-    public void setAuthors(ArrayList<Author> mAuthors) {
-        this.mAuthors = mAuthors;
-    }
-
-    public Author getDetailAuthor() {
-        return detailAuthor;
-    }
-
-    public void setDetailAuthor(Author detailAuthor) {
-        this.detailAuthor = detailAuthor;
-    }
-
-    public AuthorDataModule getAuthorDataModule() {
-        return authorDataModule;
-    }
-
+//    get set
     public String getColumnConstant() {
         return COLUMN_NAME;
-    }
-
-    public AbstractAutocomplete getInputAuthor() {
-        return inputAuthor;
-    }
-
-    public void setInputAuthor(AbstractAutocomplete inputAuthor) {
-        this.inputAuthor = inputAuthor;
-    }
-
-    public UIComponent getAuthorInput() {
-        return authorInput;
-    }
-
-    public void setAuthorInput(UIComponent authorInput) {
-        this.authorInput = authorInput;
     }
 }

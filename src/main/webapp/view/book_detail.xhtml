@@ -12,7 +12,7 @@
       xmlns:p="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
-    <title>Author page</title>
+    <title>#{bookController.detailBook.name}</title>
     <link rel="stylesheet" type="text/css" href="../style/style.css"/>
     <link rel="stylesheet" type="text/css" href="../style/detail_author_style.css"/>
 </h:head>
@@ -21,62 +21,41 @@
     <ui:include src="../template/navigate_menu.xhtml" />
 
     <div class="content_panel">
+
         <h2>#{bookController.detailBook.name}</h2>
+
         <div id="undername_line">
         </div>
 
-        <div id="book_info" class="board_style left margin">
-            <h:form>
-                <h:panelGrid columns="3" >
-                    <h:outputText value="Name" for="updateName"/>
-                    <h:inputText id="updateName" value="#{bookController.detailBook.name}"/>
-                    <h:message for="updateName" style="color:red" />
+        <div id="review_container" style="display: inline-block;vertical-align: top;">
+        <div id="add_review" class="board_style left margin" style="width: 640px">
+            <h:form >
+                <h:panelGrid columns="3">
+                    <h:outputLabel value="Name:" for="inputReviewName"/>
+                    <h:inputText id="inputReviewName" value="#{reviewController.newReview.commenterName}"/>
+                    <h:message for="inputReviewName" style="color:red" />
 
-                    <h:outputText value="ISBN" for="updateIsbn"/>
-                    <h:outputText id="updateIsbn" value="#{bookController.detailBook.isbn}"/>
-                    <h:message for="updateIsbn" style="color:red" />
+                    <h:outputLabel value="Rating:" for="inputReviewRating"/>
+                    <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}"/>
+                    <h:message for="inputReviewRating" style="color:red" />
 
-                    <h:outputText value="Publisher" for="updatePublisher"/>
-                    <h:inputText id="updatePublisher" value="#{bookController.detailBook.publisher}"/>
-                    <h:message for="updatePublisher" style="color:red" />
+                    <h:outputLabel value="Comment:"/>
+                    <h:inputTextarea id="inputCommentArea" value="#{reviewController.newReview.com}" />
+                    <h:message for="inputCommentArea" style="color:red" />
 
-                    <h:outputText value="YEAR" for="updateYear"/>
-                    <h:outputText id="updateYear" value="#{bookController.detailBook.publishYear}"/>
-                    <h:message for="updateYear" style="color:red" />
+                    <h:commandButton value="Save Record" action="#{reviewController.createReview(bookController.detailBook)}" styleClass="margin"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
 
-                    <h:commandButton value="Edit" action="#{bookController.update()}"/>
-
-                    <h:commandButton value="Delete">
-                        <rich:componentControl target="popup_delete_book" operation="show" />
-                    </h:commandButton>
-            </h:panelGrid>
-        </h:form>
-    </div>
-
-    <div id="add_review" class="board_style left margin">
-        <h:form >
-            <h:panelGrid columns="3">
-                <h:outputLabel value="Name:" for="inputReviewName"/>
-                <h:inputText id="inputReviewName" value="#{reviewController.newReview.commenterName}"/>
-                <h:message for="inputReviewName" style="color:red" />
-
-                <h:outputLabel value="Rating:" for="inputReviewRating"/>
-                <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}"/>
-                <h:message for="inputReviewRating" style="color:red" />
-
-                <h:outputLabel value="Comment:"/>
-                <h:inputText value="#{reviewController.newReview.com}"/>
-
-                <h:commandButton value="Save Record" action="#{reviewController.createReview(bookController.detailBook)}"/>
-        </h:panelGrid>
-        </h:form>
-    </div>
-
-        <div id="comments_form">
+        <div id="comments_form" class="margin left" style="clear: left">
             <h:form id="form">
                 <h:panelGrid columns="1" style="width: 640px">
                     <a4j:outputPanel id="panel" layout="block">
-                        <a4j:repeat value="#{reviewController.getReviews(bookController.detailBook)}" var="review" rows="15" id="repeat">
+                        <a4j:repeat value="#{reviewController.getReviews(bookController.detailBook)}" var="review" rows="15" id="repeatComments">
+                            <f:facet name="header">
+                                <rich:dataScroller for="repeatComments" render="panel" fastStep="1"/>
+                            </f:facet>
                             <rich:panel styleClass="panel">
                                 <f:facet name="header">
                                     <h:panelGroup>
@@ -92,13 +71,41 @@
                             </rich:panel>
                         </a4j:repeat>
                     </a4j:outputPanel>
-                    <a4j:outputPanel layout="block">
-                        <rich:dataScroller for="repeat" render="panel" fastStep="3"/>
-                    </a4j:outputPanel>
                 </h:panelGrid>
             </h:form>
         </div>
     </div>
+
+    <div id="book_info" class="board_style margin" style="display: inline-block; vertical-align: top;">
+        <h:form>
+            <h:panelGrid columns="3" >
+                <h:outputText value="Name" for="updateName"/>
+                <h:inputText id="updateName" value="#{bookController.detailBook.name}"/>
+                <h:message for="updateName" style="color:red" />
+
+                <h:outputText value="ISBN" for="updateIsbn"/>
+                <h:outputText id="updateIsbn" value="#{bookController.detailBook.isbn}"/>
+                <h:message for="updateIsbn" style="color:red" />
+
+                <h:outputText value="Publisher" for="updatePublisher"/>
+                <h:inputText id="updatePublisher" value="#{bookController.detailBook.publisher}"/>
+                <h:message for="updatePublisher" style="color:red" />
+
+                <h:outputText value="Year" for="updateYear"/>
+                <h:outputText id="updateYear" value="#{bookController.detailBook.publishYear}"/>
+                <h:message for="updateYear" style="color:red" />
+
+                <h:commandButton value="Edit" action="#{bookController.update()}"/>
+
+                <h:commandButton value="Delete">
+                    <rich:componentControl target="popup_delete_book" operation="show" />
+                </h:commandButton>
+            </h:panelGrid>
+        </h:form>
+    </div>
+    </div>
+
+    <!--popups-->
 
     <rich:popupPanel id="popup_delete_book" modal="false" autosized="true" resizeable="false" style="width: 300px;height: 200px">
         <f:facet name="header">
@@ -112,12 +119,11 @@
 
         <div>
             <p>Are you shure ?</p>
-            <h:commandButton value="Delete" type="submit">
-                <p:ajax listener="#{bookController.deleteDetail()}"/>
-            </h:commandButton>
+            <h:form>
+                <h:commandButton value="Delete" type="submit" action="#{bookController.deleteDetail}"/>
+            </h:form>
 
-            <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;">
-            </h:commandButton>
+            <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;"/>
         </div>
     </rich:popupPanel>
 </h:body>

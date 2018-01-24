@@ -1,24 +1,23 @@
 package managers;
 import entity.Book;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repository.BookFacade;
 import repository.BookHome;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Stateless
 public class BookManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookManager.class);
 
     @EJB
     private BookFacade bookFacade;
 
     @EJB
     private BookHome bookHome;
-
- //TODO: remove this field and inject directly into controller (?)
 
     public Book getBookByPk(long pk) {
         return bookFacade.findByPk(pk);
@@ -41,18 +40,14 @@ public class BookManager {
     }
 
     public void deleteList(List<Long> ids){
-        System.out.println("WTF DELETE B" + ids.toString() );
-
         bookHome.deleteList(ids);
     }
 
     public List<Book> filterByRating(int rating) {
-        return bookFacade.filterByRating(rating);
+        return bookFacade.filterByRatingRange(rating - 1, rating);
     }
 
-    public List<Long> getCountByRating(){
-        List<Long> ratingsCount = new ArrayList<>();
-        Stream.iterate(1, n -> n+1).limit(5).forEach(integer ->ratingsCount.add(bookFacade.getCountByRating((long)integer)));
-        return ratingsCount;
+    public Long getCountByRating(int from, int to){
+        return bookFacade.getCountByRatingRange(from, to);
     }
 }

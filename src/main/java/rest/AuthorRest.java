@@ -3,18 +3,20 @@ package rest;
 import entity.Author;
 import entity.Book;
 import managers.AuthorManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rest.dto.AuthorDto;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/author")
 public class AuthorRest {
+    final Logger logger = LoggerFactory.getLogger(AuthorRest.class);
 
     @EJB
     private AuthorManager authorManager;
@@ -52,7 +54,7 @@ public class AuthorRest {
     @Path("/")
     public Response createAuthor(@FormParam("name") String name,
                                  @FormParam("second_name") String secondName) {
-        authorManager.save(new Author(name, secondName, new Date()));
+        authorManager.save(new Author(name, secondName));
         return Response.status(200).build();
     }
 

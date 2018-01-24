@@ -7,23 +7,49 @@ import lombok.Setter;
 import managers.AuthorManager;
 import managers.BookManager;
 import model.BookDataModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
+import javax.faces.FacesException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIInput;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ManagedBean
 @SessionScoped
 public class BookController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
 
-    private final String COLUMN_NAME = "column_name_books";
+    private final String COLUMN_NAME = "column_name_books_key";
+
+    private @Setter @Getter Book newBook = new Book();
+    private @Getter @Setter Book detailBook = new Book();
+
+    private @Setter @Getter String authorA = new String();
+
+    private List<Author> aAuthors = new ArrayList<>();
+
+    private @Getter @Setter List<String> authorsForBook = new ArrayList<>();
+
+    //    all authors for autocompleteAll. fix
+    private List<Author> allAuthors = new ArrayList<>();
+
+    //    sorting
+    private String sortingColumn = null;
+    private HashMap<String, Boolean> mOderMap = new HashMap<>();
+
+    private ArrayList<Long> selectedToDeletePks = new ArrayList<>();
+
+    private @Getter @Setter List <Author> autocompleteAuthors = new ArrayList<>();
 
     @EJB
     private @Getter BookManager bookManager;
@@ -32,75 +58,119 @@ public class BookController {
     private @Getter AuthorManager authorManager;
 
     @EJB
-    private @Getter
-    BookDataModule dataModule;
-
-    private @Setter @Getter Book newBook = new Book();
-    private @Getter @Setter Book detailBook = new Book();
-
-
-    //    all authors for autocomplete
-    private List<Author> allAuthors = new ArrayList<>();
-    private @Getter @Setter List<String> authorsForBook = new ArrayList<>();
-    //    sorting
-    private String sortingColumn = null;
-    private HashMap<String, Boolean> mOderMap = new HashMap<>();
-    private ArrayList<Long> selectedPks = new ArrayList<>();
-
-    private @Getter @Setter List <Author> autocompleteAuthors = new ArrayList<>();
+    private @Getter BookDataModule dataModule;
 
     public BookController() { }
 
-    public void createBook(){
+    /**
+     * Inserting new book
+     * */
+    public String insertNewBook(){
         ArrayList<Author> authors = new ArrayList<>();
         authorsForBook.forEach(author -> authors.add(authorManager.getAuthorByPk(Long.parseLong(author))));
         newBook.getAuthors().addAll(authors);
-        newBook.setCrateDate(new Date());
+        LOGGER.info("insertNewBook:(book = [{}])", newBook);
         bookManager.save(newBook);
         newBook = new Book();
+        authorsForBook.clear();
+        return "books_manage.xhtml";
     }
 
-    public void createBook(Author author) throws IOException {
-        Map<String, String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        newBook.setName( map.get("add_book_by_author:inputBookName"));
-        newBook.setIsbn( map.get("add_book_by_author:inputBookIsbn"));
-        newBook.setPublisher( map.get("add_book_by_author:inputBookPublisher"));
-        newBook.setPublishYear( Integer.parseInt(map.get("add_book_by_author:inputBookYear")));
-        ArrayList<Author> authors = new ArrayList<>();
+    /**
+     * Create book by pointed single author from detail author page
+     * @param author author of a book
+     * */
+    public String createBookByAuthor(Author author) throws IOException {
+        ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
         authors.add(author);
         newBook.setAuthors(authors);
-        newBook.setCrateDate(new Date());
+        LOGGER.info("insertNewBook:(book = [{}], author = [{}])", newBook, author);
         bookManager.save(newBook);
         newBook = new Book();
-        reload();
+        return "author_detail.xhtml";
     }
 
+    /**
+     * Get list of authors book by authors pk
+     * @param pk authors pk
+     * @return authors books
+     * */
+    public List<Book> getBooksByAuthorPk(Long pk){
+        LOGGER.info("getBooksByAuthorPk:(pk = [{}]", pk);
+        return authorManager.getAuthorByPk(pk).getBooks();
+    }
+
+    /**
+     * Update detail book
+     * */
     public void update() {
+        LOGGER.info("update:(detailBook = [{}]", detailBook);
         bookManager.update(detailBook);
     }
 
-    public void changeName(ValueChangeEvent e){
-        detailBook.setName(((UIInput) e.getComponent()).getValue().toString());
-    }
-
-    public void changePublisher(ValueChangeEvent e){
-        detailBook.setPublisher(((UIInput) e.getComponent()).getValue().toString());
-    }
-
-    public void selectPk(long pk) {
-        if(selectedPks.contains(pk)){
-            selectedPks.remove(pk);
-        }else {
-            selectedPks.add(pk);
-        }
-    }
-
+    /**
+     * Delete selected books
+     * */
     public String deleteSelected() {
-        bookManager.deleteList(selectedPks);
-        selectedPks.clear();
+        LOGGER.info("deleteSelected:(selectedBookList = [{}]", selectedToDeletePks);
+        bookManager.deleteList(selectedToDeletePks);
+        selectedToDeletePks.clear();
         return null;
     }
 
+    /**
+     * Delete detail book and redirect to book manage page
+     * */
+    public void deleteDetail(){
+        LOGGER.info("deleteDetail:(detailBook = [{}]", detailBook);
+        bookManager.delete(detailBook.getId());
+        try {
+            redirectToManagePage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Get autocompleted authors list by authors second name prefix
+     * @param prefix prefix of author
+     * */
+    public List<Author> autocompleteAuthor(FacesContext context, UIComponent component, Object prefix) {
+        aAuthors = authorManager.getAutocompleteBySecondName(((String) prefix));
+        return aAuthors;
+    }
+
+
+    /**
+     * Filter books by entered author second name
+     * */
+    public void filterByAuthor(){
+        if(authorA.equals("")){
+            dataModule.setFilteredRating(null);
+            dataModule.setFilteredAuthor(null);
+        }
+        if(authorA != null && !authorA.equals("")){
+            List<Author> authors = new ArrayList<>();
+            Author author2 = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorA)).findFirst().get();
+            dataModule.setFilteredAuthor(author2);
+        }
+    }
+
+    /**
+     * Adding and removing selected book to delete list
+     * @param pk pk of selected book
+     * */
+    public void selectPk(long pk) {
+        if(selectedToDeletePks.contains(pk)){
+            selectedToDeletePks.remove(pk);
+        }else {
+            selectedToDeletePks.add(pk);
+        }
+    }
+
+    /**
+     * Sorting authors by params from RequestParameterMap
+     * */
     public String sortBy() {
         Map<String,String> params =
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -110,7 +180,10 @@ public class BookController {
         return null;
     }
 
-    private void changeOrder(String columnName){
+    /**
+     * Handle order changing in author table
+     * */
+    private void changeOrder(String columnName) {
         if(mOderMap.containsKey(columnName)) {
             mOderMap.put(columnName, !mOderMap.get(columnName));
         } else {
@@ -118,52 +191,92 @@ public class BookController {
         }
     }
 
-    public void deleteDetail(){
-        bookManager.delete(detailBook.getId());
-    }
-
+    /**
+     * Redirect to detail page by pointed pk
+     * @param pk pk of Book
+     * */
     public void toDetailPage(long pk) {
-        detailBook = bookManager.getBookByPk(Long.valueOf(pk));
+        LOGGER.info("toDetailPage:(pk = [{}])", pk);
+        detailBook = bookManager.getBookByPk(pk);
+
+        try {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+
+            ExternalContext extContext = ctx.getExternalContext();
+            String url = extContext.encodeActionURL(ctx.getApplication().
+                    getViewHandler().getActionURL(ctx, "/view/book_detail.xhtml"));
+
+            extContext.redirect(url);
+        } catch (IOException e) {
+            throw new FacesException(e);
+        }
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "book_detail.xhtml");
     }
 
-    public void reload() throws IOException {
+    private void reload() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
 
-    //    query
-    public List<Author> autocomplete() {
+    /**
+     * FIX
+     * */
+    public List<Author> autocompleteAll() {
         if(allAuthors.isEmpty()) {
             allAuthors = authorManager.getAllAuthors();
         }
-//        Collection<Author> authors = Collections2.filter(allAuthors, new Predicate<Author>() {
-//            @Override
-//            public boolean apply(Author author) {
-//                if (prefix == null) {
-//                    return true;
-//                }
-//                return author.getSecondName().toLowerCase().startsWith(prefix.toLowerCase());
-//            }
-//        });
         return allAuthors;
     }
 
-    public void onSelectItem(){
-
-        Map<String,String> params =
-                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        String action = params.get("username");
-//        authorsForBook.add(author.getId());
+    private void unsetBookFilter(){
+        dataModule.setFilteredRating(null);
+        dataModule.setFilteredAuthor(null);
     }
 
-    public List<Long> getBookCountByRating(){
-        return bookManager.getCountByRating();
+    /**
+     * Redirect to book manage page without filter
+     * */
+    public void redirectToManagePageAndUnsetFilters() throws IOException {
+        LOGGER.info("redirectToManagePageAndUnsetFilters:");
+        unsetBookFilter();
+        redirectToManagePage();
     }
 
-    public Author getGeneralAuthor(Book book){
-        return book.getAuthors().get(0);
+    /**
+     * Redirect to book manage page
+     * */
+    private void redirectToManagePage() throws IOException {
+        try {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+
+            ExternalContext extContext = ctx.getExternalContext();
+            String url = extContext.encodeActionURL(ctx.getApplication().
+                    getViewHandler().getActionURL(ctx, "/view/books_manage.xhtml"));
+
+            extContext.redirect(url);
+        } catch (IOException e) {
+            throw new FacesException(e);
+        }
+    }
+
+    /**
+     * Get books count by rating from pointed rating to rating -1
+     * */
+    public Long getBookCountByRating(int rating){
+        LOGGER.info("getBookCountByRating:(rating = [{}]", rating);
+        return bookManager.getCountByRating(rating-1, rating);
+    }
+
+    /**
+     * Redirect to book manage page with rating filter
+     * */
+    public String toBookManageByRating(int rating) throws IOException {
+        LOGGER.info("toBookManageByRating:(rating = [{}])", rating);
+        dataModule.setFilteredAuthor(null);
+        dataModule.setFilteredRating(rating);
+        redirectToManagePage();
+        return null;
     }
 
     public String getColumnConstant() {

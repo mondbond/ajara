@@ -1,5 +1,7 @@
 package rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repository.BookFacade;
 import repository.ReviewFacade;
 import rest.dto.ReviewDto;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Path("/review")
 public class ReviewRest {
+    final Logger logger = LoggerFactory.getLogger(ReviewRest.class);
 
     @EJB
     ReviewFacade reviewFacade;

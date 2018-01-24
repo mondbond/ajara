@@ -27,6 +27,10 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
 
+    <!--<error-page>-->
+        <!--<exception-type>javax.faces.application.ViewExpiredException</exception-type>-->
+        <!--<location>/view/error_page.xhtml</location>-->
+    <!--</error-page>-->
 
     <!-- Auto scan REST service -->
     <context-param>

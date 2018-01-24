@@ -12,30 +12,43 @@
       xmlns:rich="http://richfaces.org/rich">
 
 <h:head>
-    <title>Hello page</title>
+    <title>Books library</title>
     <link rel="stylesheet" type="text/css" href="style/style.css"/>
     <link rel="stylesheet" type="text/css" href="style/welcome_page_style.css"/>
 </h:head>
 
 <h:body>
-    <div id="content_container" class="center_h">
-        <h:form id="welcome_table" styleClass="center_h center_v center_text board_style">
+    <div id="content_container" class="center_h center_v center_text">
+
+        <div class="board_style center_text" style="width: 600px;height:70px;margin-top: 100px;">
             <h2>Welcome to Library site</h2>
-        </h:form>
-
-        <div id="author_div">
-            <a href="view/author_manage.xhtml">author page</a>
         </div>
 
-        <div id="rating_books">
-            <rich:list value="#{bookController.bookCountByRating}" var="count">
-                <h:form>
-                    <h:outputLabel value="#{count}"/>
-                </h:form>
-            </rich:list>
+        <div class="margin" style="display: inline-block;width: 600px;">
+            <div id="author_div" class="left">
+                <a href="view/author_manage.xhtml">
+                    <img src="img/newAuthor.png" alt=""/>
+                </a>
+            </div>
+
+            <div id="books_div" class="right">
+                <a href="view/books_manage.xhtml">
+                    <img src="img/books.png" alt=""/>
+                </a>
+            </div>
         </div>
-        <div id="books_div">
-            <a href="view/books_manage.xhtml">books page</a>
+
+        <div id="rating_books" class="center_h" style="display: inline-block;">
+            <h3>Our books by rating:</h3>
+            <h:form>
+                <ul style="list-style-type: none;" class="big_font">
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(5)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(5)}</li>
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(4)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(4)}</li>
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(3)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(3)}</li>
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(2)}"><img src="img/golden_star.png" alt=""/><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(2)}</li>
+                    <li><h:commandLink action="#{bookController.toBookManageByRating(1)}"><img src="img/golden_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/><img src="img/black_star.png" alt=""/></h:commandLink> #{bookController.bookCountByRating(1)}</li>
+                </ul>
+            </h:form>
         </div>
     </div>
 </h:body>

@@ -5,6 +5,8 @@ import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
 import org.ajax4jsf.model.SequenceRange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repository.AuthorFacade;
 
 import javax.ejb.EJB;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Stateful
 public class AuthorDataModule extends ExtendedDataModel<Author> {
+    final Logger logger = LoggerFactory.getLogger(AuthorDataModule.class);
 
     public final String PK_COLUMN = "ID";
     public final String NAME_COLUMN = "FIRST_NAME";
@@ -48,7 +51,6 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
         int firstRow = ((SequenceRange) range).getFirstRow();
         int numberOfLines = ((SequenceRange) range).getRows();
 
-        System.out.println("ASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
         this.list = dao.getPagination(firstRow, numberOfLines, sortingColumn , isASC);
 
         for (int i = 0; i < list.size(); i++) {
@@ -63,6 +65,7 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
 
     @Override
     public int getRowCount() {
+        logger.info("getRowCount: " + String.valueOf(dao.countAll()));
         if (cachedCount == null) {
             this.cachedCount = dao.countAll();
         }
