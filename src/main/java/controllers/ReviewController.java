@@ -4,6 +4,7 @@ import entity.Book;
 import entity.Reviews;
 import lombok.Getter;
 import lombok.Setter;
+import managers.BookManager;
 import managers.ReviewManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +24,16 @@ public class ReviewController {
     @EJB
     private ReviewManager reviewManager;
 
+    @EJB
+    private BookManager bookManager;
+
     /**
      * Create review entity with pointed book
      * @param book Book of review relate to
      * */
     public void createReview(Book book){
         LOGGER.info("IN createReview(book = [{}])", book);
-        newReview.setBook(reviewManager.getBookById(book.getId()));
+        newReview.setBook(bookManager.getBookByPk(book.getId()));
         reviewManager.createReview(newReview);
     }
 
@@ -40,6 +44,6 @@ public class ReviewController {
      * */
     public List<Reviews> getReviews(Book book) {
         LOGGER.info("IN getReviews(book = [{}])", book);
-        return reviewManager.getBookById(book.getId()).getReviews();
+        return bookManager.getBookByPk(book.getId()).getReviews();
     }
 }

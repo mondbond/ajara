@@ -27,7 +27,7 @@ public class BookRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/sort/{sort}")
-    public List<BookDto> getAllBooks(@PathParam("sort") String sortColumn) {
+    public List<BookDto> getBooks(@PathParam("sort") String sortColumn) {
         return bookFacade.getPagination(0, 100, sortColumn, false).stream()
                 .map(bm).collect(Collectors.toList());
     }
@@ -35,7 +35,7 @@ public class BookRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{bookId}")
-    public BookDto getAllBooks(@PathParam("bookId") Long bookId) {
+    public BookDto getBook(@PathParam("bookId") Long bookId) {
         return Stream.of(bookFacade.findByPk(bookId)).map(bm).findFirst().get();
     }
 }
