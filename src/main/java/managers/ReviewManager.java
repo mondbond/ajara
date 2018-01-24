@@ -25,6 +25,7 @@ public class ReviewManager {
         reviewHome.insert(review);
     }
 
+    //TODO: getBookById shouldn't be there. Please move this to BookManager;
     public Book getBookById(long pk){
         return bookFacade.findByPk(pk);
     }
