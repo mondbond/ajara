@@ -86,7 +86,7 @@ public class BookFacade extends AbstractFacade<Book> {
     public List<Book> getPaginationByRating(int from , int to,  int skip, int limit, String sortColumn, boolean isAsc) {
         LOGGER.info("getPaginationByRating:(from = [{}], to = [{}], skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])",from, to, skip, limit, sortColumn, isAsc);
 
-        String sqlString = "from " + Book.class.getName() + " b where b.avgRating between " + from +" and " + to + " order by " + sortColumn + " " + ((isAsc)? "ASC": "DESC");
+        String sqlString = "from " + Book.class.getName() + " b where b.avgRating > " + from +" and b.avgRating <= " + to + " order by " + sortColumn + " " + ((isAsc)? "ASC": "DESC");
         Query query = getEntityManager().createQuery(sqlString, Book.class);
         query.setFirstResult(skip);
         query.setMaxResults(limit);

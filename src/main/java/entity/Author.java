@@ -39,11 +39,11 @@ public class Author implements Serializable, HasDate {
     private long id;
 
     @Column(name = "FIRST_NAME")
-    @Pattern(regexp = "[a-zA-Z0-9_.-]{3,100}", message = "Name must contain minimum 3 maximum 100 characters")
+    @Pattern(regexp = "[a-zA-Z0-9- ]{3,100}", message = "Name must contain minimum 3 maximum 100 characters without special symbols")
     private String firstName;
 
     @Column(name = "SECOND_NAME")
-    @Pattern(regexp = "[a-zA-Z0-9_.-]{3,100}", message = "Second name must contain minimum 3 maximum 100 characters")
+    @Pattern(regexp = "[a-zA-Z0-9- ]{3,100}", message = "Second name must contain minimum 3 maximum 100 characters without special symbols")
     private String secondName;
 
     @Column(name = "AVG_RATING")

@@ -29,7 +29,8 @@
 
         <div id="books_data" class="left margin center_text" >
             <h:form>
-            <rich:dataTable id="books" value="#{bookController.dataModule}" var="book" rows="10" styleClass="table_size">
+                <a4j:outputPanel id="booksTablePanel">
+                <rich:dataTable id="books" value="#{bookController.dataModule}" var="book" rows="10" styleClass="table_size">
                 <f:facet name="header">
                     <h:form>
                         <h:outputText value="All books" />
@@ -100,6 +101,7 @@
                     <rich:dataScroller for="books" maxPages="5"/>
                 </f:facet>
             </rich:dataTable>
+                </a4j:outputPanel>
             </h:form>
         </div>
 
@@ -167,11 +169,10 @@
                         </h:selectManyListbox>
                     </div>
 
-                    <div>
-                        <h:form>
-                            <h:commandButton value="Save Record" action="#{bookController.insertNewBook}"/>
-                        </h:form>
-                    </div>
+                    <a4j:commandButton value="Save book" action="#{bookController.insertNewBook}">
+                        <a4j:ajax execute="@form booksTablePanel" render="@form booksTablePanel" />
+                    </a4j:commandButton>
+
                 </h:panelGrid>
             </h:form>
         </div>

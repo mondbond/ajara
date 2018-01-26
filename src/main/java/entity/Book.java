@@ -26,9 +26,9 @@ import static entity.Book.QUERY_BY_RATING;
 @Table(name = "BOOK")
 @NamedQueries({
         @NamedQuery(name = QUERY_BY_RATING,
-                query = "select b from Book b WHERE b.avgRating between ?1 and ?2"),
+                query = "select b from Book b WHERE b.avgRating > ?1 and b.avgRating <= ?2"),
         @NamedQuery(name = Book.QUERY_COUNT_BY_RATING,
-                query = "select count(*) from Book b WHERE b.avgRating between ?1 and ?2")
+                query = "select count(*) from Book b WHERE b.avgRating > ?1 and b.avgRating <= ?2")
 })
 public class Book implements Serializable, HasDate {
 
@@ -40,20 +40,20 @@ public class Book implements Serializable, HasDate {
     @SequenceGenerator(name="book_id_sequence", allocationSize = 1, sequenceName="BOOK_SEQ")
     private Long id;
 
-    @Column(name = "ISBN")
-    @Pattern(regexp = "[0-9]{10,18}", message = "ISBN must contain minimum 10, maximum 18 numbers")
+    @Column(name = "ISBN", unique = true)
+    @Pattern(regexp = "[0-9]{10,18}", message = "ISBN must contain minimum 10, maximum 18 numbers and be unique")
     private String isbn;
 
     @Column(name = "NAME")
-    @Pattern(regexp = "[a-zA-Z0-9_.-]{3,50}", message = "Name must contain minimum 3 maximum 50 characters")
+    @Pattern(regexp = "[a-zA-Z0-9- ]{3,50}", message = "Name must contain minimum 3 maximum 50 characters without special characters")
     private String name;
 
     @Column(name = "PUBLISHER")
-    @Pattern(regexp = "[a-zA-Z0-9_.-]{3,50}", message = "PUBLISHER must contain minimum 3 maximum 50 characters")
+    @Pattern(regexp = "[a-zA-Z0-9- ]{3,50}", message = "PUBLISHER must contain minimum 3 maximum 50 characters without special characters")
     private String publisher;
 
     @Column(name = "PUBLISH_YEAR")
-    @Range(min = 1000, max = 2018, message = "Write year between 1000 and 2018")
+    @Range(min = 1000, max = 2018, message = "Year must be between 1000 and 2018")
     private Integer publishYear;
 
     @Column(name = "AVG_RATING")

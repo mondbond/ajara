@@ -22,14 +22,15 @@
 
     <div class="content_panel">
 
-        <h2>#{authorController.detailAuthor.fullName()}</h2>
+        <h2>Author: #{authorController.detailAuthor.fullName()}</h2>
 
         <div id="undername_line">
         </div>
 
     <div id="authors_books" class="left margin center_text" >
         <h:form>
-        <rich:dataTable id="author_books" value="#{bookController.getBooksByAuthorPk(authorController.detailAuthor.id)}" var="book" rows="10" styleClass="table_size">
+            <a4j:outputPanel id="tablePanel">
+            <rich:dataTable id="author_books" value="#{bookController.getBooksByAuthorPk(authorController.detailAuthor.id)}" var="book" rows="10" styleClass="table_size">
             <f:facet name="header">
                 <h:outputText value="All his books" />
             </f:facet>
@@ -96,6 +97,7 @@
                 <rich:dataScroller renderIfSinglePage="true" lastPageMode="full" for="author_books" maxPages="5" stepControls="auto" value="#{authorController.authorDataModule}"/>
             </f:facet>
         </rich:dataTable>
+            </a4j:outputPanel>
         </h:form>
     </div>
 
@@ -117,7 +119,7 @@
             <rich:componentControl target="popup_delete_author" operation="show" />
         </h:commandButton>
 
-        <h:commandButton value="Add book by this newAuthor">
+        <h:commandButton value="Add book by this author">
             <rich:componentControl target="popup_add_book" operation="show" />
         </h:commandButton>
     </h:form>
@@ -155,7 +157,9 @@
                         <h:inputText id="inputBookYear" value="#{bookController.newBook.publishYear}"/>
                         <h:message for="inputBookYear" style="color:red" />
                     </div>
-                        <h:commandButton value="Save Record" action="#{bookController.createBookByAuthor(authorController.detailAuthor)}"/>
+                    <a4j:commandButton value="Save book" action="#{bookController.createBookByAuthor(authorController.detailAuthor)}">
+                        <a4j:ajax execute="@form tablePanel" render="@form tablePanel" />
+                    </a4j:commandButton>
                 </h:panelGrid>
             </h:form>
         </div>
@@ -175,7 +179,7 @@
         <div>
             <p>Are you shure ?</p>
             <h:commandButton value="Delete" type="submit">
-                <p:ajax listener="#{authorController.deleteDetail()}"/>
+                <f:ajax listener="#{authorController.deleteDetail()}"/>
             </h:commandButton>
 
             <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;"/>
