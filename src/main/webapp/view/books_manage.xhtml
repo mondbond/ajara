@@ -147,26 +147,35 @@
                         <h:message for="inputBookName" style="color:red" />
                     </div>
                     <div>
-                        <h:outputLabel value="ISBN" for="inputBookIsbn"/>
+                        <h:outputLabel value="ISBN:" for="inputBookIsbn"/>
                         <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}"/>
                         <h:message for="inputBookIsbn" style="color:red" />
                     </div>
                     <div>
-                        <h:outputLabel value="Publisher" for="inputBookPublisher"/>
+                        <h:outputLabel value="Publisher:" for="inputBookPublisher"/>
                         <h:inputText id="inputBookPublisher" value="#{bookController.newBook.publisher}"/>
                         <h:message for="inputBookPublisher" style="color:red" />
                     </div>
                     <div>
-                        <h:outputLabel value="Year" for="inputBookPublisher"/>
+                        <h:outputLabel value="Year:" for="inputBookPublisher"/>
                         <h:inputText id="inputBookYear" value="#{bookController.newBook.publishYear}"/>
                         <h:message for="inputBookPublisher" style="color:red" />
                     </div>
 
                     <div>
-                        <h:outputLabel value="Authors"/>
+                        <h:outputLabel value="Authors:"/>
                         <h:selectManyListbox value="#{bookController.authorsForBook}" style="height:200px;">
                             <f:selectItems value="#{bookController.autocompleteAll()}" var='newAuthor' itemValue="${newAuthor.id}" itemLabel="#{newAuthor.fullName()}"/>
                         </h:selectManyListbox>
+                    </div>
+
+                    <div>
+
+                    <rich:autocomplete id="authorsMultipleSelect" tokens=", " value="#{bookController.authorA}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                                       layout="list" styleClass="margin left">
+                        <a4j:ajax event="selectitem" />
+                        <h:outputText value="#{newAuthor.fullName()}"  style="font-weight:bold"/>
+                    </rich:autocomplete>
                     </div>
 
                     <a4j:commandButton value="Save book" action="#{bookController.insertNewBook}">
@@ -189,12 +198,16 @@
         </f:facet>
 
         <div class="center_text">
-            <p>Are you shure ?</p>
-            <h:form>
-                <h:commandButton value="OK" action="#{bookController.deleteSelected}"/>
-            </h:form>
+            <div class="center_text" style="height: 50px;margin-top: 50px">
+                <p>Confirm deleting selected authors</p>
+            </div>
+            <div class="center_text">
+                <h:form style="display:inline-block">
+                    <h:commandButton value="YES" action="#{bookController.deleteSelected}" styleClass="margin"/>
+                </h:form>
 
-            <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_books')}.hide(); return false;"/>
+                <h:commandButton value="NO" style="display:inline-block" onclick="#{rich:component('popup_delete_books')}.hide(); return false;" styleClass="margin"/>
+            </div>
         </div>
     </rich:popupPanel>
 </h:body>

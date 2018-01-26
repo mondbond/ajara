@@ -23,6 +23,7 @@ import java.util.Map;
 @ManagedBean(name = "authorController")
 @SessionScoped
 public class AuthorController {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorController.class);
 
     private final String COLUMN_NAME = "column_name_author_key";
