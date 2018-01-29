@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Stateless
@@ -74,6 +75,22 @@ public class BookFacade extends AbstractFacade<Book> {
     }
 
     /**
+     * Get paginating list of books by Author
+     * @param author author of books
+     * @return list of Book
+     * */
+    public Long getCountByAuthor(Author author) {
+        LOGGER.info("IN getCountByAuthor:(author = [{}])",author);
+
+        String sqlString = "SELECT COUNT(*) FROM BOOK b WHERE b.ID IN (SELECT BOOK_ID FROM JOIN_BOOK_AUTHOR WHERE AUTHOR_ID = " + author.getId() + ")";
+//        String sqlStringjOIN = "SELECT COUNT(*) from " + Book.class.getName() + " b inner join JOIN_BOOK_AUTHOR j on j.author_id = "+ author.getId()+ " and j.book_id = b.id";
+        Query query = getEntityManager().createNativeQuery(sqlString);
+        Long result = ((BigDecimal) query.getSingleResult()).longValue();
+        LOGGER.debug("OUT getCountByAuthor:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result);
+        return result;
+    }
+
+    /**
      * Get paginating list of books by rating
      * @param from start range
      * @param to end range
@@ -92,6 +109,22 @@ public class BookFacade extends AbstractFacade<Book> {
         query.setMaxResults(limit);
         List<Book> result = query.getResultList();
         LOGGER.debug("OUT getPaginationByRating:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result.size());
+        return result;
+    }
+
+    /**
+     * Get paginating list of books by rating
+     * @param from start range
+     * @param to end range
+     * @return list of Book
+     * */
+    public Long getCountByRating(int from , int to) {
+        LOGGER.info("getCountByRating:(from = [{}], to = [{}], sort column = [{}], is ASC = [{}])",from, to);
+
+        String sqlString = "select count(*) from " + Book.class.getName() + " b where b.avgRating > " + from +" and b.avgRating <= " + to;
+        Query query = getEntityManager().createQuery(sqlString);
+        Long result = (Long) query.getSingleResult();
+        LOGGER.debug("OUT getSizeByRating:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result);
         return result;
     }
 }

@@ -67,10 +67,7 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
     @Override
     public int getRowCount() {
         logger.info("getRowCount: " + String.valueOf(dao.countAll()));
-        if (cachedCount == null) {
-            this.cachedCount = dao.countAll();
-        }
-        return cachedCount;
+        return dao.countAll();
     }
 
     @Override

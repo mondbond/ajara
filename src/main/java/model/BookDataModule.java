@@ -80,10 +80,14 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
 
     @Override
     public int getRowCount() {
-        if (cachedCount == null) {
-            this.cachedCount = dao.countAll();
+        if(filteredAuthor == null && filteredRating == null) {
+            return dao.countAll();
+        }else if(filteredAuthor != null) {
+            return ((Number)(dao.getCountByAuthor(filteredAuthor))).intValue();
+//            return filteredAuthor.getBooks().size();
+        }else {
+            return ((Number)(dao.getCountByRating((filteredRating-1), filteredRating))).intValue();
         }
-        return cachedCount;
     }
 
     @Override
