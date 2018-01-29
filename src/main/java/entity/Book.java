@@ -32,6 +32,14 @@ import static entity.Book.QUERY_BY_RATING;
 })
 public class Book implements Serializable, HasDate {
 
+    public static final String PK_COLUMN = "id";
+    public static final String NAME_COLUMN = "name";
+    public static final String PUBLISHER_COLUMN = "publisher";
+    public static final String PUBLISH_YEAR_COLUMN = "publishYear";
+    public static final String AVG_RATING_COLUMN = "avgRating";
+    public static final String DATE_COLUMN = "createDate";
+    public static final String COLUMN_NAME = "column_name_book_key";
+
     public static final String QUERY_BY_RATING = "Book.eq.ratinq";
     public static final String QUERY_COUNT_BY_RATING = "Book.count.eq.ratinq";
 
@@ -81,4 +89,5 @@ public class Book implements Serializable, HasDate {
     public void setDate(Date date) {
         createDate = date;
     }
+
 }

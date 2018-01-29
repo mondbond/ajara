@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import managers.AuthorManager;
 import managers.BookManager;
-import model.BookDataModule;
+import model.BookJPAModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +17,10 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ListJoin;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,8 +32,6 @@ import java.util.Map;
 @SessionScoped
 public class BookController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
-
-    private final String COLUMN_NAME = "column_name_books_key";
 
     private @Setter @Getter Book newBook = new Book();
     private @Getter @Setter Book detailBook = new Book();
@@ -56,9 +58,6 @@ public class BookController {
 
     @EJB
     private @Getter AuthorManager authorManager;
-
-    @EJB
-    private @Getter BookDataModule dataModule;
 
     public BookController() { }
 
@@ -93,12 +92,47 @@ public class BookController {
     /**
      * Get list of authors book by authors pk
      * @param pk authors pk
-     * @return BookDataModel instance with filtered by author
+     * @return BookJPAModel instance with filtered by author
      * */
-    public BookDataModule getBooksByAuthorPk(Long pk){
+    public BookJPAModel getBooksByAuthorPk(Long pk){
         LOGGER.info("getBooksByAuthorPk:(pk = [{}]", pk);
-        dataModule.setFilteredAuthor(authorManager.getAuthorByPk(pk));
-        return dataModule;
+//        dataModule.setFilteredAuthor(authorManager.getAuthorByPk(pk));
+//        getModel().setFilter(Book.);
+//        dataModule.setFilteredAuthor(authorManager.getAuthorByPk(pk));
+//
+        CriteriaBuilder cb = getBookManager().getBookFacade().getEntityManager().getCriteriaBuilder();
+//
+//        CriteriaQuery<Book> cq = cb.createQuery(Book.class);
+//        Root<Author> authorRoot = cq.from(Author.class);
+//        Root<Book> bookRoot = cq.from(Book.class);
+//        Join<Book, Author> join = authorRoot.join("Book");
+////        cq.select(bookRoot).where(cb.equal(authorRoot.get("id"), pk));
+//        cq.select(bookRoot).where(cb.equal(join.get("id"), pk));
+//
+//        getModel().getFilters().add(cb.equal(join.get("id"), pk));
+
+            CriteriaQuery<Book> criteriaQuery = cb.createQuery(Book.class);
+            Root<Author> answerRoot = criteriaQuery.from(Author.class);
+            criteriaQuery.where(cb.equal(answerRoot.get("id"), pk));
+            ListJoin<Author, Book> answers = answerRoot.joinList("books");
+            CriteriaQuery<Book> cq = criteriaQuery.select(answers);
+
+//            String s = answers;
+//            answers.
+
+        getModel().join = answers;
+        getModel().filtere = cb.equal(answerRoot.get("id"), pk);
+
+
+//            criteriaQuery.
+//            TypedQuery<Book> query = entityManager.createQuery(cq);
+//            return query.getResultList();
+//        }
+
+//        getModel();
+
+
+        return getModel();
     }
 
     /**
@@ -145,17 +179,17 @@ public class BookController {
     /**
      * Filter books by entered author second name
      * */
-    public void filterByAuthor(){
-        if(authorA.equals("")){
-            dataModule.setFilteredRating(null);
-            dataModule.setFilteredAuthor(null);
-        }
-        if(authorA != null && !authorA.equals("")){
-            List<Author> authors = new ArrayList<>();
-            Author author2 = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorA)).findFirst().get();
-            dataModule.setFilteredAuthor(author2);
-        }
-    }
+//    public void filterByAuthor(){
+//        if(authorA.equals("")){
+//            dataModule.setFilteredRating(null);
+//            dataModule.setFilteredAuthor(null);
+//        }
+//        if(authorA != null && !authorA.equals("")){
+//            List<Author> authors = new ArrayList<>();
+//            Author author2 = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorA)).findFirst().get();
+//            dataModule.setFilteredAuthor(author2);
+//        }
+//    }
 
     /**
      * Adding and removing selected book to delete list
@@ -175,22 +209,24 @@ public class BookController {
     public String sortBy() {
         Map<String,String> params =
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        sortingColumn = params.get(COLUMN_NAME);
-        changeOrder(sortingColumn);
-        dataModule.setSortField(sortingColumn, mOderMap.get(sortingColumn));
+//        sortingColumn = params.get(Book.COLUMN_NAME);
+//        dataModule.setSortField(sortingColumn, mOderMap.get(sortingColumn));
+//        getBookManager().
+
+        authorManager.getAuthorFacade().getModel().setSortingColumnAndConfigureOrder(params.get(getColumnName()));
         return null;
     }
 
-    /**
-     * Handle order changing in author table
-     * */
-    private void changeOrder(String columnName) {
-        if(mOderMap.containsKey(columnName)) {
-            mOderMap.put(columnName, !mOderMap.get(columnName));
-        } else {
-            mOderMap.put(columnName, true);
-        }
-    }
+//    /**
+//     * Handle order changing in author table
+//     * */
+//    private void changeOrder(String columnName) {
+//        if(mOderMap.containsKey(columnName)) {
+//            mOderMap.put(columnName, !mOderMap.get(columnName));
+//        } else {
+//            mOderMap.put(columnName, true);
+//        }
+//    }
 
     /**
      * Redirect to detail page by pointed pk
@@ -230,19 +266,19 @@ public class BookController {
         return allAuthors;
     }
 
-    private void unsetBookFilter(){
-        dataModule.setFilteredRating(null);
-        dataModule.setFilteredAuthor(null);
-    }
+//    private void unsetBookFilter(){
+//        dataModule.setFilteredRating(null);
+//        dataModule.setFilteredAuthor(null);
+//    }
 
     /**
      * Redirect to book manage page without filter
      * */
-    public void redirectToManagePageAndUnsetFilters() throws IOException {
-        LOGGER.info("redirectToManagePageAndUnsetFilters:");
-        unsetBookFilter();
-        redirectToManagePage();
-    }
+//    public void redirectToManagePageAndUnsetFilters() throws IOException {
+//        LOGGER.info("redirectToManagePageAndUnsetFilters:");
+//        unsetBookFilter();
+//        redirectToManagePage();
+//    }
 
     /**
      * Redirect to book manage page
@@ -272,15 +308,43 @@ public class BookController {
     /**
      * Redirect to book manage page with rating filter
      * */
-    public String toBookManageByRating(int rating) throws IOException {
-        LOGGER.info("toBookManageByRating:(rating = [{}])", rating);
-        dataModule.setFilteredAuthor(null);
-        dataModule.setFilteredRating(rating);
-        redirectToManagePage();
-        return null;
+//    public String toBookManageByRating(int rating) throws IOException {
+//        LOGGER.info("toBookManageByRating:(rating = [{}])", rating);
+//        dataModule.setFilteredAuthor(null);
+//        dataModule.setFilteredRating(rating);
+//        redirectToManagePage();
+//        return null;
+//    }
+
+    public BookJPAModel getModel() {
+        return bookManager.getBookFacade().getModel();
     }
 
-    public String getColumnConstant() {
-        return COLUMN_NAME;
+    public String getPkColumn() {
+        return Book.PK_COLUMN;
+    }
+
+    public String getNameColumn() {
+        return Book.NAME_COLUMN;
+    }
+
+    public String getPublisherColumn() {
+        return Book.PUBLISHER_COLUMN;
+    }
+
+    public String getPublishYearColumn() {
+        return Book.PUBLISH_YEAR_COLUMN;
+    }
+
+    public String getAvgRatingColumn() {
+        return Book.AVG_RATING_COLUMN;
+    }
+
+    public String getDateColumn() {
+        return Book.DATE_COLUMN;
+    }
+
+    public String getColumnName() {
+        return Book.COLUMN_NAME;
     }
 }

@@ -1,5 +1,6 @@
 package managers;
 import entity.Book;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.BookFacade;
@@ -14,7 +15,7 @@ public class BookManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookManager.class);
 
     @EJB
-    private BookFacade bookFacade;
+    private @Getter BookFacade bookFacade;
 
     @EJB
     private BookHome bookHome;

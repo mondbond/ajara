@@ -1,6 +1,7 @@
 package managers;
 
 import entity.Author;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.AuthorFacade;
@@ -15,7 +16,7 @@ public class AuthorManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorManager.class);
 
     @EJB
-    private AuthorFacade authorFacade;
+    private @Getter AuthorFacade authorFacade;
 
     @EJB
     private AuthorHome authorHome;

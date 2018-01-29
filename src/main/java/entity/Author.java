@@ -25,9 +25,16 @@ import java.util.List;
             query = "select a from Author a WHERE a.secondName LIKE ?1")
 public class Author implements Serializable, HasDate {
 
+    public static final String PK_COLUMN = "id";
+    public static final String NAME_COLUMN = "firstName";
+    public static final String SECOND_NAME_COLUMN = "secondName";
+    public static final String AVG_RATING_COLUMN = "avgRating";
+    public static final String DATE_COLUMN = "createDate";
+    public static final String COLUMN_NAME = "column_name_author_key";
+
     public static final String QUERY_LIKE_SECOND_NAME = "Author.by.secondName.like";
 
-//    lombok has no annotation for including only necessary fields
+    //    lombok has no annotation for including only necessary fields
     public Author(String firstName, String secondName) {
         this.firstName = firstName;
         this.secondName = secondName;
@@ -64,4 +71,5 @@ public class Author implements Serializable, HasDate {
     public void setDate(Date date) {
         createDate = date;
     }
+
 }

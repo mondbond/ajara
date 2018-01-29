@@ -2,6 +2,7 @@ package repository;
 
 import entity.Author;
 import entity.Book;
+import model.BookJPAModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +13,8 @@ import java.util.List;
 @Stateless
 public class BookFacade extends AbstractFacade<Book> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookFacade.class);
+
+    private BookJPAModel bookModel;
 
     public BookFacade() {
         super(Book.class);
@@ -93,5 +96,12 @@ public class BookFacade extends AbstractFacade<Book> {
         List<Book> result = query.getResultList();
         LOGGER.debug("OUT getPaginationByRating:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result.size());
         return result;
+    }
+
+    public BookJPAModel getModel() {
+        if(bookModel == null) {
+            bookModel = new BookJPAModel(getEntityManager(), Author.DATE_COLUMN, Book.class);
+        }
+        return bookModel;
     }
 }

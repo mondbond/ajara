@@ -1,6 +1,8 @@
 package model;
 
 import entity.Author;
+import lombok.Getter;
+import lombok.Setter;
 import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
@@ -18,11 +20,11 @@ import java.util.List;
 public class AuthorDataModule extends ExtendedDataModel<Author> {
     final Logger logger = LoggerFactory.getLogger(AuthorDataModule.class);
 
-    public final String PK_COLUMN = "ID";
-    public final String NAME_COLUMN = "FIRST_NAME";
-    public final String SECOND_NAME_COLUMN = "SECOND_NAME";
-    public final String AVG_RATING_COLUMN = "AVG_RATING";
-    public final String DATE_COLUMN = "CREATE_DATE";
+    private @Getter @Setter final String PK_COLUMN = "ID";
+    private @Getter @Setter final String NAME_COLUMN = "FIRST_NAME";
+    private @Getter @Setter final String SECOND_NAME_COLUMN = "SECOND_NAME";
+    private @Getter @Setter final String AVG_RATING_COLUMN = "AVG_RATING";
+    private @Getter @Setter final String DATE_COLUMN = "CREATE_DATE";
 
     private Integer rowKey;
     private List<Author> list;

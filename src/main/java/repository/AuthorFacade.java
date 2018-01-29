@@ -1,6 +1,7 @@
 package repository;
 
 import entity.Author;
+import model.AuthorJPAModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,8 @@ import java.util.List;
 public class AuthorFacade extends AbstractFacade<Author> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractFacade.class);
+
+    private AuthorJPAModel authorModel;
 
     public AuthorFacade() {
         super(Author.class);
@@ -27,5 +30,12 @@ public class AuthorFacade extends AbstractFacade<Author> {
                 .getResultList();
         LOGGER.debug("OUT getAutocompleteBySecondName: returned [{}]", result);
         return result;
+    }
+
+    public AuthorJPAModel getModel() {
+        if(authorModel == null) {
+            authorModel = new AuthorJPAModel(getEntityManager(), Author.DATE_COLUMN, Author.class);
+        }
+        return authorModel;
     }
 }

@@ -4,7 +4,7 @@ import entity.Author;
 import lombok.Getter;
 import lombok.Setter;
 import managers.AuthorManager;
-import model.AuthorDataModule;
+import model.AuthorJPAModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,16 +17,12 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 @ManagedBean(name = "authorController")
 @SessionScoped
 public class AuthorController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorController.class);
-
-    private final String COLUMN_NAME = "column_name_author_key";
 
     private @Getter @Setter Author detailAuthor = new Author();
 
@@ -36,15 +32,8 @@ public class AuthorController {
     //    for multiple selection
     private @Getter @Setter ArrayList<Long> selectedToDeletePks = new ArrayList<>();
 
-    //    sorting
-    private String sortingColumn = null;
-    private HashMap<String, Boolean> mOderMap = new HashMap<>();
-
     @EJB
     private AuthorManager authorManager;
-
-    @EJB
-    private @Getter AuthorDataModule authorDataModule;
 
     /**
      * Inserting new author to database
@@ -108,21 +97,14 @@ public class AuthorController {
      * */
     public String sortBy() {
         Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        sortingColumn = params.get(COLUMN_NAME);
-        changeOrder(sortingColumn);
-        authorDataModule.setSortField(sortingColumn, mOderMap.get(sortingColumn));
-        return null;
-    }
+//        sortingColumn = Author.getCOLUMN_NAME();
+//        authorManager.getAuthorFacade().getModel().getArrangeableState().getSortFields().add(new SortField(ExpressionFactory.newInstance(). {
+//        }));
 
-    /**
-     * Handle order changing in author table
-     * */
-    private void changeOrder(String columnName){
-        if(mOderMap.containsKey(columnName)) {
-            mOderMap.put(columnName, !mOderMap.get(columnName));
-        } else {
-            mOderMap.put(columnName, true);
-        }
+//        changeOrder(sortingColumn);
+        authorManager.getAuthorFacade().getModel().setSortingColumnAndConfigureOrder(params.get(getCOLUMN_NAME()));
+//        authorManager.getAuthorFacade().getModel().setASC(mOderMap.get(sortingColumn));
+        return null;
     }
 
     /**
@@ -168,7 +150,36 @@ public class AuthorController {
     }
 
 //    get set
-    public String getColumnConstant() {
-        return COLUMN_NAME;
+//    public String getColumnConstant() {
+//        return ;
+//    }
+
+    public AuthorJPAModel getModel(){
+        return authorManager.getAuthorFacade().getModel();
     }
+
+    public String getPK_COLUMN() {
+        return Author.PK_COLUMN;
+    }
+
+    public String getNAME_COLUMN() {
+        return Author.NAME_COLUMN;
+    }
+
+    public String getSECOND_NAME_COLUMN() {
+        return Author.SECOND_NAME_COLUMN;
+    }
+
+    public String getAVG_RATING_COLUMN() {
+        return Author.AVG_RATING_COLUMN;
+    }
+
+    public String getDATE_COLUMN() {
+        return Author.DATE_COLUMN;
+    }
+
+    public String getCOLUMN_NAME() {
+        return Author.COLUMN_NAME;
+    }
+
 }
