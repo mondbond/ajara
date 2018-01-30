@@ -20,7 +20,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +50,6 @@ public class BookController {
 
     //    sorting
     private String sortingColumn = null;
-    private HashMap<String, Boolean> mOderMap = new HashMap<>();
 
     private ArrayList<Long> selectedToDeletePks = new ArrayList<>();
 
@@ -214,21 +212,8 @@ public class BookController {
     public String sortBy() {
         Map<String,String> params =
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        sortingColumn = params.get(COLUMN_NAME);
-        changeOrder(sortingColumn);
-        dataModule.setSortField(sortingColumn, mOderMap.get(sortingColumn));
+        dataModule.sortBy(params.get(COLUMN_NAME));
         return null;
-    }
-
-    /**
-     * Handle order changing in author table
-     * */
-    private void changeOrder(String columnName) {
-        if(mOderMap.containsKey(columnName)) {
-            mOderMap.put(columnName, !mOderMap.get(columnName));
-        } else {
-            mOderMap.put(columnName, true);
-        }
     }
 
     /**
