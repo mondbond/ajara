@@ -38,10 +38,16 @@ public class BookController {
 
     private List<Author> aAuthors = new ArrayList<>();
 
-    private @Getter @Setter List<String> authorsForBook = new ArrayList<>();
+    private @Getter @Setter String hiddenId;
 
     //    all authors for autocompleteAll. fix
     private List<Author> allAuthors = new ArrayList<>();
+
+    private @Getter @Setter String detailBookAddAuthorId;
+    private @Getter @Setter String newBookAddAuthorId;
+
+    private @Getter @Setter String bookAddAuthorAutocomplate;
+    private @Getter @Setter String booksAddAuthorAutocomplate;
 
     //    sorting
     private String sortingColumn = null;
@@ -67,12 +73,10 @@ public class BookController {
      * */
     public String insertNewBook(){
         ArrayList<Author> authors = new ArrayList<>();
-        authorsForBook.forEach(author -> authors.add(authorManager.getAuthorByPk(Long.parseLong(author))));
         newBook.getAuthors().addAll(authors);
         LOGGER.info("insertNewBook:(book = [{}])", newBook);
         bookManager.save(newBook);
         newBook = new Book();
-        authorsForBook.clear();
         return "books_manage.xhtml";
     }
 
@@ -132,6 +136,40 @@ public class BookController {
         }
     }
 
+    public void deleteAuthorFromBook(Long pk){
+        LOGGER.info("IN deleteAuthorFromBook:(pk = [{}]", pk);
+        detailBook.getAuthors().removeIf(author1 -> author1.getId() == pk);
+        bookManager.update(detailBook);
+    }
+
+    public void addAuthorToBook(){
+        LOGGER.info("IN addAuthorToBook:");
+        if(detailBookAddAuthorId != null && !detailBookAddAuthorId.equals("")){
+            LOGGER.info("IN addAuthorToBook:   nullll = [{}]", detailBookAddAuthorId);
+            Author author = authorManager.getAuthorByPk(Long.parseLong(detailBookAddAuthorId));
+            detailBook.getAuthors().add(author);
+            bookManager.update(detailBook);
+            bookAddAuthorAutocomplate = null;
+        }
+    }
+
+
+    public void deleteAuthorFromAddBookForm(Long pk){
+        LOGGER.info("IN deleteAuthorFromAddBookForm:(pk = [{}]", pk);
+        newBook.getAuthors().removeIf(author1 -> author1.getId() == pk);
+
+    }
+
+    public void addAuthorToAddBookForm(){
+        LOGGER.info("IN addAuthorToAddBookForm:");
+        if(newBookAddAuthorId != null && !newBookAddAuthorId.equals("")){
+            LOGGER.info("IN addAuthorToAddBookForm:   nullll = [{}]", newBookAddAuthorId);
+            Author author = authorManager.getAuthorByPk(Long.parseLong(newBookAddAuthorId));
+            newBook.getAuthors().add(author);
+            booksAddAuthorAutocomplate = null;
+        }
+    }
+
     /**
      * Get autocompleted authors list by authors second name prefix
      * @param prefix prefix of author
@@ -146,6 +184,7 @@ public class BookController {
      * Filter books by entered author second name
      * */
     public void filterByAuthor(){
+        LOGGER.info("filterByAuthor " + hiddenId);
         if(authorA.equals("")){
             dataModule.setFilteredRating(null);
             dataModule.setFilteredAuthor(null);
@@ -218,16 +257,6 @@ public class BookController {
     private void reload() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
-    }
-
-    /**
-     * FIX
-     * */
-    public List<Author> autocompleteAll() {
-        if(allAuthors.isEmpty()) {
-            allAuthors = authorManager.getAllAuthors();
-        }
-        return allAuthors;
     }
 
     private void unsetBookFilter(){

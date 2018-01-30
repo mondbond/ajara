@@ -17,7 +17,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 @ManagedBean(name = "authorController")
@@ -38,7 +37,6 @@ public class AuthorController {
 
     //    sorting
     private String sortingColumn = null;
-    private HashMap<String, Boolean> mOderMap = new HashMap<>();
 
     @EJB
     private AuthorManager authorManager;
@@ -108,21 +106,8 @@ public class AuthorController {
      * */
     public String sortBy() {
         Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        sortingColumn = params.get(COLUMN_NAME);
-        changeOrder(sortingColumn);
-        authorDataModule.setSortField(sortingColumn, mOderMap.get(sortingColumn));
+        authorDataModule.sortBy(params.get(COLUMN_NAME));
         return null;
-    }
-
-    /**
-     * Handle order changing in author table
-     * */
-    private void changeOrder(String columnName){
-        if(mOderMap.containsKey(columnName)) {
-            mOderMap.put(columnName, !mOderMap.get(columnName));
-        } else {
-            mOderMap.put(columnName, true);
-        }
     }
 
     /**

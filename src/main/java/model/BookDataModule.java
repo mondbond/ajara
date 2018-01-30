@@ -20,7 +20,7 @@ import java.util.List;
 
 @Stateful
 public class BookDataModule  extends ExtendedDataModel<Book> {
-    final Logger logger = LoggerFactory.getLogger(BookDataModule.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookDataModule.class);
 
     public final String PK_COLUMN = "ID";
     public final String NAME_COLUMN = "NAME";
@@ -35,7 +35,6 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
 
     private Integer rowKey;
     private List<Book> list = new ArrayList<>();
-    private Integer cachedCount;
 
     private boolean isASC;
     //    sorting

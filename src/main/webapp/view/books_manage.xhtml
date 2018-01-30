@@ -17,6 +17,27 @@
 </h:head>
 
 <h:body>
+
+
+    <script type="text/javascript" >
+
+        function get_hidden_author_id(){
+            return document.getElementById('superform:hiddenSelectedAuthorsIdContainer').value;
+        }
+
+        function pass_filter_id(pk){
+            document.getElementById('superform:hiddenSelectedAuthorsIdContainer').value=pk;
+            alert("sdgfsgdfagds " + pk + " _ " + document.getElementById('superform:hiddenSelectedAuthorsIdContainer').value);
+        }
+
+        function pass_select_id(pk){
+            document.getElementById('add_book_form:hiddenSelectedAuthorsIdAddForm').value=pk;
+            document.getElementById('add_book_form:hiddenSelectedAuthorsIdAddForm').onchange();
+            alert("sdgfsgdfagds " + pk + " _ " + document.getElementById('add_book_form:hiddenSelectedAuthorsIdAddForm').value);
+        }
+
+    </script>
+
     <ui:include src="../template/navigate_menu.xhtml" />
 
     <div class="content_panel">
@@ -25,7 +46,6 @@
 
         <div id="undername_line">
         </div>
-
 
         <div id="books_data" class="left margin center_text" >
             <h:form>
@@ -118,10 +138,15 @@
                 <rich:autocomplete id="her" value="#{bookController.authorA}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
                                    layout="list" styleClass="margin left">
                     <a4j:ajax event="selectitem" />
-                    <h:outputText value="#{newAuthor.fullName()}"  style="font-weight:bold"/>
+                        <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onclick="pass_filter_id('#{newAuthor.id}')" />
                 </rich:autocomplete>
 
-                <h:commandButton action="#{bookController.filterByAuthor}" value="Filter" styleClass="margin left" style="display: inline-block"/>
+                <h:commandButton action="#{bookController.filterByAuthor}" value="Filter" styleClass="margin left" style="display: inline-block">
+                </h:commandButton>
+
+                <h:inputText value="#{bookController.hiddenId}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
+                    <f:ajax event="change" />
+                </h:inputText>
             </h:form>
         </div>
     </div>
@@ -138,8 +163,8 @@
             </h:outputLink>
         </f:facet>
 
-        <div id="add_books_form" class="board_style left margin">
-            <h:form >
+        <div class="board_style left margin">
+            <h:form id="add_book_form">
                 <h:panelGrid>
                     <div>
                         <h:outputLabel value="Name:" for="inputBookName"/>
@@ -163,14 +188,30 @@
                     </div>
 
                     <div>
-                        <h:outputLabel value="Authors:"/>
-                        <h:selectManyListbox value="#{bookController.authorsForBook}" style="height:200px;">
-                            <f:selectItems value="#{bookController.autocompleteAll()}" var='newAuthor' itemValue="${newAuthor.id}" itemLabel="#{newAuthor.fullName()}"/>
-                        </h:selectManyListbox>
+                        <h:outputText value="Authors: " for="bm_add_authors"/>
+                        <rich:list id="bm_add_authors" value="#{bookController.newBook.authors}" var="newAuthor">
+                            <h:outputText value="#{newAuthor.fullName()}" />
+                            <h:commandLink actionListener="#{bookController.deleteAuthorFromAddBookForm(newAuthor.id)}" value=" X">
+                                <a4j:ajax execute="bm_add_authors" render="bm_add_authors" />
+                            </h:commandLink>
+                        </rich:list>
+                        <h:message for="bm_add_authors" style="color:red" />
+
+                        <h:outputText value="Add author: "/>
+                        <rich:autocomplete value="#{bookController.booksAddAuthorAutocomplate}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                                           layout="list" styleClass="margin left">
+                            <a4j:ajax event="selectitem" />
+                            <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onclick="pass_select_id('#{newAuthor.id}')" />
+                        </rich:autocomplete>
+
+                        <h:commandButton actionListener="#{bookController.addAuthorToAddBookForm}" value="Add author" styleClass="margin left" style="display: inline-block">
+                            <a4j:ajax execute="bm_add_authors" render="bm_add_authors" />
+                        </h:commandButton>
+
                     </div>
 
-                    <div>
 
+                    <div>
                     <rich:autocomplete id="authorsMultipleSelect" tokens=", " value="#{bookController.authorA}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
                                        layout="list" styleClass="margin left">
                         <a4j:ajax event="selectitem" />
@@ -183,6 +224,9 @@
                     </a4j:commandButton>
 
                 </h:panelGrid>
+                <h:inputText value="#{bookController.newBookAddAuthorId}" id="hiddenSelectedAuthorsIdAddForm" style="display: none">
+                    <f:ajax event="change" />
+                </h:inputText>
             </h:form>
         </div>
     </rich:popupPanel>

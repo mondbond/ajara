@@ -18,6 +18,21 @@
 </h:head>
 
 <h:body>
+
+    <script type="text/javascript" >
+
+        function get_hidden_author_id(){
+            return document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').value;
+        }
+
+        function pass_id(i){
+            document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').value=i;
+            document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').onchange();
+            alert("sdgfsgdfagds " + i + " _ " + get_hidden_author_id());
+        }
+
+    </script>
+
     <ui:include src="../template/navigate_menu.xhtml" />
 
     <div class="content_panel">
@@ -81,27 +96,45 @@
     </div>
 
     <div id="book_info" class="board_style margin padding" style="display: inline-block; vertical-align: top;">
-        <h:form>
+        <h:form id="editBookForm">
             <h:panelGrid columns="3" >
-                <h:outputText value="Name" for="updateName"/>
+                <h:outputText value="Name: " for="updateName"/>
                 <h:inputText id="updateName" value="#{bookController.detailBook.name}"/>
                 <h:message for="updateName" style="color:red" />
 
-                <h:outputText value="ISBN" for="updateIsbn"/>
+                <h:outputText value="Authors: " for="updateAuthor"/>
+                <rich:list id="updateAuthor" value="#{bookController.detailBook.authors}" var="newAuthor">
+                    <h:commandLink value="#{newAuthor.fullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}" />
+                    <h:commandLink actionListener="#{bookController.deleteAuthorFromBook(newAuthor.id)}" value=" X">
+                        <a4j:ajax execute="updateAuthor" render="updateAuthor" />
+                    </h:commandLink>
+                </rich:list>
+                <h:message for="updateAuthor" style="color:red" />
+
+                <h:outputText value="Add author: "/>
+                <rich:autocomplete value="#{bookController.bookAddAuthorAutocomplate}" id="her" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                                   layout="list" styleClass="margin left">
+                    <a4j:ajax event="selectitem" />
+                    <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onclick="pass_id('#{newAuthor.id}')" />
+                </rich:autocomplete>
+
+                <h:commandButton actionListener="#{bookController.addAuthorToBook}" value="Add author" styleClass="margin left" style="display: inline-block">
+                    <a4j:ajax execute="updateAuthor" render="updateAuthor" />
+                </h:commandButton>
+
+                <h:outputText value="ISBN: " for="updateIsbn"/>
                 <h:outputText id="updateIsbn" value="#{bookController.detailBook.isbn}"/>
                 <h:message for="updateIsbn" style="color:red" />
 
-                <h:outputText value="Publisher" for="updatePublisher"/>
+                <h:outputText value="Publisher: " for="updatePublisher"/>
                 <h:inputText id="updatePublisher" value="#{bookController.detailBook.publisher}"/>
                 <h:message for="updatePublisher" style="color:red" />
 
-                <h:outputText value="Year" for="updateYear"/>
+                <h:outputText value="Year: " for="updateYear"/>
                 <h:outputText id="updateYear" value="#{bookController.detailBook.publishYear}"/>
                 <h:message for="updateYear" style="color:red" />
 
                 <h:outputText value=""/>
-
-                <h:commandButton value="Edit" action="#{bookController.update()}"/>
 
                 <a4j:commandButton value="Edit" action="#{bookController.update()}">
                     <a4j:ajax execute="@form bookFullName" render="@form bookFullName" />
@@ -110,8 +143,10 @@
                 <h:commandButton value="Delete">
                     <rich:componentControl target="popup_delete_book" operation="show" />
                 </h:commandButton>
-
             </h:panelGrid>
+            <h:inputText value="#{bookController.detailBookAddAuthorId}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
+                <f:ajax event="change" />
+            </h:inputText>
         </h:form>
     </div>
     </div>

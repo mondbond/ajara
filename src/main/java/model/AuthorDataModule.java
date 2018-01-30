@@ -12,6 +12,7 @@ import repository.AuthorFacade;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.faces.context.FacesContext;
+import java.util.HashMap;
 import java.util.List;
 
 @Stateful
@@ -26,15 +27,39 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
 
     private Integer rowKey;
     private List<Author> list;
-    private Integer cachedCount;
 
     private boolean isASC;
 //    sorting
+
     private String sortingColumn = DATE_COLUMN;
+
+    private HashMap<String, Boolean> mOderMap = new HashMap<>();
+
     @EJB
     private  AuthorFacade dao;
 
     public AuthorDataModule() {
+    }
+
+    /**
+     * Sorting authors by params from RequestParameterMap
+     * */
+    public void sortBy(String sortingColumn) {
+        logger.info("SORT [{}] and map = [{}]", sortingColumn, mOderMap);
+        this.sortingColumn = sortingColumn;
+        changeOrder(sortingColumn);
+    }
+
+    /**
+     * Handle order changing in author table
+     * */
+    private void changeOrder(String columnName){
+        if(mOderMap.containsKey(columnName)) {
+            mOderMap.put(columnName, !mOderMap.get(columnName));
+        } else {
+            mOderMap.put(columnName, true);
+        }
+        isASC = mOderMap.get(columnName);
     }
 
     @Override
@@ -93,11 +118,6 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
     @Override
     public void setWrappedData(Object o) {
         throw new UnsupportedOperationException();
-    }
-
-    public void setSortField(String sortField, boolean isASC) {
-        this.isASC = isASC;
-        sortingColumn = sortField;
     }
 
     public String getPkColumnConstant() {
