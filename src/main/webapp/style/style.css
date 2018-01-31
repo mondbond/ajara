@@ -80,4 +80,7 @@ a, a:link, a:visited, a:active {
     font-size: 35px;
 }
 
-/*fonts*/
+/*style*/
+.no_list_style{
+    list-style-type: none;
+}

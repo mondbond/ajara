@@ -27,7 +27,6 @@
 
         function pass_filter_id(pk){
             document.getElementById('superform:hiddenSelectedAuthorsIdContainer').value=pk;
-            alert("sdgfsgdfagds " + pk + " _ " + document.getElementById('superform:hiddenSelectedAuthorsIdContainer').value);
         }
 
         function pass_select_id(pk){
@@ -79,7 +78,7 @@
                             Author
                     </f:facet>
 
-                    <rich:list value="#{book.authors}" var="newAuthor">
+                    <rich:list value="#{book.authors}" var="newAuthor" styleClass="no_list_style">
                             <h:commandLink value="#{newAuthor.fullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
                     </rich:list>
                 </rich:column>
@@ -243,7 +242,7 @@
 
         <div class="center_text">
             <div class="center_text" style="height: 50px;margin-top: 50px">
-                <p>Confirm deleting selected authors</p>
+                <p>Confirm deleting selected books</p>
             </div>
             <div class="center_text">
                 <h:form style="display:inline-block">

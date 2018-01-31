@@ -28,7 +28,6 @@
         function pass_id(i){
             document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').value=i;
             document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').onchange();
-            alert("sdgfsgdfagds " + i + " _ " + get_hidden_author_id());
         }
 
     </script>
@@ -163,14 +162,19 @@
             </h:outputLink>
         </f:facet>
 
-        <div>
-            <p>Are you shure ?</p>
-            <h:form>
-                <h:commandButton value="Delete" type="submit" action="#{bookController.deleteDetail}"/>
-            </h:form>
+        <div class="center_text">
+            <div class="center_text" style="height: 50px;margin-top: 50px">
+                <p>Confirm deleting this book</p>
+            </div>
+            <div class="center_text">
+                <h:form style="display:inline-block">
+                    <h:commandButton value="YES" action="#{bookController.deleteDetail}" styleClass="margin"/>
+                </h:form>
 
-            <h:commandButton value="CANCEL" onclick="#{rich:component('popup_delete_authors')}.hide(); return false;"/>
+                <h:commandButton value="NO" style="display:inline-block" onclick="#{rich:component('popup_delete_books')}.hide(); return false;" styleClass="margin"/>
+            </div>
         </div>
+
     </rich:popupPanel>
 </h:body>
 </html>
