@@ -17,7 +17,7 @@ import java.util.List;
 
 @Stateful
 public class AuthorDataModule extends ExtendedDataModel<Author> {
-    final Logger logger = LoggerFactory.getLogger(AuthorDataModule.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorDataModule.class);
 
     public final String PK_COLUMN = "ID";
     public final String NAME_COLUMN = "FIRST_NAME";
@@ -45,7 +45,7 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
      * Sorting authors by params from RequestParameterMap
      * */
     public void sortBy(String sortingColumn) {
-        logger.info("SORT [{}] and map = [{}]", sortingColumn, mOderMap);
+        LOGGER.info("SORT [{}] and map = [{}]", sortingColumn, mOderMap);
         this.sortingColumn = sortingColumn;
         changeOrder(sortingColumn);
     }
@@ -91,7 +91,7 @@ public class AuthorDataModule extends ExtendedDataModel<Author> {
 
     @Override
     public int getRowCount() {
-        logger.info("getRowCount: " + String.valueOf(dao.countAll()));
+        LOGGER.info("getRowCount: " + String.valueOf(dao.countAll()));
         return dao.countAll();
     }
 

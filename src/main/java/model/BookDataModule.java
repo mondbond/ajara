@@ -8,6 +8,7 @@ import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
 import org.ajax4jsf.model.SequenceRange;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.BookFacade;
@@ -63,9 +64,9 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
         int firstRow = ((SequenceRange) range).getFirstRow();
         int numberOfLines = ((SequenceRange) range).getRows();
 
-        if(filteredAuthor == null && filteredRating == null) {
+        if(!ObjectUtils.allNotNull(filteredAuthor, filteredRating)) {
             this.list = dao.getPagination(firstRow, numberOfLines, sortingColumn, isASC);
-        }else if(filteredAuthor != null) {
+        }else if(ObjectUtils.allNotNull(filteredAuthor)) {
             this.list = dao.getPaginationByAuthor(filteredAuthor, firstRow, numberOfLines, sortingColumn, isASC);
         }else {
             this.list = dao.getPaginationByRating((filteredRating-1), filteredRating, firstRow, numberOfLines, sortingColumn, isASC);
@@ -86,10 +87,9 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
         if(filteredAuthor == null && filteredRating == null) {
             return dao.countAll();
         }else if(filteredAuthor != null) {
-            return ((Number)(dao.getCountByAuthor(filteredAuthor))).intValue();
-//            return filteredAuthor.getBooks().size();
+            return ((dao.getCountByAuthor(filteredAuthor))).intValue();
         }else {
-            return ((Number)(dao.getCountByRating((filteredRating-1), filteredRating))).intValue();
+            return ((dao.getCountByRating((filteredRating-1), filteredRating))).intValue();
         }
     }
 
@@ -136,11 +136,6 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
     @Override
     public void setWrappedData(Object o) {
         throw new UnsupportedOperationException();
-    }
-
-    public void setSortField(String sortField, boolean isASC) {
-        this.isASC = isASC;
-        sortingColumn = sortField;
     }
 
     public String getPkColumnConstant() {
