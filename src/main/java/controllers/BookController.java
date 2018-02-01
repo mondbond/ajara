@@ -7,7 +7,6 @@ import lombok.Setter;
 import managers.AuthorManager;
 import managers.BookManager;
 import model.BookDataModule;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,7 +142,7 @@ public class BookController {
 
     public void addAuthorToBook(){
         LOGGER.info("IN addAuthorToBook:");
-        if(!StringUtils.isBlank(detailBookAddAuthorId)){
+        if(detailBookAddAuthorId != null && !detailBookAddAuthorId.equals("")){
             LOGGER.info("IN addAuthorToBook:   nullll = [{}]", detailBookAddAuthorId);
             Author author = authorManager.getAuthorByPk(Long.parseLong(detailBookAddAuthorId));
             detailBook.getAuthors().add(author);
@@ -161,7 +160,7 @@ public class BookController {
 
     public void addAuthorToAddBookForm(){
         LOGGER.info("IN addAuthorToAddBookForm:");
-        if(!StringUtils.isBlank(newBookAddAuthorId)){
+        if(newBookAddAuthorId != null && !newBookAddAuthorId.equals("")){
             LOGGER.info("IN addAuthorToAddBookForm:   nullll = [{}]", newBookAddAuthorId);
             Author author = authorManager.getAuthorByPk(Long.parseLong(newBookAddAuthorId));
             newBook.getAuthors().add(author);
@@ -178,18 +177,20 @@ public class BookController {
         return aAuthors;
     }
 
+
     /**
      * Filter books by entered author second name
      * */
     public void filterByAuthor(){
         LOGGER.info("filterByAuthor " + hiddenId);
-        if(StringUtils.isBlank(authorA)){
+        if(authorA.equals("")){
             dataModule.setFilteredRating(null);
             dataModule.setFilteredAuthor(null);
         }
-        if(!StringUtils.isBlank(authorA)){
-            Author authors = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorA)).findFirst().get();
-            dataModule.setFilteredAuthor(authors);
+        if(authorA != null && !authorA.equals("")){
+            List<Author> authors = new ArrayList<>();
+            Author author2 = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorA)).findFirst().get();
+            dataModule.setFilteredAuthor(author2);
         }
     }
 
