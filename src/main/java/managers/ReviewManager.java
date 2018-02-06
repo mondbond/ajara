@@ -23,4 +23,12 @@ public class ReviewManager {
             throw new ReviewException("Something happen while you trying to save review", e);
         }
     }
+
+    public void deleteReview(Long pk) throws ReviewException {
+        try {
+            reviewHome.deleteByPk(pk);
+        }catch (Exception e){
+            throw new ReviewException("Something happen while you trying to delete review", e);
+        }
+    }
 }

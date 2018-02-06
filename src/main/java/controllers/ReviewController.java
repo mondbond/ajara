@@ -2,6 +2,8 @@ package controllers;
 
 import entity.Book;
 import entity.Reviews;
+import exception.BookException;
+import exception.ReviewException;
 import lombok.Getter;
 import lombok.Setter;
 import managers.BookManager;
@@ -14,7 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.util.List;
 
-@ManagedBean
+@ManagedBean(name = "reviewController")
 @SessionScoped
 public class ReviewController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorController.class);
@@ -31,7 +33,7 @@ public class ReviewController {
      * Create review entity with pointed book
      * @param book Book of review relate to
      * */
-    public void createReview(Book book){
+    public void createReview(Book book) throws BookException, ReviewException {
         LOGGER.info("IN createReview(book = [{}])", book);
         newReview.setBook(bookManager.getBookByPk(book.getId()));
         reviewManager.createReview(newReview);
@@ -43,8 +45,12 @@ public class ReviewController {
      * @param book book of what reviews are you need
      * @return list of reviews
      * */
-    public List<Reviews> getReviews(Book book) {
+    public List<Reviews> getReviews(Book book) throws BookException {
         LOGGER.info("IN getReviews(book = [{}])", book);
         return bookManager.getBookByPk(book.getId()).getReviews();
+    }
+
+    public void deleteReview(Long pk) throws ReviewException {
+        reviewManager.deleteReview(pk);
     }
 }

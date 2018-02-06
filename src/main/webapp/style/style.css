@@ -4,6 +4,10 @@ body{
     /*padding: 0;*/
 }
 
+html, body {
+    overflow: auto;
+}
+
 /*position*/
 .center_text{
     text-align: center;

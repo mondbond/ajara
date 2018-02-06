@@ -120,7 +120,6 @@ public class BookFacade extends AbstractFacade<Book> {
      * */
     public Long getCountByRating(int from , int to) {
         LOGGER.info("getCountByRating:(from = [{}], to = [{}], sort column = [{}], is ASC = [{}])",from, to);
-
         String sqlString = "select count(*) from " + Book.class.getName() + " b where b.avgRating > " + from +" and b.avgRating <= " + to;
         Query query = getEntityManager().createQuery(sqlString);
         Long result = (Long) query.getSingleResult();

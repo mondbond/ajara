@@ -28,13 +28,13 @@ public class BookManager {
         }
     }
 
-    public List<Book> getAllBooks() throws BookException {
-        try {
-            return bookFacade.findAll();
-        }catch (Exception e){
-            throw new BookException("Something happen while you trying to find books", e);
-        }
-    }
+//    public List<Book> getAllBooks() throws BookException {
+//        try {
+//            return bookFacade.findAll();
+//        }catch (Exception e){
+//            throw new BookException("Something happen while you trying to find books", e);
+//        }
+//    }
 
     public void save(Book book) throws BookException {
         try {

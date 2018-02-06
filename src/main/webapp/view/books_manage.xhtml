@@ -132,13 +132,13 @@
             </h:commandButton>
 
             <h:form id="superform">
-                <rich:autocomplete id="her" value="#{bookController.authorA}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                <rich:autocomplete id="her" value="#{bookController.authorAutocomplete}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
                                    layout="list" styleClass="margin left">
                     <a4j:ajax event="selectitem" />
                         <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onclick="pass_filter_id('#{newAuthor.id}')" />
                 </rich:autocomplete>
 
-                <h:commandButton action="#{bookController.filterByAuthor}" value="Filter" styleClass="margin left" style="display: inline-block">
+                <h:commandButton action="#{bookController.filterByAuthor}" value="Filter by author" styleClass="margin left" style="display: inline-block">
                 </h:commandButton>
 
                 <h:outputText id="authorFilterMessage" value="#{bookController.filterAuthorMessage}" styleClass="validate_message"/>
@@ -174,7 +174,8 @@
                         <h:outputLabel value="ISBN:" for="inputBookIsbn"/>
                         <h:inputText binding="#{bookController.isbnValidMessage}" id="inputBookIsbn" value="#{bookController.newBook.isbn}">
                         </h:inputText>
-                        <h:message for="inputBookIsbn" style="color:red" />
+                        <h:message for="inputBookIsbn" value="#{bookController.isbnMessage}" style="color:red" />
+                        <h:outputText id="isbnvalidMessage" value="#{bookController.isbnMessage}" styleClass="validate_message"/>
                     </div>
                     <div>
                         <h:outputLabel value="Publisher:" for="inputBookPublisher"/>
@@ -198,7 +199,7 @@
                         <h:message for="bm_add_authors" style="color:red" />
 
                         <h:outputText value="Add author: "/>
-                        <rich:autocomplete value="#{bookController.booksAddAuthorAutocomplate}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                        <rich:autocomplete value="#{bookController.booksAddAuthorAutocomplete}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
                                            layout="list" styleClass="margin left">
                             <a4j:ajax event="selectitem" />
                             <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onclick="pass_select_id('#{newAuthor.id}')" />
@@ -207,14 +208,6 @@
                         <h:commandButton actionListener="#{bookController.addAuthorToAddBookForm}" value="Add author" styleClass="margin left" style="display: inline-block">
                             <a4j:ajax execute="bm_add_authors" render="bm_add_authors" />
                         </h:commandButton>
-                    </div>
-
-                    <div>
-                    <rich:autocomplete id="authorsMultipleSelect" tokens=", " value="#{bookController.authorA}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
-                                       layout="list" styleClass="margin left">
-                        <a4j:ajax event="selectitem" />
-                        <h:outputText value="#{newAuthor.fullName()}"  style="font-weight:bold"/>
-                    </rich:autocomplete>
                     </div>
 
                     <a4j:commandButton value="Save book" action="#{bookController.insertNewBook}">

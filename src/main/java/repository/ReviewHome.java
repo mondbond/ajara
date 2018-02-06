@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 
 @Stateless
 public class ReviewHome extends AbstractHome<Reviews> {
-    final Logger logger = LoggerFactory.getLogger(ReviewHome.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewHome.class);
 
     ReviewHome() {
         super(Reviews.class);

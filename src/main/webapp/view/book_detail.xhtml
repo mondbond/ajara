@@ -81,6 +81,13 @@
                                         <h:outputText value="#{review.commenterName}" style="font-weight:bold; margin-left: 4px" />
                                     </h:panelGroup>
                                 </f:facet>
+                                <f:facet name="header">
+                                    <h:panelGroup>
+                                    <h:commandLink value="#" style="color: inherit" action="#{reviewController.deleteReview(review.id)}">
+                                        X
+                                    </h:commandLink>
+                                    </h:panelGroup>
+                                </f:facet>
                                 <h:panelGrid columns="2">
                                     <h:outputText value="Rating:" style="font-weight:bold" />
                                     <h:outputText value="#{review.rating}" />
@@ -114,7 +121,7 @@
                 <h:message for="updateAuthor" style="color:red" />
 
                 <h:outputText value="Add author: "/>
-                <rich:autocomplete value="#{bookController.bookAddAuthorAutocomplate}" id="her" attached="false"
+                <rich:autocomplete value="#{bookController.bookAddAuthorAutocomplete}" id="her" attached="false"
                                    autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
                                    layout="list" styleClass="margin left">
                     <a4j:ajax event="selectitem" />

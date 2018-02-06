@@ -33,9 +33,6 @@ public class AuthorController {
     //    for multiple selection
     private @Getter @Setter ArrayList<Long> selectedToDeletePks = new ArrayList<>();
 
-    //    sorting
-    private String sortingColumn = null;
-
     @EJB
     private AuthorManager authorManager;
 
@@ -117,11 +114,6 @@ public class AuthorController {
 
             extContext.redirect(url);
     }
-
-//    private void reload() throws IOException {
-//        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-//        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
-//    }
 
     /**
      * Redirect to manage author page

@@ -95,6 +95,7 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
 
     /**
      * Sorting authors by params from RequestParameterMap
+     * @param sortingColumn
      * */
     public void sortBy(String sortingColumn) {
         this.sortingColumn = sortingColumn;
@@ -103,6 +104,7 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
 
     /**
      * Handle order changing in author table
+     * @param columnName
      * */
     private void changeOrder(String columnName) {
         if(mOderMap.containsKey(columnName)) {
@@ -136,11 +138,6 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
     @Override
     public void setWrappedData(Object o) {
         throw new UnsupportedOperationException();
-    }
-
-    public void setSortField(String sortField, boolean isASC) {
-        this.isASC = isASC;
-        sortingColumn = sortField;
     }
 
     public String getPkColumnConstant() {

@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 
 @Stateless
 public class ReviewFacade extends AbstractFacade<Reviews> {
-    final Logger logger = LoggerFactory.getLogger(ReviewFacade.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewFacade.class);
 
     ReviewFacade() {
         super(Reviews.class);

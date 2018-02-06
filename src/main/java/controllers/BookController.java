@@ -20,7 +20,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ public class BookController {
     private @Setter @Getter Book newBook = new Book();
     private @Getter @Setter Book detailBook = new Book();
 
-    private @Setter @Getter String authorA = new String();
+    private @Setter @Getter String authorAutocomplete = new String();
 
     private List<Author> aAuthors = new ArrayList<>();
 
@@ -46,18 +45,15 @@ public class BookController {
     UIInput isbnValidMessage;
 
     private @Getter @Setter
-    UIInput isbnMessage;
-
-    //    all authors for autocompleteAll. fix
-    private List<Author> allAuthors = new ArrayList<>();
+    String isbnMessage;
 
     private @Getter @Setter String detailBookAddAuthorId;
     private @Getter @Setter String newBookAddAuthorId;
     private @Getter @Setter String filterAuthorId;
     private @Getter @Setter String filterAuthorMessage;
 
-    private @Getter @Setter String bookAddAuthorAutocomplate;
-    private @Getter @Setter String booksAddAuthorAutocomplate;
+    private @Getter @Setter String bookAddAuthorAutocomplete;
+    private @Getter @Setter String booksAddAuthorAutocomplete;
 
     private ArrayList<Long> selectedToDeletePks = new ArrayList<>();
 
@@ -78,6 +74,7 @@ public class BookController {
      * Inserting new book
      * */
     public String insertNewBook() throws BookException {
+        isbnMessage = "";
         if(bookManager.isUnique("ISBN", newBook.getIsbn())){
             ArrayList<Author> authors = new ArrayList<>();
             newBook.getAuthors().addAll(authors);
@@ -85,8 +82,8 @@ public class BookController {
             bookManager.save(newBook);
             newBook = new Book();
         }else {
+            isbnMessage = "ISBN must be unique";
         }
-
         return "books_manage.xhtml";
     }
 
@@ -94,7 +91,7 @@ public class BookController {
      * Create book by pointed single author from detail author page
      * @param author author of a book
      * */
-    public String createBookByAuthor(Author author) throws IOException, BookException {
+    public String createBookByAuthor(Author author) throws BookException {
         ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
         authors.add(author);
         newBook.setAuthors(authors);
@@ -166,7 +163,7 @@ public class BookController {
             if(!hasSame) {
                 detailBook.getAuthors().add(author);
                 bookManager.update(detailBook);
-                bookAddAuthorAutocomplate = null;
+                bookAddAuthorAutocomplete = null;
             }
         }
     }
@@ -193,7 +190,7 @@ public class BookController {
             }
             if(!hasSame) {
                 newBook.getAuthors().add(author);
-                booksAddAuthorAutocomplate = null;
+                booksAddAuthorAutocomplete = null;
             }
         }
     }
@@ -213,7 +210,7 @@ public class BookController {
     public void filterByAuthor() throws AuthorException {
         LOGGER.info("filterByAuthor " + hiddenId);
         filterAuthorMessage = null;
-        if((hiddenId == null || hiddenId.equals("")) && authorA.equals("")){
+        if((hiddenId == null || hiddenId.equals("")) && authorAutocomplete.equals("")){
             dataModule.setFilteredRating(null);
             dataModule.setFilteredAuthor(null);
         } else if(hiddenId == null || hiddenId.equals("")){
@@ -223,9 +220,9 @@ public class BookController {
             dataModule.setFilteredAuthor(filteredAuthor);
             hiddenId = null;
         }
-//        if(authorA != null && !authorA.equals("")){
+//        if(authorAutocomplete != null && !authorAutocomplete.equals("")){
 //            List<Author> authors = new ArrayList<>();
-//            Author author2 = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorA)).findFirst().get();
+//            Author author2 = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorAutocomplete)).findFirst().get();
 //            dataModule.setFilteredAuthor(author2);
 //        }
     }
@@ -275,11 +272,6 @@ public class BookController {
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "book_detail.xhtml");
     }
 
-    private void reload() throws IOException {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
-    }
-
     private void unsetBookFilter(){
         dataModule.setFilteredRating(null);
         dataModule.setFilteredAuthor(null);
@@ -321,6 +313,7 @@ public class BookController {
 
     /**
      * Redirect to book manage page with rating filter
+     * @param rating
      * */
     public String toBookManageByRating(int rating) throws IOException {
         LOGGER.info("toBookManageByRating:(rating = [{}])", rating);
