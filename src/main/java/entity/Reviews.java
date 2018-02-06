@@ -32,7 +32,7 @@ public class Reviews implements Serializable, HasDate {
     @Pattern(regexp = "[a-zA-Z0-9- ]{3,100}", message = "Name must contain minimum 3 maximum 100 characters without special symbols")
     private String commenterName;
 
-    @Column(name = "COM")
+    @Column(name = "COM", nullable = true)
     private String com;
 
     @Column(name = "RATING")

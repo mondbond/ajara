@@ -3,10 +3,7 @@ package entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import entity.listeners.CreateDateListener;
 import entity.listeners.HasDate;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -19,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter @Setter
 @Entity
+@EqualsAndHashCode
 @EntityListeners({CreateDateListener.class})
 @Table(name = "AUTHOR")
 @NamedQuery(name = "Author.by.secondName.like",
@@ -53,7 +51,7 @@ public class Author implements Serializable, HasDate {
     private Date createDate;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
     public String fullName() {

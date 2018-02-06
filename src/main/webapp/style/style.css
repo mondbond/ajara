@@ -80,6 +80,14 @@ a, a:link, a:visited, a:active {
     font-size: 35px;
 }
 
+.validate_message{
+    color: #c3062a;
+}
+
+.confirm_message{
+    color: #0b8419;
+}
+
 /*style*/
 .no_list_style{
     list-style-type: none;

@@ -46,7 +46,7 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper  {
                 //log error ?
 
                 //redirect error page
-                requestMap.put("exceptionMessage", t.getMessage());
+                requestMap.put("exceptionMessage", t.getCause().getCause().getCause().getMessage());
                 nav.handleNavigation(fc, null, "/view/error_page.xhtml");
                 fc.renderResponse();
 

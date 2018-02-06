@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Path("/book")
+@Path("/books")
 public class BookRest {
     final Logger logger = LoggerFactory.getLogger(BookRest.class);
     private BookMapper bm = new BookMapper();

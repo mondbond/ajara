@@ -20,7 +20,6 @@
 <h:body>
 
     <script type="text/javascript" >
-
         function get_hidden_author_id(){
             return document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').value;
         }
@@ -28,8 +27,8 @@
         function pass_id(i){
             document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').value=i;
             document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').onchange();
+            alert("ddfashfhdfas" + document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').value );
         }
-
     </script>
 
     <ui:include src="../template/navigate_menu.xhtml" />
@@ -53,7 +52,11 @@
 
                     <h:outputLabel value="Rating:" for="inputReviewRating"/>
                     <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}"/>
+                    <div>
+                    <h:outputText id="authorAddMessage" value="#{bookController.filterAuthorMessage}" styleClass="validate_message"/>
                     <h:message for="inputReviewRating" style="color:red" />
+                    </div>
+
 
                     <h:outputLabel value="Comment:"/>
                     <h:inputTextarea id="inputCommentArea" value="#{reviewController.newReview.com}" />
@@ -111,10 +114,11 @@
                 <h:message for="updateAuthor" style="color:red" />
 
                 <h:outputText value="Add author: "/>
-                <rich:autocomplete value="#{bookController.bookAddAuthorAutocomplate}" id="her" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                <rich:autocomplete value="#{bookController.bookAddAuthorAutocomplate}" id="her" attached="false"
+                                   autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
                                    layout="list" styleClass="margin left">
                     <a4j:ajax event="selectitem" />
-                    <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onclick="pass_id('#{newAuthor.id}')" />
+                    <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onfocus="pass_id('#{newAuthor.id}')" onclick="pass_id('#{newAuthor.id}')"/>
                 </rich:autocomplete>
 
                 <h:commandButton actionListener="#{bookController.addAuthorToBook}" value="Add author" styleClass="margin left" style="display: inline-block">
@@ -152,7 +156,7 @@
 
     <!--popups-->
 
-    <rich:popupPanel id="popup_delete_book" modal="false" autosized="true" resizeable="false" style="width: 300px;height: 200px">
+    <rich:popupPanel id="popup_delete_book" modal="true" autosized="true" resizeable="false" style="width: 300px;height: 200px">
         <f:facet name="header">
             <h:outputText value="Add book" />
         </f:facet>

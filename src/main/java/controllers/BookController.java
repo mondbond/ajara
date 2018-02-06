@@ -2,6 +2,8 @@ package controllers;
 
 import entity.Author;
 import entity.Book;
+import exception.AuthorException;
+import exception.BookException;
 import lombok.Getter;
 import lombok.Setter;
 import managers.AuthorManager;
@@ -15,6 +17,7 @@ import javax.faces.FacesException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -39,17 +42,22 @@ public class BookController {
 
     private @Getter @Setter String hiddenId;
 
+    private @Getter @Setter
+    UIInput isbnValidMessage;
+
+    private @Getter @Setter
+    UIInput isbnMessage;
+
     //    all authors for autocompleteAll. fix
     private List<Author> allAuthors = new ArrayList<>();
 
     private @Getter @Setter String detailBookAddAuthorId;
     private @Getter @Setter String newBookAddAuthorId;
+    private @Getter @Setter String filterAuthorId;
+    private @Getter @Setter String filterAuthorMessage;
 
     private @Getter @Setter String bookAddAuthorAutocomplate;
     private @Getter @Setter String booksAddAuthorAutocomplate;
-
-    //    sorting
-    private String sortingColumn = null;
 
     private ArrayList<Long> selectedToDeletePks = new ArrayList<>();
 
@@ -69,12 +77,16 @@ public class BookController {
     /**
      * Inserting new book
      * */
-    public String insertNewBook(){
-        ArrayList<Author> authors = new ArrayList<>();
-        newBook.getAuthors().addAll(authors);
-        LOGGER.info("insertNewBook:(book = [{}])", newBook);
-        bookManager.save(newBook);
-        newBook = new Book();
+    public String insertNewBook() throws BookException {
+        if(bookManager.isUnique("ISBN", newBook.getIsbn())){
+            ArrayList<Author> authors = new ArrayList<>();
+            newBook.getAuthors().addAll(authors);
+            LOGGER.info("insertNewBook:(book = [{}])", newBook);
+            bookManager.save(newBook);
+            newBook = new Book();
+        }else {
+        }
+
         return "books_manage.xhtml";
     }
 
@@ -82,7 +94,7 @@ public class BookController {
      * Create book by pointed single author from detail author page
      * @param author author of a book
      * */
-    public String createBookByAuthor(Author author) throws IOException {
+    public String createBookByAuthor(Author author) throws IOException, BookException {
         ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
         authors.add(author);
         newBook.setAuthors(authors);
@@ -97,7 +109,7 @@ public class BookController {
      * @param pk authors pk
      * @return BookDataModel instance with filtered by author
      * */
-    public BookDataModule getBooksByAuthorPk(Long pk){
+    public BookDataModule getBooksByAuthorPk(Long pk) throws AuthorException {
         LOGGER.info("getBooksByAuthorPk:(pk = [{}]", pk);
         dataModule.setFilteredAuthor(authorManager.getAuthorByPk(pk));
         return dataModule;
@@ -106,7 +118,7 @@ public class BookController {
     /**
      * Update detail book
      * */
-    public void update() {
+    public void update() throws BookException {
         LOGGER.info("update:(detailBook = [{}]", detailBook);
         bookManager.update(detailBook);
     }
@@ -114,7 +126,7 @@ public class BookController {
     /**
      * Delete selected books
      * */
-    public String deleteSelected() {
+    public String deleteSelected() throws BookException {
         LOGGER.info("deleteSelected:(selectedBookList = [{}]", selectedToDeletePks);
         bookManager.deleteList(selectedToDeletePks);
         selectedToDeletePks.clear();
@@ -124,7 +136,7 @@ public class BookController {
     /**
      * Delete detail book and redirect to book manage page
      * */
-    public void deleteDetail(){
+    public void deleteDetail() throws BookException {
         LOGGER.info("deleteDetail:(detailBook = [{}]", detailBook);
         bookManager.delete(detailBook.getId());
         try {
@@ -134,20 +146,28 @@ public class BookController {
         }
     }
 
-    public void deleteAuthorFromBook(Long pk){
+    public void deleteAuthorFromBook(Long pk) throws BookException {
         LOGGER.info("IN deleteAuthorFromBook:(pk = [{}]", pk);
         detailBook.getAuthors().removeIf(author1 -> author1.getId() == pk);
         bookManager.update(detailBook);
     }
 
-    public void addAuthorToBook(){
+    public void addAuthorToBook() throws AuthorException, BookException {
         LOGGER.info("IN addAuthorToBook:");
+        boolean hasSame = false;
         if(detailBookAddAuthorId != null && !detailBookAddAuthorId.equals("")){
-            LOGGER.info("IN addAuthorToBook:   nullll = [{}]", detailBookAddAuthorId);
             Author author = authorManager.getAuthorByPk(Long.parseLong(detailBookAddAuthorId));
-            detailBook.getAuthors().add(author);
-            bookManager.update(detailBook);
-            bookAddAuthorAutocomplate = null;
+            for(Author item : detailBook.getAuthors()){
+                if(item.getId() == author.getId()){
+                    LOGGER.info("IN addAuthorToBook: id, id = [{}] and [{}]", item.getId(), author.getId());
+                    hasSame = true;
+                }
+            }
+            if(!hasSame) {
+                detailBook.getAuthors().add(author);
+                bookManager.update(detailBook);
+                bookAddAuthorAutocomplate = null;
+            }
         }
     }
 
@@ -158,13 +178,23 @@ public class BookController {
 
     }
 
-    public void addAuthorToAddBookForm(){
+    public void addAuthorToAddBookForm() throws AuthorException {
         LOGGER.info("IN addAuthorToAddBookForm:");
+        boolean hasSame = false;
+
         if(newBookAddAuthorId != null && !newBookAddAuthorId.equals("")){
             LOGGER.info("IN addAuthorToAddBookForm:   nullll = [{}]", newBookAddAuthorId);
             Author author = authorManager.getAuthorByPk(Long.parseLong(newBookAddAuthorId));
-            newBook.getAuthors().add(author);
-            booksAddAuthorAutocomplate = null;
+            for(Author item : detailBook.getAuthors()){
+                if(item.getId() == author.getId()){
+                    LOGGER.info("IN addAuthorToBook: id, id = [{}] and [{}]", item.getId(), author.getId());
+                    hasSame = true;
+                }
+            }
+            if(!hasSame) {
+                newBook.getAuthors().add(author);
+                booksAddAuthorAutocomplate = null;
+            }
         }
     }
 
@@ -172,26 +202,32 @@ public class BookController {
      * Get autocompleted authors list by authors second name prefix
      * @param prefix prefix of author
      * */
-    public List<Author> autocompleteAuthor(FacesContext context, UIComponent component, Object prefix) {
+    public List<Author> autocompleteAuthor(FacesContext context, UIComponent component, Object prefix) throws AuthorException {
         aAuthors = authorManager.getAutocompleteBySecondName(((String) prefix));
         return aAuthors;
     }
 
-
     /**
      * Filter books by entered author second name
      * */
-    public void filterByAuthor(){
+    public void filterByAuthor() throws AuthorException {
         LOGGER.info("filterByAuthor " + hiddenId);
-        if(authorA.equals("")){
+        filterAuthorMessage = null;
+        if((hiddenId == null || hiddenId.equals("")) && authorA.equals("")){
             dataModule.setFilteredRating(null);
             dataModule.setFilteredAuthor(null);
+        } else if(hiddenId == null || hiddenId.equals("")){
+            filterAuthorMessage = "Choose correct author name";
+        }else {
+            Author filteredAuthor = authorManager.getAuthorByPk(Long.parseLong(hiddenId));
+            dataModule.setFilteredAuthor(filteredAuthor);
+            hiddenId = null;
         }
-        if(authorA != null && !authorA.equals("")){
-            List<Author> authors = new ArrayList<>();
-            Author author2 = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorA)).findFirst().get();
-            dataModule.setFilteredAuthor(author2);
-        }
+//        if(authorA != null && !authorA.equals("")){
+//            List<Author> authors = new ArrayList<>();
+//            Author author2 = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorA)).findFirst().get();
+//            dataModule.setFilteredAuthor(author2);
+//        }
     }
 
     /**
@@ -220,7 +256,7 @@ public class BookController {
      * Redirect to detail page by pointed pk
      * @param pk pk of Book
      * */
-    public void toDetailPage(long pk) {
+    public void toDetailPage(long pk) throws BookException {
         LOGGER.info("toDetailPage:(pk = [{}])", pk);
         detailBook = bookManager.getBookByPk(pk);
 
@@ -278,7 +314,7 @@ public class BookController {
     /**
      * Get books count by rating from pointed rating to rating -1
      * */
-    public Long getBookCountByRating(int rating){
+    public Long getBookCountByRating(int rating) throws BookException {
         LOGGER.info("getBookCountByRating:(rating = [{}]", rating);
         return bookManager.getCountByRating(rating-1, rating);
     }

@@ -23,7 +23,7 @@ import static entity.Book.QUERY_BY_RATING;
 @Getter @Setter
 @Entity
 @EntityListeners({CreateDateListener.class})
-@Table(name = "BOOK")
+@Table(name = "BOOK", uniqueConstraints={@UniqueConstraint(columnNames={"isbn"})})
 @NamedQueries({
         @NamedQuery(name = QUERY_BY_RATING,
                 query = "select b from Book b WHERE b.avgRating > ?1 and b.avgRating <= ?2"),

@@ -18,21 +18,19 @@
 
 <h:body>
 
-
     <script type="text/javascript" >
-
         function get_hidden_author_id(){
             return document.getElementById('superform:hiddenSelectedAuthorsIdContainer').value;
         }
 
         function pass_filter_id(pk){
             document.getElementById('superform:hiddenSelectedAuthorsIdContainer').value=pk;
+            document.getElementById('superform:hiddenSelectedAuthorsIdContainer').onchange();
         }
 
         function pass_select_id(pk){
             document.getElementById('add_book_form:hiddenSelectedAuthorsIdAddForm').value=pk;
             document.getElementById('add_book_form:hiddenSelectedAuthorsIdAddForm').onchange();
-            alert("sdgfsgdfagds " + pk + " _ " + document.getElementById('add_book_form:hiddenSelectedAuthorsIdAddForm').value);
         }
 
     </script>
@@ -143,6 +141,8 @@
                 <h:commandButton action="#{bookController.filterByAuthor}" value="Filter" styleClass="margin left" style="display: inline-block">
                 </h:commandButton>
 
+                <h:outputText id="authorFilterMessage" value="#{bookController.filterAuthorMessage}" styleClass="validate_message"/>
+
                 <h:inputText value="#{bookController.hiddenId}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
                     <f:ajax event="change" />
                 </h:inputText>
@@ -172,7 +172,8 @@
                     </div>
                     <div>
                         <h:outputLabel value="ISBN:" for="inputBookIsbn"/>
-                        <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}"/>
+                        <h:inputText binding="#{bookController.isbnValidMessage}" id="inputBookIsbn" value="#{bookController.newBook.isbn}">
+                        </h:inputText>
                         <h:message for="inputBookIsbn" style="color:red" />
                     </div>
                     <div>
@@ -206,9 +207,7 @@
                         <h:commandButton actionListener="#{bookController.addAuthorToAddBookForm}" value="Add author" styleClass="margin left" style="display: inline-block">
                             <a4j:ajax execute="bm_add_authors" render="bm_add_authors" />
                         </h:commandButton>
-
                     </div>
-
 
                     <div>
                     <rich:autocomplete id="authorsMultipleSelect" tokens=", " value="#{bookController.authorA}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
@@ -230,7 +229,7 @@
         </div>
     </rich:popupPanel>
 
-    <rich:popupPanel id="popup_delete_books" modal="false" autosized="true" resizeable="false" style="width: 300px;height: 200px">
+    <rich:popupPanel id="popup_delete_books" modal="true" autosized="true" resizeable="false" style="width: 300px;height: 200px">
         <f:facet name="header">
             <h:outputText value="Delete books" />
         </f:facet>

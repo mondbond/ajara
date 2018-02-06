@@ -35,6 +35,7 @@ public class ReviewController {
         LOGGER.info("IN createReview(book = [{}])", book);
         newReview.setBook(bookManager.getBookByPk(book.getId()));
         reviewManager.createReview(newReview);
+        newReview = new Reviews();
     }
 
     /**

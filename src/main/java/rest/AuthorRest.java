@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Path("/author")
+@Path("/authors")
 public class AuthorRest {
     final Logger logger = LoggerFactory.getLogger(AuthorRest.class);
 

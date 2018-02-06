@@ -1,6 +1,7 @@
 package controllers;
 
 import entity.Author;
+import exception.AuthorException;
 import lombok.Getter;
 import lombok.Setter;
 import managers.AuthorManager;
@@ -9,12 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
-import javax.faces.FacesException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,7 +21,6 @@ import java.util.Map;
 @ManagedBean(name = "authorController")
 @SessionScoped
 public class AuthorController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorController.class);
 
     private final String COLUMN_NAME = "column_name_author_key";
@@ -47,42 +45,36 @@ public class AuthorController {
     /**
      * Inserting new author to database
      * */
-    public String insertNewAuthor() {
+    public String insertNewAuthor() throws AuthorException {
         authorManager.save(new Author(newAuthor.getFirstName(), newAuthor.getSecondName()));
         LOGGER.info("IN insertNewAuthor(author = [{}])", newAuthor);
         newAuthor = new Author();
-        try {
-            reload();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return "author_manage.xhtml";
     }
 
     /**
      * Updating detail author to database
      * */
-    public String update() throws IOException {
+    public String update() throws AuthorException{
         LOGGER.info("IN update(author = [{}])", detailAuthor);
         authorManager.update(detailAuthor);
-        reload();
         return "author_detail.xhtml";
     }
 
     /**
      * Delete selected authors
      * */
-    public String deleteSelected() {
+    public void deleteSelected() throws AuthorException {
         LOGGER.info("deleteSelected:(deletedList = [{}])", selectedToDeletePks);
         authorManager.deleteList(selectedToDeletePks);
         selectedToDeletePks.clear();
-    return null;
+        throw new NullPointerException();
     }
 
     /**
      * Delete detail author and redirecting to manage page
      * */
-    public void deleteDetail() throws IOException {
+    public void deleteDetail() throws IOException, AuthorException {
         LOGGER.info("deleteDetail:(deleted = [{}])", detailAuthor);
         authorManager.delete(detailAuthor.getId());
         detailAuthor = new Author();
@@ -114,10 +106,9 @@ public class AuthorController {
      * Redirect to detail author page by pk. Set detailAuthor var
      * @param pk authors pk
      * */
-    public void toDetailPage(long pk) {
+    public void toDetailPage(long pk) throws IOException, AuthorException {
         LOGGER.info("toDetailPage:(pk = [{}])", pk);
         detailAuthor = authorManager.getAuthorByPk(pk);
-        try {
             FacesContext ctx = FacesContext.getCurrentInstance();
 
             ExternalContext extContext = ctx.getExternalContext();
@@ -125,31 +116,24 @@ public class AuthorController {
                     getViewHandler().getActionURL(ctx, "/view/author_detail.xhtml"));
 
             extContext.redirect(url);
-        } catch (IOException e) {
-            throw new FacesException(e);
-        }
     }
 
-    private void reload() throws IOException {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
-    }
+//    private void reload() throws IOException {
+//        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+//        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+//    }
 
     /**
      * Redirect to manage author page
      * */
     private void redirectToManagePage() throws IOException {
-        try {
-            FacesContext ctx = FacesContext.getCurrentInstance();
+        FacesContext ctx = FacesContext.getCurrentInstance();
 
-            ExternalContext extContext = ctx.getExternalContext();
-            String url = extContext.encodeActionURL(ctx.getApplication().
-                    getViewHandler().getActionURL(ctx, "/view/author_manage.xhtml"));
+        ExternalContext extContext = ctx.getExternalContext();
+        String url = extContext.encodeActionURL(ctx.getApplication().
+                getViewHandler().getActionURL(ctx, "/view/author_manage.xhtml"));
 
-            extContext.redirect(url);
-        } catch (IOException e) {
-            throw new FacesException(e);
-        }
+        extContext.redirect(url);
     }
 
 //    get set

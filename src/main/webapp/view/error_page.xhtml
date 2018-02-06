@@ -2,14 +2,16 @@
 <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets">
 <head>
     <title>Error</title>
     <link rel="stylesheet" type="text/css" href="../style/error_style.css"/>
 </head>
 <body>
 
-<h1>Oops... something happend</h1>
+<ui:include src="../template/navigate_menu.xhtml" />
+
+<h1>Oops... something happend. Anyway, you can open other page from menu</h1>
 <p>#{exceptionMessage}</p>
 </body>
 </html >

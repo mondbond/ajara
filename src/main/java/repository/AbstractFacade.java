@@ -48,7 +48,7 @@ public abstract class AbstractFacade<T> {
     public List<T> findByPks(List<Long> pks) {
         LOGGER.info("IN findByPks:(pks = [{}])", pks);
         Query query = entityManager.createQuery("from " + entity.getName() +" t where t.id in (:list)");
-        query.setParameter("pks", pks);
+        query.setParameter("list", pks);
         List<T> result = query.getResultList();
         LOGGER.debug("OUT findByPks():returned pks of [{}], size = [{}]", entity.getSimpleName(), result.size());
         return result;
@@ -93,5 +93,13 @@ public abstract class AbstractFacade<T> {
         int result = ((Long) entityManager.createQuery("SELECT count(*) from " + entity.getName()).getSingleResult()).intValue();
         LOGGER.debug("OUT countAll: entity = [{}], count = [{}]", entity.getSimpleName(), result);
         return result;
+    }
+
+    public boolean isUnique(String columnName, String value){
+        String sqlString = "select count (*) from " + entity.getName() + " where " + columnName + " = " + value;
+        Query query = entityManager.createQuery(sqlString);
+        Long result = (Long) query.getSingleResult();
+        LOGGER.info("OUT isUnique:(int = [{}])", result);
+        return result == 0;
     }
 }

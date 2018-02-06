@@ -1,6 +1,7 @@
 package managers;
 
 import entity.Reviews;
+import exception.ReviewException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.ReviewHome;
@@ -15,7 +16,11 @@ public class ReviewManager {
     @EJB
     private ReviewHome reviewHome;
 
-    public void createReview(Reviews review){
-        reviewHome.insert(review);
+    public void createReview(Reviews review) throws ReviewException {
+        try {
+            reviewHome.insert(review);
+        }catch (Exception e){
+            throw new ReviewException("Something happen while you trying to save review", e);
+        }
     }
 }

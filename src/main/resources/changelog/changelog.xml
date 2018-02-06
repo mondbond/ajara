@@ -6,7 +6,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-    <changeSet id="4" newAuthor="mond">
+    <changeSet id="4" author="mond">
         <createTable tableName="AUTHOR">
             <column name="id" type="int" autoIncrement="true" incrementBy="1" startWith="1000" >
                 <constraints primaryKey="true" nullable="false"/>
@@ -23,7 +23,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="11" newAuthor="mond">
+    <changeSet id="11" author="mond">
         <createTable tableName="BOOK">
             <column name="id" type="int" autoIncrement="true" incrementBy="1" startWith="1000" >
                 <constraints primaryKey="true" nullable="false"/>
@@ -46,7 +46,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="8" newAuthor="mond">
+    <changeSet id="8" author="mond">
         <createSequence
                 cycle="false"
                 incrementBy="1"
@@ -58,7 +58,7 @@
                 startValue="1000"/>
     </changeSet>
 
-    <changeSet id="14" newAuthor="mond">
+    <changeSet id="14" author="mond">
         <createTable tableName="JOIN_BOOK_AUTHOR">
             <column name="author_id" type="int" >
                 <constraints nullable="false"/>
@@ -69,7 +69,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet newAuthor="mond" id="15">
+    <changeSet author="mond" id="15">
         <addForeignKeyConstraint baseColumnNames="author_id"
                                  baseTableName="JOIN_BOOK_AUTHOR"
                                  constraintName="author_id"
@@ -92,7 +92,7 @@
     </changeSet>
 
 
-    <changeSet id="47" newAuthor="mond">
+    <changeSet id="47" author="mond">
         <createTable tableName="REVIEWS">
             <column name="ID" type="int" autoIncrement="true" incrementBy="1" startWith="1000" >
                 <constraints primaryKey="true" nullable="false"/>
@@ -120,7 +120,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet newAuthor="mond" id="48">
+    <changeSet author="mond" id="48">
         <addForeignKeyConstraint baseColumnNames="ID_BOOK"
                                  baseTableName="REVIEWS"
                                  constraintName="ID_BOOK_C"
@@ -130,7 +130,7 @@
                                  referencedTableName="BOOK"/>
     </changeSet>
 
-    <changeSet id="50" newAuthor="mond">
+    <changeSet id="50" author="mond">
         <addColumn tableName="BOOK">
             <column name="AVG_RATING" type="float">
                 <constraints nullable="true"/>
