@@ -57,7 +57,6 @@
                     <h:message for="inputReviewRating" style="color:red" />
                     </div>
 
-
                     <h:outputLabel value="Comment:"/>
                     <h:inputTextarea id="inputCommentArea" value="#{reviewController.newReview.com}" />
                     <h:message for="inputCommentArea" style="color:red" />
@@ -69,37 +68,34 @@
 
         <div id="comments_form" class="margin left" style="clear: left">
             <h:form id="form">
-                <h:panelGrid columns="1" style="width: 640px">
-                    <a4j:outputPanel id="panel" layout="block">
-                        <a4j:repeat value="#{reviewController.getReviews(bookController.detailBook)}" var="review" rows="15" id="repeatComments">
+                <a4j:outputPanel id="booksTablePanel">
+                    <rich:dataTable id="books" value="#{reviewController.dataModel}" var="review" rows="10" >
+                        <rich:column>
                             <f:facet name="header">
-                                <rich:dataScroller for="repeatComments" render="panel" fastStep="1"/>
+                                Comments
                             </f:facet>
-                            <rich:panel styleClass="panel">
-                                <f:facet name="header">
-                                    <h:panelGroup>
-                                        <h:outputText value="#{review.commenterName}" style="font-weight:bold; margin-left: 4px" />
-                                    </h:panelGroup>
-                                </f:facet>
-                                <f:facet name="header">
-                                    <h:panelGroup>
-                                    <h:commandLink value="#" style="color: inherit" action="#{reviewController.deleteReview(review.id)}">
-                                        X
-                                    </h:commandLink>
-                                    </h:panelGroup>
-                                </f:facet>
                                 <h:panelGrid columns="2">
                                     <h:outputText value="Rating:" style="font-weight:bold" />
                                     <h:outputText value="#{review.rating}" />
                                     <h:outputText value="Comment:" style="font-weight:bold" />
-                                    <h:outputText value="#{review.com}" />
+                                    <h:outputText value="#{review.com}" style="width: 200px;display:block" />
                                     <h:outputText value="Date:" style="font-weight:bold" />
                                     <h:outputText value="#{review.createDate}" />
                                 </h:panelGrid>
-                            </rich:panel>
-                        </a4j:repeat>
-                    </a4j:outputPanel>
-                </h:panelGrid>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">Select</f:facet>
+                            <h:panelGroup>
+                                <h:commandLink style="color: inherit" action="#{reviewController.deleteReview(review.id)}">
+                                    <img src="../img/garbage.png" alt="delete"/>
+                                </h:commandLink>
+                            </h:panelGroup>
+                        </rich:column>
+                        <f:facet name="footer">
+                            <rich:dataScroller for="books" maxPages="5"/>
+                        </f:facet>
+                    </rich:dataTable>
+                </a4j:outputPanel>
             </h:form>
         </div>
     </div>

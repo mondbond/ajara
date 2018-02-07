@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import managers.BookManager;
 import managers.ReviewManager;
+import model.ReviewDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,10 @@ public class ReviewController {
 
     @EJB
     private BookManager bookManager;
+
+    @EJB
+    private @Getter @Setter
+    ReviewDataModel dataModel;
 
     /**
      * Create review entity with pointed book

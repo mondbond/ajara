@@ -146,6 +146,8 @@
                         <h:outputLabel value="ISBN" for="inputBookIsbn"/>
                         <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}"/>
                         <h:message for="inputBookIsbn" style="color:red" />
+                        <h:outputText id="isbnvalidMessage" value="#{bookConroller.isbnMessage}" styleClass="validate_message"/>
+
                     </div>
                     <div>
                         <h:outputLabel value="Publisher" for="inputBookPublisher"/>

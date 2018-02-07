@@ -47,6 +47,9 @@ public class BookController {
     private @Getter @Setter
     String isbnMessage;
 
+    private @Getter @Setter
+    String authorIsbnMessage;
+
     private @Getter @Setter String detailBookAddAuthorId;
     private @Getter @Setter String newBookAddAuthorId;
     private @Getter @Setter String filterAuthorId;
@@ -92,12 +95,18 @@ public class BookController {
      * @param author author of a book
      * */
     public String createBookByAuthor(Author author) throws BookException {
-        ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
+        authorIsbnMessage = "khbjbvh";
+        if(bookManager.isUnique("ISBN", newBook.getIsbn())){
+            ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
         authors.add(author);
         newBook.setAuthors(authors);
         LOGGER.info("insertNewBook:(book = [{}], author = [{}])", newBook, author);
         bookManager.save(newBook);
         newBook = new Book();
+        }else {
+            LOGGER.info("insertNewBook nooooooooo :(book = [{}], author = [{}])", newBook, author);
+            authorIsbnMessage = "ISBN must be unique";
+        }
         return "author_detail.xhtml";
     }
 

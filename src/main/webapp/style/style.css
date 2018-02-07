@@ -1,5 +1,8 @@
 /*general*/
 body{
+    background-image: url("../img/paper_fibers.png");
+    /*background-image: url("../img/paper-fabric.ai");*/
+    background-repeat: repeat;
     /*margin: 0;*/
     /*padding: 0;*/
 }
@@ -95,4 +98,10 @@ a, a:link, a:visited, a:active {
 /*style*/
 .no_list_style{
     list-style-type: none;
+}
+
+
+.column_size{
+    width: 200px;
+    white-space:normal!important;
 }

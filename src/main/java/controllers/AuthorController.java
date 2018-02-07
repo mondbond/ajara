@@ -65,7 +65,6 @@ public class AuthorController {
         LOGGER.info("deleteSelected:(deletedList = [{}])", selectedToDeletePks);
         authorManager.deleteList(selectedToDeletePks);
         selectedToDeletePks.clear();
-        throw new NullPointerException();
     }
 
     /**
