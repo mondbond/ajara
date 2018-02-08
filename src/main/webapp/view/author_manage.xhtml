@@ -84,7 +84,12 @@
                 </rich:column>
 
                 <rich:column>
-                    <f:facet name="header">Select</f:facet>
+                    <f:facet name="header">
+                        Select All
+                        <h:selectBooleanCheckbox>
+                            <p:ajax listener="#{authorController.selectPk(newAuthor.id)}"/>
+                        </h:selectBooleanCheckbox>
+                    </f:facet>
                     <h:selectBooleanCheckbox>
                         <p:ajax listener="#{authorController.selectPk(newAuthor.id)}"/>
                     </h:selectBooleanCheckbox>

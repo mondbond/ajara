@@ -16,6 +16,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ManagedBean(name = "authorController")
@@ -32,6 +33,11 @@ public class AuthorController {
 
     //    for multiple selection
     private @Getter @Setter ArrayList<Long> selectedToDeletePks = new ArrayList<>();
+
+    private @Getter @Setter
+    LinkedHashMap<Long, Boolean> selectBox = new LinkedHashMap<>();
+
+    private @Setter @Getter boolean selectAllState;
 
     @EJB
     private AuthorManager authorManager;
@@ -63,8 +69,10 @@ public class AuthorController {
      * */
     public void deleteSelected() throws AuthorException {
         LOGGER.info("deleteSelected:(deletedList = [{}])", selectedToDeletePks);
-        authorManager.deleteList(selectedToDeletePks);
-        selectedToDeletePks.clear();
+        if(!selectedToDeletePks.isEmpty()) {
+            authorManager.deleteList(selectedToDeletePks);
+            selectedToDeletePks.clear();
+        }
     }
 
     /**
@@ -125,6 +133,10 @@ public class AuthorController {
                 getViewHandler().getActionURL(ctx, "/view/author_manage.xhtml"));
 
         extContext.redirect(url);
+    }
+
+    public void selectAll(){
+
     }
 
 //    get set

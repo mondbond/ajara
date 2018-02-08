@@ -31,7 +31,7 @@ public class ReviewController {
     private BookManager bookManager;
 
     @EJB
-    private @Getter @Setter
+    private @Setter
     ReviewDataModel dataModel;
 
     /**
@@ -57,5 +57,10 @@ public class ReviewController {
 
     public void deleteReview(Long pk) throws ReviewException {
         reviewManager.deleteReview(pk);
+    }
+
+    public ReviewDataModel getReviewDataModelByBook(Long id) {
+        dataModel.setBookId(id);
+        return dataModel;
     }
 }

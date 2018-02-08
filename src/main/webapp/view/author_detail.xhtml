@@ -22,7 +22,7 @@
 
     <div class="content_panel">
 
-        <h2>Author: #{authorController.detailAuthor.fullName()}</h2>
+        <h2 id="author_title_name">Author: #{authorController.detailAuthor.fullName()}</h2>
 
         <div id="undername_line">
         </div>
@@ -103,16 +103,17 @@
 
     <h:form id="author_edit_form" styleClass="margin board_style left" style="width:300px" >
         <h:panelGrid columns="3">
-            <h:outputText value="Name" for="updateName"/>
-            <h:inputText id="updateName" value="#{authorController.detailAuthor.firstName}"/>
-            <h:message for="updateName" style="color:red" />
+            <h:outputText value="Name :" for="updateNameText"/>
+            <h:outputText id="updateNameText" value="#{authorController.detailAuthor.firstName}"/>
+            <h:message for="updateNameText" style="color:red" />
 
-            <h:outputText value="Second name" for="updateSecondName"/>
-            <h:inputText id="updateSecondName" value="#{authorController.detailAuthor.secondName}"/>
-            <h:message for="updateSecondName" style="color:red" />
+            <h:outputText value="Second name :" for="updateSecondNameText"/>
+            <h:outputText id="updateSecondNameText" value="#{authorController.detailAuthor.secondName}"/>
+            <h:message for="updateSecondNameText" style="color:red" />
         </h:panelGrid>
 
-        <h:commandButton value="Edit" action="#{authorController.update}" styleClass="margin">
+        <h:commandButton value="Edit" styleClass="margin">
+            <rich:componentControl target="popup_edit_author" operation="show" />
         </h:commandButton>
 
         <h:commandButton value="Delete" styleClass="margin">
@@ -124,7 +125,10 @@
         </h:commandButton>
     </h:form>
 
-    <rich:popupPanel id="popup_add_book" modal="true" autosized="true" resizeable="false">
+
+        <!--popups-->
+
+    <rich:popupPanel id="popup_add_book" modal="true" autosized="false" resizeable="false">
         <f:facet name="header">
             <h:outputText value="Add book" />
         </f:facet>
@@ -146,7 +150,7 @@
                         <h:outputLabel value="ISBN" for="inputBookIsbn"/>
                         <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}"/>
                         <h:message for="inputBookIsbn" style="color:red" />
-                        <h:outputText id="isbnvalidMessage" value="#{bookConroller.isbnMessage}" styleClass="validate_message"/>
+                        <h:outputText id="isbnvalidMessage" value="#{bookController.isbnMessage}" styleClass="validate_message"/>
 
                     </div>
                     <div>
@@ -167,6 +171,37 @@
         </div>
     </rich:popupPanel>
     </div>
+
+
+    <rich:popupPanel id="popup_edit_author" modal="true" autosized="true" resizeable="false">
+        <f:facet name="header">
+            <h:outputText value="Add book" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup_edit_author')}.hide(); return false;" style="color: inherit">
+                X
+            </h:outputLink>
+        </f:facet>
+
+        <div id="edit_author" class="board_style left margin">
+            <h:form id="edit_author_form" >
+                    <h:panelGrid columns="3">
+                        <h:outputText value="Name" for="updateName"/>
+                        <h:inputText id="updateName" value="#{authorController.detailAuthor.firstName}"/>
+                        <h:message for="updateName" style="color:red" />
+
+                        <h:outputText value="Second name" for="updateSecondName"/>
+                        <h:inputText id="updateSecondName" value="#{authorController.detailAuthor.secondName}"/>
+                        <h:message for="updateSecondName" style="color:red" />
+
+                        <a4j:commandButton value="Edit author" action="#{authorController.update}">
+                            <a4j:ajax execute="@form" render="@form updateNameText updateSecondNameText author_title_name" />
+                        </a4j:commandButton>
+                    </h:panelGrid>
+            </h:form>
+        </div>
+    </rich:popupPanel>
+
 
     <rich:popupPanel id="popup_delete_author" modal="true" autosized="true" resizeable="false" style="width: 300px;height: 200px">
         <f:facet name="header">

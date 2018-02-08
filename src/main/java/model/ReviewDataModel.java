@@ -1,6 +1,8 @@
 package model;
 
 import entity.Reviews;
+import lombok.Setter;
+import managers.ReviewManager;
 import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
@@ -30,12 +32,17 @@ public class ReviewDataModel extends ExtendedDataModel<Reviews> {
     private boolean isASC;
 //    sorting
 
+    private @Setter Long bookId;
+
     private String sortingColumn = DATE_COLUMN;
 
     private HashMap<String, Boolean> mOderMap = new HashMap<>();
 
     @EJB
     private ReviewFacade dao;
+
+    @EJB
+    private ReviewManager manager;
 
     public ReviewDataModel() {
     }
@@ -76,7 +83,8 @@ public class ReviewDataModel extends ExtendedDataModel<Reviews> {
         int firstRow = ((SequenceRange) range).getFirstRow();
         int numberOfLines = ((SequenceRange) range).getRows();
 
-        this.list = dao.getPagination(firstRow, numberOfLines, sortingColumn , isASC);
+//        this.list = dao.getPagination(firstRow, numberOfLines, sortingColumn , isASC);
+        this.list = manager.getPagination(firstRow, numberOfLines, sortingColumn , isASC, bookId);
 
         for (int i = 0; i < list.size(); i++) {
             dataVisitor.process(facesContext, i, o);

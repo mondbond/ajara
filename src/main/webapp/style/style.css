@@ -42,6 +42,14 @@ html, body {
     padding: 10px;
 }
 
+body{
+    font-size: 20px;
+}
+
+td{
+    font-size: 20px;
+}
+
 /*link*/
 a, a:link, a:visited, a:active {
     color: #c3062a;
@@ -99,7 +107,6 @@ a, a:link, a:visited, a:active {
 .no_list_style{
     list-style-type: none;
 }
-
 
 .column_size{
     width: 200px;

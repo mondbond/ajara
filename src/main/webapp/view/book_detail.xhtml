@@ -21,13 +21,13 @@
 
     <script type="text/javascript" >
         function get_hidden_author_id(){
-            return document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').value;
+            return document.getElementById('edit_Book_Form:hiddenSelectedAuthorsIdContainer').value;
         }
 
         function pass_id(i){
-            document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').value=i;
-            document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').onchange();
-            alert("ddfashfhdfas" + document.getElementById('editBookForm:hiddenSelectedAuthorsIdContainer').value );
+            document.getElementById('edit_Book_Form:hiddenSelectedAuthorsIdContainer').value=i;
+            document.getElementById('edit_Book_Form:hiddenSelectedAuthorsIdContainer').onchange();
+            alert("ddfashfhdfas" + document.getElementById('edit_Book_Form:hiddenSelectedAuthorsIdContainer').value );
         }
     </script>
 
@@ -69,12 +69,14 @@
         <div id="comments_form" class="margin left" style="clear: left">
             <h:form id="form">
                 <a4j:outputPanel id="booksTablePanel">
-                    <rich:dataTable id="books" value="#{reviewController.dataModel}" var="review" rows="10" >
+                    <rich:dataTable id="books" value="#{reviewController.getReviewDataModelByBook(bookController.detailBook.id)}" var="review" rows="10" >
                         <rich:column>
                             <f:facet name="header">
                                 Comments
                             </f:facet>
                                 <h:panelGrid columns="2">
+                                    <h:outputText value="Name:" style="font-weight:bold" />
+                                    <h:outputText value="#{review.commenterName}" />
                                     <h:outputText value="Rating:" style="font-weight:bold" />
                                     <h:outputText value="#{review.rating}" />
                                     <h:outputText value="Comment:" style="font-weight:bold" />
@@ -103,61 +105,111 @@
     <div id="book_info" class="board_style margin padding" style="display: inline-block; vertical-align: top;">
         <h:form id="editBookForm">
             <h:panelGrid columns="3" >
-                <h:outputText value="Name: " for="updateName"/>
-                <h:inputText id="updateName" value="#{bookController.detailBook.name}"/>
-                <h:message for="updateName" style="color:red" />
+                <h:outputText value="Name: " for="updateNameText"/>
+                <h:outputText id="updateNameText" value="#{bookController.detailBook.name}"/>
+                <h:message for="updateNameText" style="color:red" />
 
-                <h:outputText value="Authors: " for="updateAuthor"/>
-                <rich:list id="updateAuthor" value="#{bookController.detailBook.authors}" var="newAuthor">
+                <h:outputText value="Authors: " for="updateAuthorText"/>
+                <rich:list id="updateAuthorText" value="#{bookController.detailBook.authors}" var="newAuthor">
                     <h:commandLink value="#{newAuthor.fullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}" />
                     <h:commandLink actionListener="#{bookController.deleteAuthorFromBook(newAuthor.id)}" value=" X">
                         <a4j:ajax execute="updateAuthor" render="updateAuthor" />
                     </h:commandLink>
                 </rich:list>
-                <h:message for="updateAuthor" style="color:red" />
-
-                <h:outputText value="Add author: "/>
-                <rich:autocomplete value="#{bookController.bookAddAuthorAutocomplete}" id="her" attached="false"
-                                   autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
-                                   layout="list" styleClass="margin left">
-                    <a4j:ajax event="selectitem" />
-                    <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onfocus="pass_id('#{newAuthor.id}')" onclick="pass_id('#{newAuthor.id}')"/>
-                </rich:autocomplete>
-
-                <h:commandButton actionListener="#{bookController.addAuthorToBook}" value="Add author" styleClass="margin left" style="display: inline-block">
-                    <a4j:ajax execute="updateAuthor" render="updateAuthor" />
-                </h:commandButton>
+                <h:message for="updateAuthorText" style="color:red" />
 
                 <h:outputText value="ISBN: " for="updateIsbn"/>
-                <h:outputText id="updateIsbn" value="#{bookController.detailBook.isbn}"/>
+                <h:outputText id="updateIsbnText" value="#{bookController.detailBook.isbn}"/>
                 <h:message for="updateIsbn" style="color:red" />
 
-                <h:outputText value="Publisher: " for="updatePublisher"/>
-                <h:inputText id="updatePublisher" value="#{bookController.detailBook.publisher}"/>
-                <h:message for="updatePublisher" style="color:red" />
+                <h:outputText value="Publisher: " for="updatePublisherText"/>
+                <h:outputText id="updatePublisherText" value="#{bookController.detailBook.publisher}"/>
+                <h:message for="updatePublisherText" style="color:red" />
 
-                <h:outputText value="Year: " for="updateYear"/>
-                <h:outputText id="updateYear" value="#{bookController.detailBook.publishYear}"/>
-                <h:message for="updateYear" style="color:red" />
-
-                <h:outputText value=""/>
+                <h:outputText value="Year: " for="updateYearText"/>
+                <h:outputText id="updateYearText" value="#{bookController.detailBook.publishYear}"/>
+                <h:message for="updateYearText" style="color:red" />
 
                 <a4j:commandButton value="Edit" action="#{bookController.update()}">
-                    <a4j:ajax execute="@form bookFullName" render="@form bookFullName" />
+                    <rich:componentControl target="popup_edit_book" operation="show" />
                 </a4j:commandButton>
 
                 <h:commandButton value="Delete">
                     <rich:componentControl target="popup_delete_book" operation="show" />
                 </h:commandButton>
             </h:panelGrid>
-            <h:inputText value="#{bookController.detailBookAddAuthorId}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
-                <f:ajax event="change" />
-            </h:inputText>
         </h:form>
     </div>
     </div>
 
     <!--popups-->
+
+    <rich:popupPanel id="popup_edit_book" modal="true" autosized="true" resizeable="false" styleClass="dialog_size" style="width: 300px;height:400px;" controlsClass="dialog_size">
+        <f:facet name="header">
+            <h:outputText value="Edit book" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup_edit_book')}.hide(); return false;" style="color: inherit">
+                X
+            </h:outputLink>
+            <h:form id="edit_Book_Form">
+                <h:panelGrid columns="3" >
+                    <h:outputText value="Name: " for="updateName"/>
+                    <h:inputText id="updateName" value="#{bookController.detailBook.name}"/>
+                    <h:message for="updateName" style="color:red" />
+
+                    <h:outputText value="Authors: " for="updateAuthor"/>
+                    <rich:list id="updateAuthor" value="#{bookController.detailBook.authors}" var="newAuthor">
+                        <h:commandLink value="#{newAuthor.fullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}" />
+                        <h:commandLink actionListener="#{bookController.deleteAuthorFromBook(newAuthor.id)}" value=" X">
+                            <a4j:ajax execute="updateAuthor" render="updateAuthor" />
+                        </h:commandLink>
+                    </rich:list>
+                    <h:message for="updateAuthor" style="color:red" />
+
+                    <h:outputText value="Add author: "/>
+                    <div>
+                    <rich:autocomplete value="#{bookController.bookAddAuthorAutocomplete}" id="authorAutocomplateForm" attached="false"
+                                       autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                                       layout="list" styleClass="margin left">
+                        <a4j:ajax event="selectitem" />
+                        <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onfocus="pass_id('#{newAuthor.id}')" onclick="pass_id('#{newAuthor.id}')"/>
+                    </rich:autocomplete>
+                    <h:outputText id="addAuthorAutocompleteMessage" value="#{bookController.addAuthorAutocompleteMessage}" for="updateAuthorText" style="color:red" />
+                    </div>
+
+                    <h:commandButton actionListener="#{bookController.addAuthorToBook}" value="Add author" styleClass="margin left" style="display: inline-block">
+                        <a4j:ajax execute="updateAuthor" render="updateAuthor authorAutocomplateForm addAuthorAutocompleteMessage" />
+                    </h:commandButton>
+
+                    <h:outputText value="ISBN: " for="updateIsbn"/>
+                    <h:outputText id="updateIsbn" value="#{bookController.detailBook.isbn}"/>
+                    <h:message for="updateIsbn" style="color:red" />
+
+                    <h:outputText value="Publisher: " for="updatePublisher"/>
+                    <h:inputText id="updatePublisher" value="#{bookController.detailBook.publisher}"/>
+                    <h:message for="updatePublisher" style="color:red" />
+
+                    <h:outputText value="Year: " for="updateYear"/>
+                    <h:outputText id="updateYear" value="#{bookController.detailBook.publishYear}"/>
+                    <h:message for="updateYear" style="color:red" />
+
+                    <h:outputText value=""/>
+
+                    <a4j:commandButton value="Edit" action="#{bookController.update()}">
+                        <a4j:ajax execute="@form " render="@form bookFullName editBookForm" />
+                    </a4j:commandButton>
+
+                    <h:commandButton value="Delete">
+                        <rich:componentControl target="popup_delete_book" operation="show" />
+                    </h:commandButton>
+                </h:panelGrid>
+                <h:inputText value="#{bookController.detailBookAddAuthorId}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
+                    <f:ajax event="change" />
+                </h:inputText>
+            </h:form>
+        </f:facet>
+    </rich:popupPanel>
 
     <rich:popupPanel id="popup_delete_book" modal="true" autosized="true" resizeable="false" style="width: 300px;height: 200px">
         <f:facet name="header">

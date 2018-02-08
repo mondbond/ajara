@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ManagedBean
 @SessionScoped
@@ -57,6 +58,8 @@ public class BookController {
 
     private @Getter @Setter String bookAddAuthorAutocomplete;
     private @Getter @Setter String booksAddAuthorAutocomplete;
+
+    private @Getter @Setter String addAuthorAutocompleteMessage;
 
     private ArrayList<Long> selectedToDeletePks = new ArrayList<>();
 
@@ -95,7 +98,8 @@ public class BookController {
      * @param author author of a book
      * */
     public String createBookByAuthor(Author author) throws BookException {
-        authorIsbnMessage = "khbjbvh";
+        authorIsbnMessage = "";
+        addAuthorAutocompleteMessage ="";
         if(bookManager.isUnique("ISBN", newBook.getIsbn())){
             ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
         authors.add(author);
@@ -126,6 +130,7 @@ public class BookController {
      * */
     public void update() throws BookException {
         LOGGER.info("update:(detailBook = [{}]", detailBook);
+        detailBook.setAuthors(detailBook.getAuthors().stream().distinct().collect(Collectors.toList()));
         bookManager.update(detailBook);
     }
 
@@ -134,8 +139,10 @@ public class BookController {
      * */
     public String deleteSelected() throws BookException {
         LOGGER.info("deleteSelected:(selectedBookList = [{}]", selectedToDeletePks);
-        bookManager.deleteList(selectedToDeletePks);
-        selectedToDeletePks.clear();
+        if(!selectedToDeletePks.isEmpty()) {
+            bookManager.deleteList(selectedToDeletePks);
+            selectedToDeletePks.clear();
+        }
         return null;
     }
 
@@ -161,46 +168,51 @@ public class BookController {
     public void addAuthorToBook() throws AuthorException, BookException {
         LOGGER.info("IN addAuthorToBook:");
         boolean hasSame = false;
+        bookAddAuthorAutocomplete = null;
+        addAuthorAutocompleteMessage = null;
         if(detailBookAddAuthorId != null && !detailBookAddAuthorId.equals("")){
             Author author = authorManager.getAuthorByPk(Long.parseLong(detailBookAddAuthorId));
             for(Author item : detailBook.getAuthors()){
                 if(item.getId() == author.getId()){
                     LOGGER.info("IN addAuthorToBook: id, id = [{}] and [{}]", item.getId(), author.getId());
                     hasSame = true;
+                    addAuthorAutocompleteMessage = "You added this author already";
                 }
             }
             if(!hasSame) {
                 detailBook.getAuthors().add(author);
                 bookManager.update(detailBook);
-                bookAddAuthorAutocomplete = null;
             }
+        }else {
+            addAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
         }
     }
-
 
     public void deleteAuthorFromAddBookForm(Long pk){
         LOGGER.info("IN deleteAuthorFromAddBookForm:(pk = [{}]", pk);
         newBook.getAuthors().removeIf(author1 -> author1.getId() == pk);
-
     }
 
     public void addAuthorToAddBookForm() throws AuthorException {
         LOGGER.info("IN addAuthorToAddBookForm:");
         boolean hasSame = false;
-
+        booksAddAuthorAutocomplete = null;
+        addAuthorAutocompleteMessage = "";
         if(newBookAddAuthorId != null && !newBookAddAuthorId.equals("")){
             LOGGER.info("IN addAuthorToAddBookForm:   nullll = [{}]", newBookAddAuthorId);
             Author author = authorManager.getAuthorByPk(Long.parseLong(newBookAddAuthorId));
-            for(Author item : detailBook.getAuthors()){
+            for(Author item : newBook.getAuthors()){
                 if(item.getId() == author.getId()){
                     LOGGER.info("IN addAuthorToBook: id, id = [{}] and [{}]", item.getId(), author.getId());
                     hasSame = true;
+                    addAuthorAutocompleteMessage = "You added this author already";
                 }
             }
             if(!hasSame) {
                 newBook.getAuthors().add(author);
-                booksAddAuthorAutocomplete = null;
             }
+        }else {
+            addAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
         }
     }
 

@@ -1,4 +1,5 @@
 package managers;
+
 import entity.Book;
 import exception.BookException;
 import org.slf4j.Logger;
@@ -63,7 +64,15 @@ public class BookManager {
     public void deleteList(List<Long> ids) throws BookException {
         try {
             List<Book> books = bookFacade.findByPks(ids);
-            books.forEach(book -> bookFacade.getEntityManager().remove(book));
+            books.forEach(book -> {
+                bookHome.deleteByPk(book.getId());
+//                book.getAuthors().forEach(author -> {
+//                    StoredProcedureQuery storedProcedure = bookHome.getEntityManager().createStoredProcedureQuery("RECOUNT_AVG_RATING_FOR_B_A");
+//                    storedProcedure.registerStoredProcedureParameter("AUTHOR_IDK", Integer.class, ParameterMode.IN);
+//                    storedProcedure.setParameter("AUTHOR_IDK", (int) author.getId());
+//                    storedProcedure.execute();
+//                });
+            });
         }catch (Exception e){
             throw new BookException("Something happen while you trying to delete books", e);
         }
