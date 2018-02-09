@@ -75,6 +75,12 @@ public class AuthorController {
         }
     }
 
+    public void clearSelected() {
+        LOGGER.info("clearSelected = [{}]", selectedToDeletePks);
+        selectedToDeletePks.clear();
+        LOGGER.info("clearSelected = [{}]", selectedToDeletePks);
+    }
+
     /**
      * Delete detail author and redirecting to manage page
      * */
@@ -89,12 +95,15 @@ public class AuthorController {
      * Adding and removing selected author to delete list
      * @param pk pk of selected author
      * */
-    public void selectPk(long pk) {
+    public void selectPk(long pk) throws AuthorException{
+        LOGGER.info("selectPk = [{}]", pk);
+        LOGGER.info("selectPkList = [{}]", selectedToDeletePks);
         if(selectedToDeletePks.contains(pk)){
             selectedToDeletePks.remove(pk);
         }else {
             selectedToDeletePks.add(pk);
         }
+        LOGGER.info("selectPkList = [{}]", selectedToDeletePks);
     }
 
     /**
@@ -131,12 +140,7 @@ public class AuthorController {
         ExternalContext extContext = ctx.getExternalContext();
         String url = extContext.encodeActionURL(ctx.getApplication().
                 getViewHandler().getActionURL(ctx, "/view/author_manage.xhtml"));
-
         extContext.redirect(url);
-    }
-
-    public void selectAll(){
-
     }
 
 //    get set

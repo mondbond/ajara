@@ -17,6 +17,7 @@ import javax.ejb.Stateful;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Stateful
@@ -46,7 +47,11 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
     @EJB
     private BookFacade dao;
 
-    public BookDataModule() { }
+    private @Getter @Setter LinkedHashMap<Long,Boolean> selectedToDelete = new LinkedHashMap<>();
+
+    public BookDataModule() {
+//        LOGGER.info("BookDataModuleController");
+    }
 
     @Override
     public void setRowKey(Object o) {
@@ -60,6 +65,7 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
 
     @Override
     public void walk(FacesContext facesContext, DataVisitor dataVisitor, Range range, Object o) {
+        LOGGER.info("BookDataModule");
         int firstRow = ((SequenceRange) range).getFirstRow();
         int numberOfLines = ((SequenceRange) range).getRows();
 
@@ -83,6 +89,7 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
 
     @Override
     public int getRowCount() {
+//        LOGGER.info("getRowCount");
         if(filteredAuthor == null && filteredRating == null) {
             return dao.countAll();
         }else if(filteredAuthor != null) {

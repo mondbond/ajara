@@ -47,7 +47,7 @@ body{
 }
 
 td{
-    font-size: 20px;
+    font-size: 15px;
 }
 
 /*link*/
@@ -85,14 +85,18 @@ a, a:link, a:visited, a:active {
 }
 
 .dialog_size{
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 600px;
 }
 
 /*font*/
 
 .big_font{
     font-size: 35px;
+}
+
+.bold{
+    font-weight: bold;
 }
 
 .validate_message{

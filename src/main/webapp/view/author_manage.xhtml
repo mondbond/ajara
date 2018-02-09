@@ -85,17 +85,19 @@
 
                 <rich:column>
                     <f:facet name="header">
-                        Select All
-                        <h:selectBooleanCheckbox>
-                            <p:ajax listener="#{authorController.selectPk(newAuthor.id)}"/>
-                        </h:selectBooleanCheckbox>
+                        <div id="selectAll">
+                            <h:selectBooleanCheckbox onclick="onSelectAll()">
+                            </h:selectBooleanCheckbox>
+                        </div>
                     </f:facet>
-                    <h:selectBooleanCheckbox>
+                    <h:selectBooleanCheckbox styleClass="deleteSelector">
                         <p:ajax listener="#{authorController.selectPk(newAuthor.id)}"/>
                     </h:selectBooleanCheckbox>
                 </rich:column>
                 <f:facet name="footer">
-                    <rich:dataScroller renderIfSinglePage="true" lastPageMode="short" for="authors" maxPages="5" stepControls="auto" value="#{authorController.authorDataModule}"/>
+                    <div id="dataScrollerWrapper">
+                        <rich:dataScroller renderIfSinglePage="true" lastPageMode="short" for="authors" maxPages="5" stepControls="auto" value="#{authorController.authorDataModule}"/>
+                    </div>
                 </f:facet>
             </rich:dataTable>
             </a4j:outputPanel>
@@ -113,7 +115,13 @@
         </div>
     </div>
 
-    <!--popups-->
+    <div id="clearSelectedWrapper" style="display: none">
+        <h:inputText id="clearSelected">
+            <p:ajax event="click" listener="#{authorController.clearSelected()}"/>
+        </h:inputText>
+    </div>
+
+        <!--popups-->
 
     <rich:popupPanel id="popup_delete_authors" modal="true" autosized="true" resizeable="false" style="width: 300px;height: 200px">
         <f:facet name="header">
@@ -171,5 +179,44 @@
         </div>
     </rich:popupPanel>
     </div>
+
+    <script type="text/javascript" >
+        window.onload = function () {
+            var bool_value = document.getElementById('selectAll').getElementsByTagName('input')[0].checked = false;
+            document.getElementById('clearSelectedWrapper').getElementsByTagName('input')[0].click();
+
+            document.getElementById('dataScrollerWrapper').addEventListener("click",function(event){
+                document.getElementById('selectAll').getElementsByTagName('input')[0].checked = false;
+                onSelectAll()
+            });
+
+            set_listeners_to_checkboxes();
+        }
+
+        function set_listeners_to_checkboxes(){
+            var boxes = [];
+            var boxes = document.querySelectorAll('.deleteSelector');
+            boxes.forEach(function (item, i, arr) {
+                boxes[i].addEventListener("click", function(e){
+                    if(document.getElementById('selectAll').getElementsByTagName('input')[0].checked === true) {
+                        if(boxes[i].checked === false){
+                            document.getElementById('selectAll').getElementsByTagName('input')[0].checked = false;
+                        }
+                    }
+                });
+            });
+        }
+
+        function onSelectAll() {
+            var boxes = [];
+            var boxes = document.querySelectorAll('.deleteSelector');
+            var bool_value = document.getElementById('selectAll').getElementsByTagName('input')[0].checked;
+            boxes.forEach(function (item, i, arr) {
+                if(boxes[i].checked != bool_value){
+                    boxes[i].click();
+                }
+            });
+        }
+    </script>
 </h:body>
 </html>

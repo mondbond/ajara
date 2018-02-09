@@ -176,7 +176,7 @@ public class BookController {
                 if(item.getId() == author.getId()){
                     LOGGER.info("IN addAuthorToBook: id, id = [{}] and [{}]", item.getId(), author.getId());
                     hasSame = true;
-                    addAuthorAutocompleteMessage = "You added this author already";
+                    addAuthorAutocompleteMessage = "You already added this author";
                 }
             }
             if(!hasSame) {
@@ -186,6 +186,11 @@ public class BookController {
         }else {
             addAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
         }
+    }
+
+
+    public void refreshDetailBook() throws BookException {
+        detailBook = bookManager.getBookByPk(detailBook.getId());
     }
 
     public void deleteAuthorFromAddBookForm(Long pk){
@@ -205,7 +210,7 @@ public class BookController {
                 if(item.getId() == author.getId()){
                     LOGGER.info("IN addAuthorToBook: id, id = [{}] and [{}]", item.getId(), author.getId());
                     hasSame = true;
-                    addAuthorAutocompleteMessage = "You added this author already";
+                    addAuthorAutocompleteMessage = "You already added this author";
                 }
             }
             if(!hasSame) {
@@ -253,11 +258,23 @@ public class BookController {
      * @param pk pk of selected book
      * */
     public void selectPk(long pk) {
+        LOGGER.info("selectPk = [{}]", pk);
+        LOGGER.info("selectPkList = [{}]", selectedToDeletePks);
         if(selectedToDeletePks.contains(pk)){
             selectedToDeletePks.remove(pk);
         }else {
             selectedToDeletePks.add(pk);
         }
+        LOGGER.info("selectPkList = [{}]", selectedToDeletePks);
+    }
+
+    /**
+     * Adding and removing selected book to delete list
+     * */
+    public void clearSelected() {
+        LOGGER.info("clearSelected = [{}]", selectedToDeletePks);
+        selectedToDeletePks.clear();
+        LOGGER.info("clearSelected = [{}]", selectedToDeletePks);
     }
 
     /**

@@ -19,6 +19,7 @@
 <h:body>
 
     <script type="text/javascript" >
+
         function get_hidden_author_id(){
             return document.getElementById('superform:hiddenSelectedAuthorsIdContainer').value;
         }
@@ -32,14 +33,13 @@
             document.getElementById('add_book_form:hiddenSelectedAuthorsIdAddForm').value=pk;
             document.getElementById('add_book_form:hiddenSelectedAuthorsIdAddForm').onchange();
         }
-
     </script>
 
     <ui:include src="../template/navigate_menu.xhtml" />
 
     <div class="content_panel">
 
-        <h2>Manage books</h2>
+        <h2 id="selectAlls">Manage books</h2>
 
         <div id="undername_line">
         </div>
@@ -75,7 +75,6 @@
                     <f:facet name="header">
                             Author
                     </f:facet>
-
                     <rich:list value="#{book.authors}" var="newAuthor" styleClass="no_list_style">
                             <h:commandLink value="#{newAuthor.fullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
                     </rich:list>
@@ -109,13 +108,21 @@
                 </rich:column>
 
                 <rich:column>
-                    <f:facet name="header">Select</f:facet>
-                    <h:selectBooleanCheckbox>
+                    <f:facet name="header">Select All
+                        <div id="selectAll">
+                            <h:selectBooleanCheckbox onclick="onSelectAll()">
+                            </h:selectBooleanCheckbox>
+                        </div>
+
+                    </f:facet>
+                    <h:selectBooleanCheckbox styleClass="deleteSelector">
                         <p:ajax listener="#{bookController.selectPk(book.id)}"/>
                     </h:selectBooleanCheckbox>
                 </rich:column>
                 <f:facet name="footer">
-                    <rich:dataScroller for="books" maxPages="5"/>
+                    <div id="dataScrollerWrapper">
+                     <rich:dataScroller for="books"/>
+                    </div>
                 </f:facet>
             </rich:dataTable>
                 </a4j:outputPanel>
@@ -248,5 +255,49 @@
             </div>
         </div>
     </rich:popupPanel>
+    <div id="clearSelectedWrapper" style="display: none">
+        <h:inputText id="clearSelected">
+            <p:ajax event="click" listener="#{bookController.clearSelected()}"/>
+        </h:inputText>
+    </div>
+
+    <script type="text/javascript" >
+        window.onload = function () {
+            var bool_value = document.getElementById('selectAll').getElementsByTagName('input')[0].checked = false;
+            document.getElementById('clearSelectedWrapper').getElementsByTagName('input')[0].click();
+
+            document.getElementById('dataScrollerWrapper').addEventListener("click",function(event){
+                document.getElementById('selectAll').getElementsByTagName('input')[0].checked = false;
+                onSelectAll()
+            });
+
+            set_listeners_to_checkboxes();
+        }
+
+            function set_listeners_to_checkboxes(){
+                var boxes = [];
+                var boxes = document.querySelectorAll('.deleteSelector');
+                boxes.forEach(function (item, i, arr) {
+                    boxes[i].addEventListener("click", function(e){
+                        if(document.getElementById('selectAll').getElementsByTagName('input')[0].checked === true) {
+                            if(boxes[i].checked === false){
+                                document.getElementById('selectAll').getElementsByTagName('input')[0].checked = false;
+                            }
+                        }
+                    });
+                });
+            }
+
+            function onSelectAll() {
+            var boxes = [];
+            var boxes = document.querySelectorAll('.deleteSelector');
+            var bool_value = document.getElementById('selectAll').getElementsByTagName('input')[0].checked;
+            boxes.forEach(function (item, i, arr) {
+                if(boxes[i].checked != bool_value){
+                    boxes[i].click();
+                }
+            });
+        }
+    </script>
 </h:body>
 </html>
