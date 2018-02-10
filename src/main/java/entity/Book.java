@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static entity.Book.QUERY_BY_RATING;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
@@ -25,14 +23,11 @@ import static entity.Book.QUERY_BY_RATING;
 @EntityListeners({CreateDateListener.class})
 @Table(name = "BOOK", uniqueConstraints={@UniqueConstraint(columnNames={"isbn"})})
 @NamedQueries({
-        @NamedQuery(name = QUERY_BY_RATING,
-                query = "select b from Book b WHERE b.avgRating > ?1 and b.avgRating <= ?2"),
         @NamedQuery(name = Book.QUERY_COUNT_BY_RATING,
                 query = "select count(*) from Book b WHERE b.avgRating > ?1 and b.avgRating <= ?2")
 })
 public class Book implements Serializable, HasDate {
 
-    public static final String QUERY_BY_RATING = "Book.eq.ratinq";
     public static final String QUERY_COUNT_BY_RATING = "Book.count.eq.ratinq";
 
     @Id

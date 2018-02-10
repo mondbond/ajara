@@ -8,7 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import managers.AuthorManager;
 import managers.BookManager;
-import model.BookDataModule;
+import model.AbstractExtendedModel;
+import model.BookDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,6 @@ import javax.faces.FacesException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -28,42 +28,31 @@ import java.util.stream.Collectors;
 
 @ManagedBean
 @SessionScoped
-public class BookController {
+public class BookController implements AbstractExtendedModel.Sorted{
     private static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
 
-    private final String COLUMN_NAME = "column_name_books_key";
+    private final @Getter String COLUMN_NAME = "column_name_books_key";
 
     private @Setter @Getter Book newBook = new Book();
     private @Getter @Setter Book detailBook = new Book();
 
     private @Setter @Getter String authorAutocomplete = new String();
 
-    private List<Author> aAuthors = new ArrayList<>();
+    private @Getter @Setter String hiddenDetailBookAddAuthorId;
+    private @Getter @Setter String hiddenManageBookAddAuthorId;
+    private @Getter @Setter String hiddenManageBookAddAuthorIdForFilter;
 
-    private @Getter @Setter String hiddenId;
+    private @Getter @Setter String bookAddAuthorAutocompleteValue;
+    private @Getter @Setter String booksAddAuthorAutocompleteValue;
 
-    private @Getter @Setter
-    UIInput isbnValidMessage;
+    private @Getter @Setter String newBookAddAuthorAutocompleteMessage;
+    private @Getter @Setter String detailBookAddAuthorAutocompleteMessage;
+    private @Getter @Setter String filterAuthorValidationMessage;
 
-    private @Getter @Setter
-    String isbnMessage;
-
-    private @Getter @Setter
-    String authorIsbnMessage;
-
-    private @Getter @Setter String detailBookAddAuthorId;
-    private @Getter @Setter String newBookAddAuthorId;
-    private @Getter @Setter String filterAuthorId;
-    private @Getter @Setter String filterAuthorMessage;
-
-    private @Getter @Setter String bookAddAuthorAutocomplete;
-    private @Getter @Setter String booksAddAuthorAutocomplete;
-
-    private @Getter @Setter String addAuthorAutocompleteMessage;
+    private @Getter @Setter String isbnValidMessage;
+    private @Getter @Setter String authorIsbnValidMessage;
 
     private ArrayList<Long> selectedToDeletePks = new ArrayList<>();
-
-    private @Getter @Setter List <Author> autocompleteAuthors = new ArrayList<>();
 
     @EJB
     private @Getter BookManager bookManager;
@@ -72,15 +61,16 @@ public class BookController {
     private @Getter AuthorManager authorManager;
 
     @EJB
-    private @Getter BookDataModule dataModule;
+    private @Getter
+    BookDataModel dataModule;
 
     public BookController() { }
 
     /**
      * Inserting new book
      * */
-    public String insertNewBook() throws BookException {
-        isbnMessage = "";
+    public void insertNewBook() throws BookException {
+        isbnValidMessage = "";
         if(bookManager.isUnique("ISBN", newBook.getIsbn())){
             ArrayList<Author> authors = new ArrayList<>();
             newBook.getAuthors().addAll(authors);
@@ -88,18 +78,17 @@ public class BookController {
             bookManager.save(newBook);
             newBook = new Book();
         }else {
-            isbnMessage = "ISBN must be unique";
+            isbnValidMessage = "ISBN must be unique";
         }
-        return "books_manage.xhtml";
     }
 
     /**
      * Create book by pointed single author from detail author page
      * @param author author of a book
      * */
-    public String createBookByAuthor(Author author) throws BookException {
-        authorIsbnMessage = "";
-        addAuthorAutocompleteMessage ="";
+    public void createBookByAuthor(Author author) throws BookException {
+        authorIsbnValidMessage = "";
+        detailBookAddAuthorAutocompleteMessage ="";
         if(bookManager.isUnique("ISBN", newBook.getIsbn())){
             ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
         authors.add(author);
@@ -108,10 +97,8 @@ public class BookController {
         bookManager.save(newBook);
         newBook = new Book();
         }else {
-            LOGGER.info("insertNewBook nooooooooo :(book = [{}], author = [{}])", newBook, author);
-            authorIsbnMessage = "ISBN must be unique";
+            authorIsbnValidMessage = "ISBN must be unique";
         }
-        return "author_detail.xhtml";
     }
 
     /**
@@ -119,10 +106,18 @@ public class BookController {
      * @param pk authors pk
      * @return BookDataModel instance with filtered by author
      * */
-    public BookDataModule getBooksByAuthorPk(Long pk) throws AuthorException {
+    public BookDataModel getBooksByAuthorPk(Long pk) throws AuthorException {
         LOGGER.info("getBooksByAuthorPk:(pk = [{}]", pk);
         dataModule.setFilteredAuthor(authorManager.getAuthorByPk(pk));
         return dataModule;
+    }
+
+    /**
+     * Get books count by rating from pointed rating to rating -1
+     * */
+    public Long getBookCountByRating(int rating) throws BookException {
+        LOGGER.info("IN getBookCountByRating:(rating = [{}]", rating);
+        return bookManager.getCountByRatingRange(rating-1, rating);
     }
 
     /**
@@ -154,9 +149,47 @@ public class BookController {
         bookManager.delete(detailBook.getId());
         try {
             redirectToManagePage();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new BookException("Something wrong");
         }
+    }
+
+    public void addAuthorToBook() throws AuthorException {
+        LOGGER.info("IN addAuthorToBook:");
+        bookAddAuthorAutocompleteValue = null;
+        detailBookAddAuthorAutocompleteMessage = null;
+        if(hiddenDetailBookAddAuthorId != null && !hiddenDetailBookAddAuthorId.equals("")){
+            Author author = authorManager.getAuthorByPk(Long.parseLong(hiddenDetailBookAddAuthorId));
+            if(isHasSameBook(newBook, author)){
+                detailBookAddAuthorAutocompleteMessage = "You already select this author";
+            }else {
+                newBook.getAuthors().add(author);
+            }
+        }else {
+            detailBookAddAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
+        }
+        hiddenDetailBookAddAuthorId = null;
+    }
+
+    public void addAuthorToAddNewBookForm() throws AuthorException {
+        LOGGER.info("IN addAuthorToAddNewBookForm:");
+        booksAddAuthorAutocompleteValue = null;
+        newBookAddAuthorAutocompleteMessage = "";
+        if(hiddenManageBookAddAuthorId != null && !hiddenManageBookAddAuthorId.equals("")){
+            Author author = authorManager.getAuthorByPk(Long.parseLong(hiddenManageBookAddAuthorId));
+            if(isHasSameBook(newBook, author)){
+                newBookAddAuthorAutocompleteMessage = "You already select this author";
+            }else {
+                newBook.getAuthors().add(author);
+            }
+        }else {
+            newBookAddAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
+        }
+        hiddenManageBookAddAuthorId =null;
+    }
+
+    private boolean isHasSameBook(Book book, Author author){
+        return book.getAuthors().stream().anyMatch(item -> item.getId() == author.getId());
     }
 
     public void deleteAuthorFromBook(Long pk) throws BookException {
@@ -165,60 +198,9 @@ public class BookController {
         bookManager.update(detailBook);
     }
 
-    public void addAuthorToBook() throws AuthorException, BookException {
-        LOGGER.info("IN addAuthorToBook:");
-        boolean hasSame = false;
-        bookAddAuthorAutocomplete = null;
-        addAuthorAutocompleteMessage = null;
-        if(detailBookAddAuthorId != null && !detailBookAddAuthorId.equals("")){
-            Author author = authorManager.getAuthorByPk(Long.parseLong(detailBookAddAuthorId));
-            for(Author item : detailBook.getAuthors()){
-                if(item.getId() == author.getId()){
-                    LOGGER.info("IN addAuthorToBook: id, id = [{}] and [{}]", item.getId(), author.getId());
-                    hasSame = true;
-                    addAuthorAutocompleteMessage = "You already added this author";
-                }
-            }
-            if(!hasSame) {
-                detailBook.getAuthors().add(author);
-                bookManager.update(detailBook);
-            }
-        }else {
-            addAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
-        }
-    }
-
-
-    public void refreshDetailBook() throws BookException {
-        detailBook = bookManager.getBookByPk(detailBook.getId());
-    }
-
     public void deleteAuthorFromAddBookForm(Long pk){
         LOGGER.info("IN deleteAuthorFromAddBookForm:(pk = [{}]", pk);
         newBook.getAuthors().removeIf(author1 -> author1.getId() == pk);
-    }
-
-    public void addAuthorToAddBookForm() throws AuthorException {
-        LOGGER.info("IN addAuthorToAddBookForm:");
-        boolean hasSame = false;
-        booksAddAuthorAutocomplete = null;
-        addAuthorAutocompleteMessage = "";
-        if(newBookAddAuthorId != null && !newBookAddAuthorId.equals("")){
-            LOGGER.info("IN addAuthorToAddBookForm:   nullll = [{}]", newBookAddAuthorId);
-            Author author = authorManager.getAuthorByPk(Long.parseLong(newBookAddAuthorId));
-            for(Author item : newBook.getAuthors()){
-                if(item.getId() == author.getId()){
-                    LOGGER.info("IN addAuthorToBook: id, id = [{}] and [{}]", item.getId(), author.getId());
-                    hasSame = true;
-                    addAuthorAutocompleteMessage = "You already added this author";
-                }
-            }
-            if(!hasSame) {
-                newBook.getAuthors().add(author);
-            }
-        }else {
-            addAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
-        }
     }
 
     /**
@@ -226,31 +208,30 @@ public class BookController {
      * @param prefix prefix of author
      * */
     public List<Author> autocompleteAuthor(FacesContext context, UIComponent component, Object prefix) throws AuthorException {
-        aAuthors = authorManager.getAutocompleteBySecondName(((String) prefix));
-        return aAuthors;
+        return authorManager.getAutocompleteBySecondName(((String) prefix));
     }
 
     /**
      * Filter books by entered author second name
      * */
     public void filterByAuthor() throws AuthorException {
-        LOGGER.info("filterByAuthor " + hiddenId);
-        filterAuthorMessage = null;
-        if((hiddenId == null || hiddenId.equals("")) && authorAutocomplete.equals("")){
+        LOGGER.info("IN filterByAuthor " + hiddenManageBookAddAuthorIdForFilter);
+        filterAuthorValidationMessage = null;
+        if((hiddenManageBookAddAuthorIdForFilter == null || hiddenManageBookAddAuthorIdForFilter.equals("")) && authorAutocomplete.equals("")){
             dataModule.setFilteredRating(null);
             dataModule.setFilteredAuthor(null);
-        } else if(hiddenId == null || hiddenId.equals("")){
-            filterAuthorMessage = "Choose correct author name";
+        } else if(hiddenManageBookAddAuthorIdForFilter == null || hiddenManageBookAddAuthorIdForFilter.equals("")){
+            filterAuthorValidationMessage = "Choose correct author name";
         }else {
-            Author filteredAuthor = authorManager.getAuthorByPk(Long.parseLong(hiddenId));
+            Author filteredAuthor = authorManager.getAuthorByPk(Long.parseLong(hiddenManageBookAddAuthorIdForFilter));
             dataModule.setFilteredAuthor(filteredAuthor);
-            hiddenId = null;
+            hiddenManageBookAddAuthorIdForFilter = null;
         }
-//        if(authorAutocomplete != null && !authorAutocomplete.equals("")){
-//            List<Author> authors = new ArrayList<>();
-//            Author author2 = aAuthors.stream().filter(author1 -> author1.fullName().equals(authorAutocomplete)).findFirst().get();
-//            dataModule.setFilteredAuthor(author2);
-//        }
+    }
+
+    private void unsetBookFilter(){
+        dataModule.setFilteredRating(null);
+        dataModule.setFilteredAuthor(null);
     }
 
     /**
@@ -258,41 +239,46 @@ public class BookController {
      * @param pk pk of selected book
      * */
     public void selectPk(long pk) {
-        LOGGER.info("selectPk = [{}]", pk);
-        LOGGER.info("selectPkList = [{}]", selectedToDeletePks);
+        LOGGER.info("IN selectToDelete = [{}]", pk);
         if(selectedToDeletePks.contains(pk)){
             selectedToDeletePks.remove(pk);
         }else {
             selectedToDeletePks.add(pk);
         }
-        LOGGER.info("selectPkList = [{}]", selectedToDeletePks);
+        LOGGER.info("OUT selectPkList = [{}]", selectedToDeletePks);
     }
 
     /**
      * Adding and removing selected book to delete list
      * */
     public void clearSelected() {
-        LOGGER.info("clearSelected = [{}]", selectedToDeletePks);
+        LOGGER.info("IN clearSelected = [{}]", selectedToDeletePks);
         selectedToDeletePks.clear();
-        LOGGER.info("clearSelected = [{}]", selectedToDeletePks);
+        filterAuthorValidationMessage = null;
+        newBookAddAuthorAutocompleteMessage = null;
+        detailBookAddAuthorAutocompleteMessage = null;
+
+        LOGGER.info("OUT clearSelected = [{}]", selectedToDeletePks);
     }
 
-    /**
-     * Sorting authors by params from RequestParameterMap
-     * */
-    public String sortBy() {
-        Map<String,String> params =
-                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+    @Override
+    public void sortBy() {
+        Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         dataModule.sortBy(params.get(COLUMN_NAME));
-        return null;
     }
+
+    public void refreshDetailBook() throws BookException {
+        detailBook = bookManager.getBookByPk(detailBook.getId());
+    }
+
+//    redirected methods
 
     /**
      * Redirect to detail page by pointed pk
      * @param pk pk of Book
      * */
     public void toDetailPage(long pk) throws BookException {
-        LOGGER.info("toDetailPage:(pk = [{}])", pk);
+        LOGGER.info("IN toDetailPage:(pk = [{}])", pk);
         detailBook = bookManager.getBookByPk(pk);
 
         try {
@@ -310,16 +296,11 @@ public class BookController {
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "book_detail.xhtml");
     }
 
-    private void unsetBookFilter(){
-        dataModule.setFilteredRating(null);
-        dataModule.setFilteredAuthor(null);
-    }
-
     /**
      * Redirect to book manage page without filter
      * */
-    public void redirectToManagePageAndUnsetFilters() throws IOException {
-        LOGGER.info("redirectToManagePageAndUnsetFilters:");
+    public void redirectToManagePageAndUnsetFilters() throws BookException {
+        LOGGER.info("IN redirectToManagePageAndUnsetFilters:");
         unsetBookFilter();
         redirectToManagePage();
     }
@@ -327,7 +308,7 @@ public class BookController {
     /**
      * Redirect to book manage page
      * */
-    private void redirectToManagePage() throws IOException {
+    private void redirectToManagePage() throws BookException {
         try {
             FacesContext ctx = FacesContext.getCurrentInstance();
 
@@ -336,32 +317,20 @@ public class BookController {
                     getViewHandler().getActionURL(ctx, "/view/books_manage.xhtml"));
 
             extContext.redirect(url);
-        } catch (IOException e) {
-            throw new FacesException(e);
+        } catch (Exception e) {
+            throw new BookException("Something wrong");
         }
-    }
-
-    /**
-     * Get books count by rating from pointed rating to rating -1
-     * */
-    public Long getBookCountByRating(int rating) throws BookException {
-        LOGGER.info("getBookCountByRating:(rating = [{}]", rating);
-        return bookManager.getCountByRating(rating-1, rating);
     }
 
     /**
      * Redirect to book manage page with rating filter
      * @param rating
      * */
-    public String toBookManageByRating(int rating) throws IOException {
-        LOGGER.info("toBookManageByRating:(rating = [{}])", rating);
+    public String toBookManageByRating(int rating) throws BookException {
+        LOGGER.info("IN toBookManageByRating:(rating = [{}])", rating);
         dataModule.setFilteredAuthor(null);
         dataModule.setFilteredRating(rating);
         redirectToManagePage();
         return null;
-    }
-
-    public String getColumnConstant() {
-        return COLUMN_NAME;
     }
 }

@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import java.util.List;
 
 @ManagedBean(name = "reviewController")
 @SessionScoped
@@ -31,12 +30,11 @@ public class ReviewController {
     private BookManager bookManager;
 
     @EJB
-    private @Setter
-    ReviewDataModel dataModel;
+    private @Setter ReviewDataModel dataModel;
 
     /**
      * Create review entity with pointed book
-     * @param book Book of review relate to
+     * @param book book of review relate to
      * */
     public void createReview(Book book) throws BookException, ReviewException {
         LOGGER.info("IN createReview(book = [{}])", book);
@@ -46,19 +44,18 @@ public class ReviewController {
     }
 
     /**
-     * Get reviews by book
-     * @param book book of what reviews are you need
-     * @return list of reviews
+     * Delete review by pk
+     * @param pk pk of review
      * */
-    public List<Reviews> getReviews(Book book) throws BookException {
-        LOGGER.info("IN getReviews(book = [{}])", book);
-        return bookManager.getBookByPk(book.getId()).getReviews();
-    }
-
     public void deleteReview(Long pk) throws ReviewException {
         reviewManager.deleteReview(pk);
     }
 
+    /**
+     * Get reviews by book
+     * @param id book id of what reviews are you need
+     * @return ReviewDataModel with seted book id in
+     * */
     public ReviewDataModel getReviewDataModelByBook(Long id) {
         dataModel.setBookId(id);
         return dataModel;

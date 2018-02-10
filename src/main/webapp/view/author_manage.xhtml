@@ -31,7 +31,7 @@
         <div id="authors_data" class="left margin center_text">
             <h:form>
                 <a4j:outputPanel id="authorsTablePanel">
-                <rich:dataTable id="authors" value="#{authorController.authorDataModule}" var="newAuthor" rows="10" styleClass="table_size">
+                <rich:dataTable id="authors" value="#{authorController.authorDataModel}" var="newAuthor" rows="10" styleClass="table_size">
                 <f:facet name="header">
                     <h:form>
                         <h:outputText value="All authors" />
@@ -41,7 +41,7 @@
                 <rich:column>
                     <f:facet name="header">
                         <h:commandLink action="#{authorController.sortBy}" > id
-                            <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getPkColumnConstant()}" />
+                            <f:param name="#{authorController.COLUMN_NAME}" value="#{authorController.authorDataModel.getPkColumnConstant()}" />
                         </h:commandLink>
                     </f:facet>
                         <h:commandLink value="#{newAuthor.id}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
@@ -50,7 +50,7 @@
                 <rich:column>
                     <f:facet name="header">
                         <h:commandLink action="#{authorController.sortBy}"> First name
-                            <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getNameColumnConstant()}" />
+                            <f:param name="#{authorController.COLUMN_NAME}" value="#{authorController.authorDataModel.getNameColumnConstant()}" />
                         </h:commandLink>
                     </f:facet>
                     <h:outputText value="#{newAuthor.firstName}"/>
@@ -59,7 +59,7 @@
                 <rich:column>
                     <f:facet name="header">
                         <h:commandLink action="#{authorController.sortBy}"> Second name
-                            <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getSecondNameColumnConstant()}" />
+                            <f:param name="#{authorController.COLUMN_NAME}" value="#{authorController.authorDataModel.getSecondNameColumnConstant()}" />
                         </h:commandLink>
                     </f:facet>
                         <h:commandLink value="#{newAuthor.secondName}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
@@ -68,7 +68,7 @@
                 <rich:column>
                     <f:facet name="header">
                         <h:commandLink action="#{authorController.sortBy}"> Rating
-                            <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getRatingColumnConstant()}" />
+                            <f:param name="#{authorController.COLUMN_NAME}" value="#{authorController.authorDataModel.getRatingColumnConstant()}" />
                         </h:commandLink>
                     </f:facet>
                     <h:outputText value="#{newAuthor.avgRating}"/>
@@ -77,7 +77,7 @@
                 <rich:column>
                     <f:facet name="header">
                         <h:commandLink action="#{authorController.sortBy}"> Create date
-                            <f:param name="#{authorController.getColumnConstant()}" value="#{authorController.authorDataModule.getDateColumnConstant()}" />
+                            <f:param name="#{authorController.COLUMN_NAME}" value="#{authorController.authorDataModel.getDateColumnConstant()}" />
                         </h:commandLink>
                     </f:facet>
                     <h:outputText value="#{newAuthor.createDate}"/>
@@ -91,12 +91,12 @@
                         </div>
                     </f:facet>
                     <h:selectBooleanCheckbox styleClass="deleteSelector">
-                        <p:ajax listener="#{authorController.selectPk(newAuthor.id)}"/>
+                        <p:ajax listener="#{authorController.selectToDelete(newAuthor.id)}"/>
                     </h:selectBooleanCheckbox>
                 </rich:column>
                 <f:facet name="footer">
                     <div id="dataScrollerWrapper">
-                        <rich:dataScroller renderIfSinglePage="true" lastPageMode="short" for="authors" maxPages="5" stepControls="auto" value="#{authorController.authorDataModule}"/>
+                        <rich:dataScroller renderIfSinglePage="true" lastPageMode="short" for="authors" maxPages="5" stepControls="auto" value="#{authorController.authorDataModel}"/>
                     </div>
                 </f:facet>
             </rich:dataTable>

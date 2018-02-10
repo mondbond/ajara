@@ -20,12 +20,11 @@ public abstract class AbstractFacade<T> {
     @PersistenceContext
     private @Getter EntityManager entityManager;
 
-
     /**
      * Constructor to inject Class type object
      * @param entity Class type param
      * */
-    public AbstractFacade(Class<T> entity) {
+    AbstractFacade(Class<T> entity) {
         this.entity = entity;
     }
 
@@ -54,6 +53,8 @@ public abstract class AbstractFacade<T> {
         return result;
     }
 
+
+//    todo do I need this ?
     /**
      * Get all rows
      * @return List of rows
@@ -66,7 +67,7 @@ public abstract class AbstractFacade<T> {
     }
 
     /**
-     * Get paginating list of entities for params
+     * Get paginating list of entities with sort params
      * @param skip count of rows to skip
      * @param limit count of rows to select
      * @param sortColumn sorting column
@@ -95,11 +96,18 @@ public abstract class AbstractFacade<T> {
         return result;
     }
 
+    /**
+     *
+     * @param columnName name of the column to check
+     * @param value checked value
+     * @return boolean value of is it value unique
+     * */
     public boolean isUnique(String columnName, String value){
+        LOGGER.info("IN isUnique:(column name = [{}], value = [{}])", columnName, value);
         String sqlString = "select count (*) from " + entity.getName() + " where " + columnName + " = " + value;
         Query query = entityManager.createQuery(sqlString);
         Long result = (Long) query.getSingleResult();
-        LOGGER.info("OUT isUnique:(int = [{}])", result);
+        LOGGER.info("OUT isUnique:(count = [{}])", result);
         return result == 0;
     }
 }

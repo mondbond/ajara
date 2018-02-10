@@ -56,7 +56,7 @@
                 <rich:column>
                     <f:facet name="header">
                             <h:commandLink action="#{bookController.sortBy}"> ID
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPkColumnConstant()}" />
+                                <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getPkColumnConstant()}" />
                             </h:commandLink>
                     </f:facet>
                         <h:commandLink value="#{book.id}" action="#{bookController.toDetailPage(book.id)}"/>
@@ -65,7 +65,7 @@
                 <rich:column>
                     <f:facet name="header">
                             <h:commandLink action="#{bookController.sortBy}"> Name
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getNameColumnConstant()}" />
+                                <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getNameColumnConstant()}" />
                             </h:commandLink>
                     </f:facet>
                         <h:commandLink value="#{book.name}" actionListener="#{bookController.toDetailPage(book.id)}"/>
@@ -83,7 +83,7 @@
                 <rich:column>
                     <f:facet name="header">
                             <h:commandLink action="#{bookController.sortBy}"> Publisher
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPublisherColumnConstant()}" />
+                                <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getPublisherColumnConstant()}" />
                             </h:commandLink>
                     </f:facet>
                     <h:outputText value="#{book.publisher}"/>
@@ -92,7 +92,7 @@
                 <rich:column>
                     <f:facet name="header">
                             <h:commandLink action="#{bookController.sortBy}"> Rating
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
+                                <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
                             </h:commandLink>
                     </f:facet>
                     <h:outputText value="#{book.avgRating}"/>
@@ -101,7 +101,7 @@
                 <rich:column>
                     <f:facet name="header">
                             <h:commandLink action="#{bookController.sortBy}"> CREATE DATE
-                                <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getDateColumnConstant()}" />
+                                <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getDateColumnConstant()}" />
                             </h:commandLink>
                     </f:facet>
                     <h:outputText value="#{book.createDate}"/>
@@ -148,9 +148,9 @@
                 <h:commandButton action="#{bookController.filterByAuthor}" value="Filter by author" styleClass="margin left" style="display: inline-block">
                 </h:commandButton>
 
-                <h:outputText id="authorFilterMessage" value="#{bookController.filterAuthorMessage}" styleClass="validate_message"/>
+                <h:outputText id="authorFilterMessage" value="#{bookController.filterAuthorValidationMessage}" styleClass="validate_message"/>
 
-                <h:inputText value="#{bookController.hiddenId}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
+                <h:inputText value="#{bookController.hiddenManageBookAddAuthorIdForFilter}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
                     <f:ajax event="change" />
                 </h:inputText>
             </h:form>
@@ -179,10 +179,10 @@
                     </div>
                     <div>
                         <h:outputLabel value="ISBN:" for="inputBookIsbn"/>
-                        <h:inputText binding="#{bookController.isbnValidMessage}" id="inputBookIsbn" value="#{bookController.newBook.isbn}">
+                        <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}">
                         </h:inputText>
-                        <h:message for="inputBookIsbn" value="#{bookController.isbnMessage}" style="color:red" />
-                        <h:outputText id="isbnvalidMessage" value="#{bookController.isbnMessage}" styleClass="validate_message"/>
+                        <h:message for="inputBookIsbn" value="#{bookController.isbnValidMessage}" style="color:red" />
+                        <h:outputText id="isbnvalidMessage" value="#{bookController.isbnValidMessage}" styleClass="validate_message"/>
                     </div>
                     <div>
                         <h:outputLabel value="Publisher:" for="inputBookPublisher"/>
@@ -207,15 +207,15 @@
 
                         <h:outputText value="Add author: "/>
                         <div>
-                            <rich:autocomplete value="#{bookController.booksAddAuthorAutocomplete}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
-                                          id="autocomplateAuthor" layout="list" styleClass="margin left">
+                            <rich:autocomplete value="#{bookController.booksAddAuthorAutocompleteValue}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                                               id="autocomplateAuthor" layout="list" styleClass="margin left">
                             <a4j:ajax event="selectitem" />
                             <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onclick="pass_select_id('#{newAuthor.id}')" />
                         </rich:autocomplete>
-                        <h:outputText id="addAuthorAutocompleteMessage" value="#{bookController.addAuthorAutocompleteMessage}" style="color:red" />
+                        <h:outputText id="addAuthorAutocompleteMessage" value="#{bookController.newBookAddAuthorAutocompleteMessage}" style="color:red" />
                         </div>
 
-                        <h:commandButton actionListener="#{bookController.addAuthorToAddBookForm}" value="Add author" styleClass="margin left" style="display: inline-block">
+                        <h:commandButton actionListener="#{bookController.addAuthorToAddNewBookForm}" value="Add author" styleClass="margin left" style="display: inline-block">
                             <a4j:ajax execute="bm_add_authors" render="bm_add_authors addAuthorAutocompleteMessage autocomplateAuthor" />
                         </h:commandButton>
                     </div>
@@ -225,7 +225,7 @@
                     </a4j:commandButton>
 
                 </h:panelGrid>
-                <h:inputText value="#{bookController.newBookAddAuthorId}" id="hiddenSelectedAuthorsIdAddForm" style="display: none">
+                <h:inputText value="#{bookController.hiddenManageBookAddAuthorId}" id="hiddenSelectedAuthorsIdAddForm" style="display: none">
                     <f:ajax event="change" />
                 </h:inputText>
             </h:form>
@@ -293,7 +293,7 @@
             var boxes = document.querySelectorAll('.deleteSelector');
             var bool_value = document.getElementById('selectAll').getElementsByTagName('input')[0].checked;
             boxes.forEach(function (item, i, arr) {
-                if(boxes[i].checked != bool_value){
+                if(boxes[i].checked !== bool_value){
                     boxes[i].click();
                 }
             });

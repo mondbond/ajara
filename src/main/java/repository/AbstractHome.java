@@ -1,6 +1,7 @@
 package repository;
 
 import lombok.Getter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,26 +22,26 @@ public abstract class AbstractHome<T> {
      * Constructor to inject Class type object
      * @param entity Class type param
      * */
-    public AbstractHome(Class<T> entity) {
+     AbstractHome(Class<T> entity) {
         this.entity = entity;
     }
 
     /**
      * Insert entity in database
-     * @param entity any entity
+     * @param entity object to insert
      * */
     public void insert(T entity) {
         LOGGER.info("IN insert(entity = [{}])", entity);
         if(entityManager.contains(entity)) {
             entityManager.persist(entity);
-        } else{
+        } else {
             entityManager.merge(entity);
         }
     }
 
     /**
      * Delete entity by pk
-     * @param pk pk of an entity
+     * @param pk pk of entity to delete
      * */
     public void deleteByPk(long pk) {
         LOGGER.info("IN deleteByPk:(pk = [{}])", pk);
@@ -50,13 +51,13 @@ public abstract class AbstractHome<T> {
 
     /**
      * Delete entities by list of pks
-     * @param list list of pks
+     * @param list list of pks to delete
 `    * */
     public void deleteList(List<Long> list) {
         LOGGER.info("IN deleteList:(list = [{}])", list);
-        if(!list.isEmpty()) {
+        if(CollectionUtils.isNotEmpty(list)) {
             Query query = entityManager.createQuery("DELETE FROM " + entity.getName() + " o WHERE o.id IN (?1)");
-             query.setParameter(1, list);
+            query.setParameter(1, list);
             query.executeUpdate();
         }
     }

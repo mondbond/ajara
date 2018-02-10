@@ -40,7 +40,8 @@ public class ReviewManager {
      * @return list of entities
      * */
     public List<Reviews> getPagination(int skip, int limit, String sortColumn, boolean isAsc, Long bookId) {
-        LOGGER.info("IN getPagination:(skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])", skip, limit, sortColumn, isAsc);
+        LOGGER.info("IN getPagination:(of = [{}], skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])",
+                Reviews.class.getSimpleName(), skip, limit, sortColumn, isAsc);
         String sqlString = "from Reviews R where book.id = " + bookId + " order by " + sortColumn + " " + ((isAsc)? "ASC": "DESC");
         Query query = reviewFacade.getEntityManager().createQuery(sqlString, Reviews.class);
         query.setFirstResult(skip);

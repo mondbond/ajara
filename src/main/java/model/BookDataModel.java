@@ -5,7 +5,6 @@ import entity.Book;
 import lombok.Getter;
 import lombok.Setter;
 import org.ajax4jsf.model.DataVisitor;
-import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
 import org.ajax4jsf.model.SequenceRange;
 import org.slf4j.Logger;
@@ -15,14 +14,10 @@ import repository.BookFacade;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 @Stateful
-public class BookDataModule  extends ExtendedDataModel<Book> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BookDataModule.class);
+public class BookDataModel extends AbstractExtendedModel<Book> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookDataModel.class);
 
     public final String PK_COLUMN = "ID";
     public final String NAME_COLUMN = "NAME";
@@ -35,37 +30,26 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
     private @Getter @Setter Author filteredAuthor;
     private @Getter @Setter Integer filteredRating = null;
 
-    private Integer rowKey;
-    private List<Book> list = new ArrayList<>();
-
-    private boolean isASC;
-    //    sorting
-
-    private HashMap<String, Boolean> mOderMap = new HashMap<>();
-
     private String sortingColumn = DATE_COLUMN;
+
     @EJB
     private BookFacade dao;
 
-    private @Getter @Setter LinkedHashMap<Long,Boolean> selectedToDelete = new LinkedHashMap<>();
-
-    public BookDataModule() {
-//        LOGGER.info("BookDataModuleController");
+    public BookDataModel() {
     }
 
-    @Override
-    public void setRowKey(Object o) {
-        this.rowKey = (Integer) o;
-    }
-
-    @Override
-    public Object getRowKey() {
-        return rowKey;
+    /**
+     * Sorting authors by params from RequestParameterMap
+     * @param sortingColumn name of the column to sort
+     * */
+    public void sortBy(String sortingColumn) {
+        this.sortingColumn = sortingColumn;
+        changeOrder(sortingColumn);
     }
 
     @Override
     public void walk(FacesContext facesContext, DataVisitor dataVisitor, Range range, Object o) {
-        LOGGER.info("BookDataModule");
+        LOGGER.info("BookDataModel");
         int firstRow = ((SequenceRange) range).getFirstRow();
         int numberOfLines = ((SequenceRange) range).getRows();
 
@@ -83,68 +67,15 @@ public class BookDataModule  extends ExtendedDataModel<Book> {
     }
 
     @Override
-    public boolean isRowAvailable() {
-        return list.size() > rowKey;
-    }
-
-    @Override
     public int getRowCount() {
-//        LOGGER.info("getRowCount");
+
         if(filteredAuthor == null && filteredRating == null) {
             return dao.countAll();
         }else if(filteredAuthor != null) {
-            return ((Number)(dao.getCountByAuthor(filteredAuthor))).intValue();
-//            return filteredAuthor.getBooks().size();
+            return (dao.getCountByAuthor(filteredAuthor)).intValue();
         }else {
-            return ((Number)(dao.getCountByRating((filteredRating-1), filteredRating))).intValue();
+            return (dao.getCountByRatingRange((filteredRating-1), filteredRating)).intValue();
         }
-    }
-
-    /**
-     * Sorting authors by params from RequestParameterMap
-     * @param sortingColumn
-     * */
-    public void sortBy(String sortingColumn) {
-        this.sortingColumn = sortingColumn;
-        changeOrder(sortingColumn);
-    }
-
-    /**
-     * Handle order changing in author table
-     * @param columnName
-     * */
-    private void changeOrder(String columnName) {
-        if(mOderMap.containsKey(columnName)) {
-            mOderMap.put(columnName, !mOderMap.get(columnName));
-        } else {
-            mOderMap.put(columnName, true);
-        }
-        isASC = mOderMap.get(columnName);
-    }
-
-    @Override
-    public Book getRowData() {
-        return list.get(rowKey);
-    }
-
-    @Override
-    public int getRowIndex() {
-        return rowKey == null ? 0 : rowKey;
-    }
-
-    @Override
-    public void setRowIndex(int i) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Object getWrappedData() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setWrappedData(Object o) {
-        throw new UnsupportedOperationException();
     }
 
     public String getPkColumnConstant() {

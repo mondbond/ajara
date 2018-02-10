@@ -29,14 +29,6 @@ public class BookManager {
         }
     }
 
-//    public List<Book> getAllBooks() throws BookException {
-//        try {
-//            return bookFacade.findAll();
-//        }catch (Exception e){
-//            throw new BookException("Something happen while you trying to find books", e);
-//        }
-//    }
-
     public void save(Book book) throws BookException {
         try {
             bookHome.insert(book);
@@ -66,17 +58,10 @@ public class BookManager {
             List<Book> books = bookFacade.findByPks(ids);
             books.forEach(book -> {
                 bookHome.deleteByPk(book.getId());
-//                book.getAuthors().forEach(author -> {
-//                    StoredProcedureQuery storedProcedure = bookHome.getEntityManager().createStoredProcedureQuery("RECOUNT_AVG_RATING_FOR_B_A");
-//                    storedProcedure.registerStoredProcedureParameter("AUTHOR_IDK", Integer.class, ParameterMode.IN);
-//                    storedProcedure.setParameter("AUTHOR_IDK", (int) author.getId());
-//                    storedProcedure.execute();
-//                });
             });
         }catch (Exception e){
             throw new BookException("Something happen while you trying to delete books", e);
         }
-//        bookHome.deleteList1(ids);
     }
 
     public boolean isUnique(String columnName, String value) throws BookException {
@@ -87,15 +72,15 @@ public class BookManager {
         }
     }
 
-    public List<Book> filterByRating(int rating) throws BookException {
-        try {
-            return bookFacade.filterByRatingRange(rating - 1, rating);
-        }catch (Exception e){
-            throw new BookException("Something happen while you trying to filter by rating", e);
-        }
-    }
+//    public List<Book> filterByRating(int rating) throws BookException {
+//        try {
+//            return bookFacade.filterByRatingRange(rating - 1, rating);
+//        }catch (Exception e){
+//            throw new BookException("Something happen while you trying to filter by rating", e);
+//        }
+//    }
 
-    public Long getCountByRating(int from, int to) throws BookException {
+    public Long getCountByRatingRange(int from, int to) throws BookException {
         try {
             return bookFacade.getCountByRatingRange(from, to);
         }catch (Exception e){

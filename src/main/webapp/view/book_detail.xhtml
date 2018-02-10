@@ -53,7 +53,7 @@
                     <h:outputLabel value="Rating:" for="inputReviewRating"/>
                     <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}"/>
                     <div>
-                    <h:outputText id="authorAddMessage" value="#{bookController.filterAuthorMessage}" styleClass="validate_message"/>
+                    <h:outputText id="authorAddMessage" value="#{bookController.filterAuthorValidationMessage}" styleClass="validate_message"/>
                     <h:message for="inputReviewRating" style="color:red" />
                     </div>
 
@@ -178,7 +178,7 @@
 
                     <div>
                         <h:outputText value="Add author: " styleClass="bold"/>
-                        <rich:autocomplete value="#{bookController.bookAddAuthorAutocomplete}" id="authorAutocomplateForm" attached="false"
+                        <rich:autocomplete value="#{bookController.bookAddAuthorAutocompleteValue}" id="authorAutocomplateForm" attached="false"
                                            autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
                                            layout="list" styleClass="margin left">
                             <a4j:ajax event="selectitem" />
@@ -189,7 +189,7 @@
                                 <a4j:ajax execute="updateAuthor" render="updateAuthor authorAutocomplateForm addAuthorAutocompleteMessage" />
                             </h:commandButton>
                         </div>
-                        <h:outputText id="addAuthorAutocompleteMessage" value="#{bookController.addAuthorAutocompleteMessage}" for="updateAuthorText" style="color:red" />
+                        <h:outputText id="addAuthorAutocompleteMessage" value="#{bookController.detailBookAddAuthorAutocompleteMessage}" for="updateAuthorText" style="color:red" />
 
                     </div>
 
@@ -222,7 +222,7 @@
                         </h:commandButton>
                     </div>
 
-                    <h:inputText value="#{bookController.detailBookAddAuthorId}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
+                    <h:inputText value="#{bookController.hiddenDetailBookAddAuthorId}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
                         <f:ajax event="change" />
                     </h:inputText>
                 </h:panelGrid>

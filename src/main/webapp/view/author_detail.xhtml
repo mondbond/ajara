@@ -37,7 +37,7 @@
             <rich:column>
                 <f:facet name="header">
                     <h:commandLink action="#{bookController.sortBy}"> Id
-                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPkColumnConstant()}" />
+                        <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getPkColumnConstant()}" />
                     </h:commandLink>
                 </f:facet>
                     <h:commandLink value="#{book.id}" actionListener="#{bookController.toDetailPage(book.id)}"/>
@@ -45,7 +45,7 @@
             <rich:column>
                 <f:facet name="header">
                     <h:commandLink action="#{bookController.sortBy}"> Name
-                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getNameColumnConstant()}" />
+                        <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getNameColumnConstant()}" />
                     </h:commandLink>
                 </f:facet>
                     <h:commandLink value="#{book.name}" actionListener="#{bookController.toDetailPage(book.id)}"/>
@@ -54,7 +54,7 @@
             <rich:column>
                 <f:facet name="header">
                     <h:commandLink action="#{bookController.sortBy}"> Publisher
-                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getPublisherColumnConstant()}" />
+                        <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getPublisherColumnConstant()}" />
                     </h:commandLink>
                 </f:facet>
                 <h:outputText value="#{book.publisher}"/>
@@ -70,7 +70,7 @@
             <rich:column>
                 <f:facet name="header">
                     <h:commandLink action="#{bookController.sortBy}"> Year
-                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getYearColumnConstant()}" />
+                        <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getYearColumnConstant()}" />
                     </h:commandLink>
                 </f:facet>
                 <h:outputText value="#{book.publishYear}"/>
@@ -79,7 +79,7 @@
             <rich:column>
                 <f:facet name="header">
                     <h:commandLink action="#{bookController.sortBy}"> Rating
-                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
+                        <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
                     </h:commandLink>
                 </f:facet>
                 <h:outputText value="#{book.avgRating}"/>
@@ -88,13 +88,13 @@
             <rich:column>
                 <f:facet name="header">
                     <h:commandLink action="#{bookController.sortBy}"> CREATE DATE
-                        <f:param name="#{bookController.getColumnConstant()}" value="#{bookController.dataModule.getDateColumnConstant()}" />
+                        <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getDateColumnConstant()}" />
                     </h:commandLink>
                 </f:facet>
                 <h:outputText value="#{book.createDate}"/>
             </rich:column>
             <f:facet name="footer">
-                <rich:dataScroller renderIfSinglePage="true" lastPageMode="full" for="author_books" maxPages="5" stepControls="auto" value="#{authorController.authorDataModule}"/>
+                <rich:dataScroller renderIfSinglePage="true" lastPageMode="full" for="author_books" maxPages="5" stepControls="auto" value="#{authorController.authorDataModel}"/>
             </f:facet>
         </rich:dataTable>
             </a4j:outputPanel>
@@ -150,7 +150,7 @@
                         <h:outputLabel value="ISBN" for="inputBookIsbn"/>
                         <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}"/>
                         <h:message for="inputBookIsbn" style="color:red" />
-                        <h:outputText id="isbnvalidMessage" value="#{bookController.isbnMessage}" styleClass="validate_message"/>
+                        <h:outputText id="isbnvalidMessage" value="#{bookController.isbnValidMessage}" styleClass="validate_message"/>
 
                     </div>
                     <div>

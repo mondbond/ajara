@@ -78,10 +78,14 @@ public class AuthorManager {
         }
     }
 
-    public List<Author> getAutocompleteBySecondName(String characters) throws AuthorException {
+    public List<Author> getAutocompleteBySecondName(String prefix) throws AuthorException {
         try {
-            LOGGER.info("getAutocompleteBySecondName(prefix = [{}])", characters);
-            return authorFacade.getAutocompleteBySecondName(characters);
+            LOGGER.info("IN getAutocompleteBySecondName(prefix = [{}])", prefix);
+            List<Author> result = authorFacade.getEntityManager().createNamedQuery(Author.QUERY_LIKE_SECOND_NAME, Author.class)
+                    .setParameter(1, prefix + "%")
+                    .getResultList();
+            LOGGER.debug("OUT getAutocompleteBySecondName: returned [{}]", result);
+            return result;
         }catch (Exception e){
             throw new AuthorException("Something happen while you trying to get authors autocomplete", e);
         }

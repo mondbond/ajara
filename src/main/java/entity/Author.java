@@ -25,7 +25,6 @@ public class Author implements Serializable, HasDate {
 
     public static final String QUERY_LIKE_SECOND_NAME = "Author.by.secondName.like";
 
-//    lombok has no annotation for including only necessary fields
     public Author(String firstName, String secondName) {
         this.firstName = firstName;
         this.secondName = secondName;
