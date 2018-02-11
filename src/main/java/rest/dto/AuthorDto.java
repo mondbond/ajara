@@ -4,13 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class AuthorDto implements Serializable {
 
-    public AuthorDto(long id, String firstName, String secondName, Date createDate, List<Long> books) {
+    public AuthorDto(long id, String firstName, String secondName, LocalDate createDate, List<Long> books) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -26,7 +26,7 @@ public class AuthorDto implements Serializable {
 
     private @Getter @Setter Float avgRating;
 
-    private @Getter @Setter Date createDate;
+    private @Getter @Setter LocalDate createDate;
 
     private @Getter @Setter List<Long> books = new ArrayList<>();
 }

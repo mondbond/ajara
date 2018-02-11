@@ -1,6 +1,6 @@
 package model;
 
-import entity.Reviews;
+import entity.Review;
 import lombok.Setter;
 import managers.ReviewManager;
 import org.ajax4jsf.model.DataVisitor;
@@ -15,17 +15,12 @@ import javax.ejb.Stateful;
 import javax.faces.context.FacesContext;
 
 @Stateful
-public class ReviewDataModel extends AbstractExtendedModel<Reviews> {
+public class ReviewDataModel extends AbstractExtendedModel<Review> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReviewDataModel.class);
-
-    public final String PK_COLUMN = "ID";
-    public final String NAME_COLUMN = "FIRST_NAME";
-    public final String AVG_RATING_COLUMN = "AVG_RATING";
-    public final String DATE_COLUMN = "CREATE_DATE";
 
     private @Setter Long bookId;
 
-    private String sortingColumn = DATE_COLUMN;
+    private String sortingColumn = Review.getDATE_COLUMN();
 
 
     @EJB
@@ -65,18 +60,18 @@ public class ReviewDataModel extends AbstractExtendedModel<Reviews> {
     }
 
     public String getPkColumnConstant() {
-        return PK_COLUMN;
+        return Review.getPK_COLUMN();
     }
 
     public String getNameColumnConstant() {
-        return NAME_COLUMN;
+        return Review.getNAME_COLUMN();
     }
 
     public String getRatingColumnConstant() {
-        return AVG_RATING_COLUMN;
+        return Review.getAVG_RATING_COLUMN();
     }
 
     public String getDateColumnConstant() {
-        return DATE_COLUMN;
+        return Review.getDATE_COLUMN();
     }
 }

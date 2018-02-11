@@ -16,13 +16,7 @@ import javax.faces.context.FacesContext;
 public class AuthorDataModel extends AbstractExtendedModel<Author> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorDataModel.class);
 
-    public final String PK_COLUMN = "ID";
-    public final String NAME_COLUMN = "FIRST_NAME";
-    public final String SECOND_NAME_COLUMN = "SECOND_NAME";
-    public final String AVG_RATING_COLUMN = "AVG_RATING";
-    public final String DATE_COLUMN = "CREATE_DATE";
-
-    private String sortingColumn = DATE_COLUMN;
+    private String sortingColumn = Author.getDATE_COLUMN();
 
     @EJB
     private  AuthorFacade dao;
@@ -60,22 +54,22 @@ public class AuthorDataModel extends AbstractExtendedModel<Author> {
 
 
     public String getPkColumnConstant() {
-        return PK_COLUMN;
+        return Author.getPK_COLUMN();
     }
 
     public String getNameColumnConstant() {
-        return NAME_COLUMN;
+        return Author.getNAME_COLUMN();
     }
 
     public String getSecondNameColumnConstant() {
-        return SECOND_NAME_COLUMN;
+        return Author.getSECOND_NAME_COLUMN();
     }
 
     public String getRatingColumnConstant() {
-        return AVG_RATING_COLUMN;
+        return Author.getAVG_RATING_COLUMN();
     }
 
     public String getDateColumnConstant() {
-        return DATE_COLUMN;
+        return Author.getDATE_COLUMN();
     }
 }

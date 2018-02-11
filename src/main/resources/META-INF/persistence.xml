@@ -12,7 +12,7 @@
         <jta-data-source>java:/OracleDS</jta-data-source>
         <class>entity.Author</class>
         <class>entity.Book</class>
-        <class>entity.Reviews</class>
+        <class>entity.Review</class>
 
         <properties>
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>

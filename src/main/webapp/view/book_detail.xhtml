@@ -52,10 +52,7 @@
 
                     <h:outputLabel value="Rating:" for="inputReviewRating"/>
                     <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}"/>
-                    <div>
-                    <h:outputText id="authorAddMessage" value="#{bookController.filterAuthorValidationMessage}" styleClass="validate_message"/>
                     <h:message for="inputReviewRating" style="color:red" />
-                    </div>
 
                     <h:outputLabel value="Comment:"/>
                     <h:inputTextarea id="inputCommentArea" value="#{reviewController.newReview.com}" />
@@ -71,7 +68,7 @@
         <div id="comments_form" class="margin left" style="clear: left">
             <h:form id="form">
                 <a4j:outputPanel id="booksTablePanel">
-                    <rich:dataTable id="books" value="#{reviewController.getReviewDataModelByBook(bookController.detailBook.id)}" var="review" rows="10" >
+                    <rich:dataTable id="books" value="#{reviewController.getReviewDataModelByBook(bookController.detailBook.id)}" style="width: 500px" var="review" rows="10" >
                         <rich:column>
                             <f:facet name="header">
                                 Comments
@@ -145,12 +142,12 @@
 
     <!--popups-->
 
-    <rich:popupPanel id="popup_edit_book" modal="true" autosized="true" resizeable="false" styleClass="dialog_size" style="font-size: 10px">
+    <rich:popupPanel id="popup_edit_book" modal="true" autosized="true" resizeable="false" styleClass="big_dialog_size" style="font-size: 10px">
         <f:facet name="header">
             <h:outputText value="Edit book" />
         </f:facet>
         <f:facet name="controls">
-            <h:outputLink value="#" onclick="#{rich:component('popup_edit_book')}.hide(); return false;" style="color: inherit">
+            <h:outputLink value="#"  onclick="#{rich:component('popup_edit_book')}.hide(); return false;" style="color: inherit">
                 X
             </h:outputLink>
         </f:facet>
@@ -158,7 +155,6 @@
         <div class="margin">
             <h:form id="edit_Book_Form" styleClass="margin">
                 <h:panelGrid>
-
                     <div>
                         <h:outputText value="Name: " for="updateName" styleClass="bold"/>
                         <h:inputText id="updateName" value="#{bookController.detailBook.name}"/>
@@ -174,30 +170,28 @@
                             </h:commandLink>
                         </rich:list>
                         <h:message for="updateAuthor" style="color:red" />
-                    </div>
 
-                    <div>
                         <h:outputText value="Add author: " styleClass="bold"/>
+                        <div>
                         <rich:autocomplete value="#{bookController.bookAddAuthorAutocompleteValue}" id="authorAutocomplateForm" attached="false"
                                            autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
                                            layout="list" styleClass="margin left">
                             <a4j:ajax event="selectitem" />
                             <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onfocus="pass_id('#{newAuthor.id}')" onclick="pass_id('#{newAuthor.id}')"/>
                         </rich:autocomplete>
-                        <div>
-                            <h:commandButton actionListener="#{bookController.addAuthorToBook}" value="Add author" styleClass="margin" style="display: inline-block">
-                                <a4j:ajax execute="updateAuthor" render="updateAuthor authorAutocomplateForm addAuthorAutocompleteMessage" />
-                            </h:commandButton>
+                            <h:outputText id="addAuthorAutocompleteMessage" value="#{bookController.detailBookAddAuthorAutocompleteMessage}" for="updateAuthorText" style="color:red"/>
                         </div>
-                        <h:outputText id="addAuthorAutocompleteMessage" value="#{bookController.detailBookAddAuthorAutocompleteMessage}" for="updateAuthorText" style="color:red" />
 
+                        <h:commandButton actionListener="#{bookController.addAuthorToBook}" value="Add author" styleClass="margin" style="display: inline-block">
+                                <a4j:ajax execute="updateAuthor" render="updateAuthor authorAutocomplateForm addAuthorAutocompleteMessage" />
+                        </h:commandButton>
                     </div>
 
                     <div>
                         <h:outputText value="ISBN: " for="updateIsbn" styleClass="bold"/>
-                        <h:outputText id="updateIsbn" value="#{bookController.detailBook.isbn}"/>
+                        <h:inputText id="updateIsbn" value="#{bookController.detailBook.isbn}" />
+                        <h:outputText id="updateIsbnValidMessage" value="#{bookController.isbnValidMessage}" style="color:red" />
                         <h:message for="updateIsbn" style="color:red" />
-
                     </div>
 
                     <div>
@@ -208,18 +202,14 @@
 
                     <div>
                         <h:outputText value="Year: " for="updateYear" styleClass="bold"/>
-                        <h:outputText id="updateYear" value="#{bookController.detailBook.publishYear}"/>
+                        <h:inputText id="updateYear" value="#{bookController.detailBook.publishYear}"/>
                         <h:message for="updateYear" style="color:red" />
                     </div>
 
                     <div>
                         <a4j:commandButton value="Edit" action="#{bookController.update()}" style="display: inline-block">
-                            <a4j:ajax execute="@form " render="@form bookFullName editBookForm" />
+                            <a4j:ajax execute="@form " render="@form bookFullName editBookForm updateIsbnValidMessage" />
                         </a4j:commandButton>
-
-                        <h:commandButton value="Delete" style="display: inline-block">
-                            <rich:componentControl target="popup_delete_book" operation="show" />
-                        </h:commandButton>
                     </div>
 
                     <h:inputText value="#{bookController.hiddenDetailBookAddAuthorId}" id="hiddenSelectedAuthorsIdContainer" style="display: none">
@@ -227,10 +217,7 @@
                     </h:inputText>
                 </h:panelGrid>
             </h:form>
-
         </div>
-
-
     </rich:popupPanel>
 
     <rich:popupPanel id="popup_delete_book" modal="true" autosized="true" resizeable="false" style="width: 300px;height: 200px">

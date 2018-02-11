@@ -1,7 +1,7 @@
 package entity.listeners;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface HasDate {
-    void setDate(Date date);
+    void setDate(LocalDate date);
 }

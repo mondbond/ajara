@@ -8,10 +8,11 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
@@ -22,6 +23,11 @@ import java.util.List;
 @NamedQuery(name = "Author.by.secondName.like",
             query = "select a from Author a WHERE a.secondName LIKE ?1")
 public class Author implements Serializable, HasDate {
+    public static @Getter final String PK_COLUMN = "ID";
+    public static @Getter final String NAME_COLUMN = "FIRST_NAME";
+    public static @Getter final String SECOND_NAME_COLUMN = "SECOND_NAME";
+    public static @Getter final String AVG_RATING_COLUMN = "AVG_RATING";
+    public static @Getter final String DATE_COLUMN = "CREATE_DATE";
 
     public static final String QUERY_LIKE_SECOND_NAME = "Author.by.secondName.like";
 
@@ -47,7 +53,7 @@ public class Author implements Serializable, HasDate {
     private Float avgRating; // TODO: Rename to averageRating
 
     @Column(name = "CREATE_DATE")
-    private Date createDate;
+    private LocalDate createDate;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
@@ -58,7 +64,7 @@ public class Author implements Serializable, HasDate {
     }
 
     @Override
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         createDate = date;
     }
 }

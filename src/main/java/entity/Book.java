@@ -12,8 +12,8 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -27,6 +27,14 @@ import java.util.List;
                 query = "select count(*) from Book b WHERE b.avgRating > ?1 and b.avgRating <= ?2")
 })
 public class Book implements Serializable, HasDate {
+    public static final @Getter String PK_COLUMN = "ID";
+    public static final @Getter String NAME_COLUMN = "NAME";
+    public static final @Getter String AUTHOR_COLUMN = "AUTHOR";
+    public static final @Getter String ISBN_COLUMN = "ISBN";
+    public static final @Getter String PUBLISHER_COLUMN = "PUBLISHER";
+    public static final @Getter String YEAR_COLUMN = "PUBLISH_YEAR";
+    public static final @Getter String AVG_RATING_COLUMN = "AVG_RATING";
+    public static final @Getter String DATE_COLUMN = "CREATE_DATE";
 
     public static final String QUERY_COUNT_BY_RATING = "Book.count.eq.ratinq";
 
@@ -55,7 +63,7 @@ public class Book implements Serializable, HasDate {
     private Float avgRating;
 
     @Column(name = "CREATE_DATE")
-    private Date createDate;
+    private LocalDate createDate;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
@@ -65,7 +73,7 @@ public class Book implements Serializable, HasDate {
     private List<Author> authors = new ArrayList<>();
 
     @OneToMany(mappedBy = "book", orphanRemoval = true)
-    private List<Reviews> reviews;
+    private List<Review> reviews;
 
     @Override
     public String toString() {
@@ -73,7 +81,7 @@ public class Book implements Serializable, HasDate {
     }
 
     @Override
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         createDate = date;
     }
 }

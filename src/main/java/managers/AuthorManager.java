@@ -3,6 +3,7 @@ package managers;
 import entity.Author;
 import exception.AuthorException;
 import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.AuthorFacade;
@@ -17,10 +18,10 @@ public class AuthorManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorManager.class);
 
     @EJB
-    private @Getter AuthorFacade authorFacade;
+    private @Getter @Setter AuthorFacade authorFacade;
 
     @EJB
-    private AuthorHome authorHome;
+    private @Setter AuthorHome authorHome;
 
     public Author getAuthorByPk(long pk) throws AuthorException {
         try {
@@ -50,7 +51,7 @@ public class AuthorManager {
         try {
             authorHome.insert(author);
         }catch (Exception e){
-            throw new AuthorException("bla", e);
+            throw new AuthorException("Something happen while you trying to insert author", e);
         }
     }
 

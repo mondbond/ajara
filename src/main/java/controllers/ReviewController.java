@@ -1,7 +1,7 @@
 package controllers;
 
 import entity.Book;
-import entity.Reviews;
+import entity.Review;
 import exception.BookException;
 import exception.ReviewException;
 import lombok.Getter;
@@ -21,7 +21,8 @@ import javax.faces.bean.SessionScoped;
 public class ReviewController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorController.class);
 
-    private @Setter @Getter Reviews newReview = new Reviews();
+    private @Setter @Getter
+    Review newReview = new Review();
 
     @EJB
     private ReviewManager reviewManager;
@@ -40,7 +41,7 @@ public class ReviewController {
         LOGGER.info("IN createReview(book = [{}])", book);
         newReview.setBook(bookManager.getBookByPk(book.getId()));
         reviewManager.createReview(newReview);
-        newReview = new Reviews();
+        newReview = new Review();
     }
 
     /**

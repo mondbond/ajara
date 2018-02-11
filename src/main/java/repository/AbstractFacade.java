@@ -53,8 +53,6 @@ public abstract class AbstractFacade<T> {
         return result;
     }
 
-
-//    todo do I need this ?
     /**
      * Get all rows
      * @return List of rows

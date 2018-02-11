@@ -50,7 +50,7 @@ public class BookController implements AbstractExtendedModel.Sorted{
     private @Getter @Setter String filterAuthorValidationMessage;
 
     private @Getter @Setter String isbnValidMessage;
-    private @Getter @Setter String authorIsbnValidMessage;
+//    private @Getter @Setter String authorIsbnValidMessage;
 
     private ArrayList<Long> selectedToDeletePks = new ArrayList<>();
 
@@ -70,16 +70,16 @@ public class BookController implements AbstractExtendedModel.Sorted{
      * Inserting new book
      * */
     public void insertNewBook() throws BookException {
-        isbnValidMessage = "";
-        if(bookManager.isUnique("ISBN", newBook.getIsbn())){
+//        isbnValidMessage = "";
+//        if(bookManager.isUnique("ISBN", newBook.getIsbn())){
             ArrayList<Author> authors = new ArrayList<>();
             newBook.getAuthors().addAll(authors);
             LOGGER.info("insertNewBook:(book = [{}])", newBook);
             bookManager.save(newBook);
             newBook = new Book();
-        }else {
-            isbnValidMessage = "ISBN must be unique";
-        }
+//        }else {
+//            isbnValidMessage = "ISBN must be unique";
+//        }
     }
 
     /**
@@ -87,18 +87,18 @@ public class BookController implements AbstractExtendedModel.Sorted{
      * @param author author of a book
      * */
     public void createBookByAuthor(Author author) throws BookException {
-        authorIsbnValidMessage = "";
-        detailBookAddAuthorAutocompleteMessage ="";
-        if(bookManager.isUnique("ISBN", newBook.getIsbn())){
+//        authorIsbnValidMessage = "";
+//        detailBookAddAuthorAutocompleteMessage ="";
+//        if(bookManager.isUnique("ISBN", newBook.getIsbn())){
             ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
         authors.add(author);
         newBook.setAuthors(authors);
         LOGGER.info("insertNewBook:(book = [{}], author = [{}])", newBook, author);
         bookManager.save(newBook);
         newBook = new Book();
-        }else {
-            authorIsbnValidMessage = "ISBN must be unique";
-        }
+//        }else {
+//            authorIsbnValidMessage = "ISBN must be unique";
+//        }
     }
 
     /**
@@ -124,9 +124,20 @@ public class BookController implements AbstractExtendedModel.Sorted{
      * Update detail book
      * */
     public void update() throws BookException {
-        LOGGER.info("update:(detailBook = [{}]", detailBook);
-        detailBook.setAuthors(detailBook.getAuthors().stream().distinct().collect(Collectors.toList()));
-        bookManager.update(detailBook);
+        isbnValidMessage = "";
+        Book sameBookInDb = bookManager.getBookByPk(detailBook.getId());
+        if(!sameBookInDb.getIsbn().equals( detailBook.getIsbn())){
+            if(bookManager.isUnique(Book.getISBN_COLUMN(), detailBook.getIsbn())){
+                LOGGER.info("update:(detailBook = [{}]", detailBook);
+                detailBook.setAuthors(detailBook.getAuthors().stream().distinct().collect(Collectors.toList()));
+                bookManager.update(detailBook);
+            } else {
+                isbnValidMessage = "ISBN must be unique";
+            }
+        }else {
+            detailBook.setAuthors(detailBook.getAuthors().stream().distinct().collect(Collectors.toList()));
+            bookManager.update(detailBook);
+        }
     }
 
     /**
@@ -160,10 +171,10 @@ public class BookController implements AbstractExtendedModel.Sorted{
         detailBookAddAuthorAutocompleteMessage = null;
         if(hiddenDetailBookAddAuthorId != null && !hiddenDetailBookAddAuthorId.equals("")){
             Author author = authorManager.getAuthorByPk(Long.parseLong(hiddenDetailBookAddAuthorId));
-            if(isHasSameBook(newBook, author)){
+            if(isHasSameBook(detailBook, author)){
                 detailBookAddAuthorAutocompleteMessage = "You already select this author";
             }else {
-                newBook.getAuthors().add(author);
+                detailBook.getAuthors().add(author);
             }
         }else {
             detailBookAddAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
@@ -186,6 +197,13 @@ public class BookController implements AbstractExtendedModel.Sorted{
             newBookAddAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
         }
         hiddenManageBookAddAuthorId =null;
+    }
+
+    public void clearMessages(){
+        LOGGER.info("clearMessages message is cleared");
+        newBookAddAuthorAutocompleteMessage = "";
+        detailBookAddAuthorAutocompleteMessage = "";
+        isbnValidMessage = "";
     }
 
     private boolean isHasSameBook(Book book, Author author){
@@ -281,6 +299,8 @@ public class BookController implements AbstractExtendedModel.Sorted{
         LOGGER.info("IN toDetailPage:(pk = [{}])", pk);
         detailBook = bookManager.getBookByPk(pk);
 
+        clearMessages();
+
         try {
             FacesContext ctx = FacesContext.getCurrentInstance();
 
@@ -294,6 +314,8 @@ public class BookController implements AbstractExtendedModel.Sorted{
         }
         FacesContext.getCurrentInstance().getApplication().getNavigationHandler()
                 .handleNavigation(FacesContext.getCurrentInstance(), null, "book_detail.xhtml");
+
+
     }
 
     /**

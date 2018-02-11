@@ -32,33 +32,18 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper  {
             ExceptionQueuedEvent event = i.next();
             ExceptionQueuedEventContext context =
                     (ExceptionQueuedEventContext) event.getSource();
-
-            // get the exception from context
             Throwable t = context.getException();
-
             final FacesContext fc = FacesContext.getCurrentInstance();
             final Map<String, Object> requestMap = fc.getExternalContext().getRequestMap();
             final NavigationHandler nav = fc.getApplication().getNavigationHandler();
-
-            //here you do what ever you want with exception
             try {
-
-                //log error ?
-
-                //redirect error page
                 requestMap.put("exceptionMessage", getLastExceptionMessage(t));
                 nav.handleNavigation(fc, null, "/view/error_page.xhtml");
                 fc.renderResponse();
-
-                // remove the comment below if you want to report the error in a jsf error message
-                //JsfUtil.addErrorMessage(t.getMessage());
-
             } finally {
-                //remove it from queue
                 i.remove();
             }
         }
-        //parent hanle
         getWrapped().handle();
     }
 

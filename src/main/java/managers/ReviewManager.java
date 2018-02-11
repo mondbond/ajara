@@ -1,6 +1,6 @@
 package managers;
 
-import entity.Reviews;
+import entity.Review;
 import exception.ReviewException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class ReviewManager {
     @EJB
     private ReviewFacade reviewFacade;
 
-    public void createReview(Reviews review) throws ReviewException {
+    public void createReview(Review review) throws ReviewException {
         try {
             reviewHome.insert(review);
         }catch (Exception e){
@@ -39,15 +39,15 @@ public class ReviewManager {
      * @param bookId id of a book
      * @return list of entities
      * */
-    public List<Reviews> getPagination(int skip, int limit, String sortColumn, boolean isAsc, Long bookId) {
+    public List<Review> getPagination(int skip, int limit, String sortColumn, boolean isAsc, Long bookId) {
         LOGGER.info("IN getPagination:(of = [{}], skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])",
-                Reviews.class.getSimpleName(), skip, limit, sortColumn, isAsc);
-        String sqlString = "from Reviews R where book.id = " + bookId + " order by " + sortColumn + " " + ((isAsc)? "ASC": "DESC");
-        Query query = reviewFacade.getEntityManager().createQuery(sqlString, Reviews.class);
+                Review.class.getSimpleName(), skip, limit, sortColumn, isAsc);
+        String sqlString = "from Review R where book.id = " + bookId + " order by " + sortColumn + " " + ((isAsc)? "ASC": "DESC");
+        Query query = reviewFacade.getEntityManager().createQuery(sqlString, Review.class);
         query.setFirstResult(skip);
         query.setMaxResults(limit);
-        List<Reviews> result = query.getResultList();
-        LOGGER.debug("OUT getPagination:returned list of [{}], size = [{}]", Reviews.class.getSimpleName(), result.size());
+        List<Review> result = query.getResultList();
+        LOGGER.debug("OUT getPagination:returned list of [{}], size = [{}]", Review.class.getSimpleName(), result.size());
         return result;
     }
 

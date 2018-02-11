@@ -144,4 +144,116 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="300" author="me">
+        <sql endDelimiter="/">
+            create or replace package package_id is
+            type saved_id is table of number;
+            savedauthors saved_id;
+            deleted_book_id number;
+            rests number;
+            end package_id;
+            /
+        </sql>
+    </changeSet>
+
+    <changeSet id="301" author="me">
+        <sql endDelimiter="/">
+            create or replace PROCEDURE GETAVG
+            (
+            PID IN NUMBER
+            ) IS
+            CURSOR author_to_update IS SELECT A.ID FROM Author A WHERE A.ID IN (SELECT AB.AUTHOR_ID FROM JOIN_BOOK_AUTHOR AB WHERE AB.BOOK_ID = PID);
+            BEGIN
+            UPDATE Author A SET A.SECOND_NAME = PID WHERE A.ID = 1301;
+            UPDATE BOOK B SET
+            B.AVG_RATING = GET_AVG_RATING_BY_BOOK(PID)
+            WHERE B.ID = PID;
+            FOR update_author_id IN author_to_update LOOP
+            UPDATE Author A SET A.AVG_RATING = (SELECT AVG(B.AVG_RATING) FROM BOOK B WHERE B.ID IN (SELECT BOOK_ID FROM JOIN_BOOK_AUTHOR AB WHERE AB.AUTHOR_ID = update_author_id.ID)) WHERE A.ID = update_author_id.ID;
+            EXIT WHEN author_to_update%NOTFOUND;
+            END LOOP;
+            END GETAVG;
+            /
+        </sql>
+    </changeSet>
+
+
+    <changeSet id="303" author="me">
+        <sql endDelimiter="/">
+            create or replace TRIGGER BEFORE_REVIEW_SAVE_BOOK_ID_TRG
+            BEFORE INSERT OR UPDATE OR DELETE ON REVIEWS
+            FOR EACH ROW
+            DECLARE
+            var number;
+            BEGIN
+            case
+            when inserting then
+            package_id.rests:=0;
+            var:=:new.id_book;
+            package_id.rests:=var;
+            when deleting then
+            package_id.rests:=0;
+            var:=:old.id_book;
+            package_id.rests:=var;
+            end case;
+            NULL;
+            END;
+            /
+        </sql>
+    </changeSet>
+
+
+    <changeSet id="304" author="me">
+        <sql endDelimiter="/">
+            create or replace TRIGGER AFTER_REVIEWS_INSERT_TRG
+            AFTER INSERT OR DELETE ON REVIEWS
+            DECLARE
+            book_var_id number;
+            BEGIN
+            book_var_id:=PACKAGE_ID.rests;
+            GETAVG(book_var_id);
+            NULL;
+            END;
+            /
+        </sql>
+    </changeSet>
+
+    <changeSet id="305" author="me">
+        <sql endDelimiter="/">
+            create or replace TRIGGER ON_CHANGE_A_B_RELATION
+            FOR DELETE OR INSERT ON JOIN_BOOK_AUTHOR
+            COMPOUND TRIGGER
+            type t_num is table of AUTHOR.ID%type
+            index by binary_integer;
+            emps t_num;
+            id_a number;
+            author_count integer;
+            BEFORE STATEMENT IS
+            BEGIN
+            NULL;
+            END BEFORE STATEMENT;
+
+            BEFORE EACH ROW IS
+            BEGIN
+            case
+            when inserting then
+            emps (emps.count + 1) := :new.author_id;
+            when deleting then
+            emps (emps.count + 1) := :old.author_id;
+            end case;
+            NULL;
+            END BEFORE EACH ROW;
+
+            AFTER STATEMENT IS
+            BEGIN
+            forall e in emps.FIRST .. emps.LAST
+            UPDATE AUTHOR A SET A.AVG_RATING = (SELECT AVG(B.AVG_RATING) FROM BOOK B WHERE B.ID IN (SELECT BOOK_ID FROM JOIN_BOOK_AUTHOR AB WHERE AB.AUTHOR_ID = emps(e))) WHERE A.ID = emps(e);
+
+            NULL;
+            END AFTER STATEMENT;
+            END ON_CHANGE_A_B_RELATION;
+            /
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

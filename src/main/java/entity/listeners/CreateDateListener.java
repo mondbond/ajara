@@ -1,13 +1,12 @@
 package entity.listeners;
 
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class CreateDateListener {
 
     @PrePersist
     public void setCreateDate(HasDate entity){
-        entity.setDate(new Date());
+        entity.setDate(LocalDate.now());
     }
 }

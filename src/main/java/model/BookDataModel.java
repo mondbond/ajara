@@ -19,18 +19,10 @@ import javax.faces.context.FacesContext;
 public class BookDataModel extends AbstractExtendedModel<Book> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookDataModel.class);
 
-    public final String PK_COLUMN = "ID";
-    public final String NAME_COLUMN = "NAME";
-    public final String AUTHOR_COLUMN = "AUTHOR";
-    public final String PUBLISHER_COLUMN = "PUBLISHER";
-    public final String YEAR_COLUMN = "PUBLISH_YEAR";
-    public final String AVG_RATING_COLUMN = "AVG_RATING";
-    public final String DATE_COLUMN = "CREATE_DATE";
-
     private @Getter @Setter Author filteredAuthor;
     private @Getter @Setter Integer filteredRating = null;
 
-    private String sortingColumn = DATE_COLUMN;
+    private String sortingColumn = Book.getDATE_COLUMN();
 
     @EJB
     private BookFacade dao;
@@ -79,31 +71,27 @@ public class BookDataModel extends AbstractExtendedModel<Book> {
     }
 
     public String getPkColumnConstant() {
-        return PK_COLUMN;
+        return Book.getPK_COLUMN();
     }
 
     public String getNameColumnConstant() {
-        return NAME_COLUMN;
-    }
-
-    public String getAuthorColumnConstant() {
-        return AUTHOR_COLUMN;
+        return Book.getNAME_COLUMN();
     }
 
     public String getPublisherColumnConstant() {
-        return PUBLISHER_COLUMN;
+        return Book.getPUBLISHER_COLUMN();
     }
 
     public String getRatingColumnConstant() {
-        return AVG_RATING_COLUMN;
-    }
-
-    public String getDateColumnConstant() {
-        return DATE_COLUMN;
+        return Book.getAVG_RATING_COLUMN();
     }
 
     public String getYearColumnConstant() {
-        return YEAR_COLUMN;
+        return Book.getYEAR_COLUMN();
+    }
+
+    public String getDateColumnConstant() {
+        return Book.getDATE_COLUMN();
     }
 }
 

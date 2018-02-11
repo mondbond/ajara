@@ -84,9 +84,15 @@ a, a:link, a:visited, a:active {
     border: 2px solid #c3062a;
 }
 
-.dialog_size{
+.big_dialog_size{
     width: 500px;
     height: 600px;
+}
+
+
+.medium_dialog_size{
+    width: 400px;
+    height: 400px;
 }
 
 /*font*/

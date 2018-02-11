@@ -1,14 +1,14 @@
 package repository;
 
-import entity.Reviews;
+import entity.Review;
 
 import javax.ejb.Stateless;
 
 @Stateless
-public class ReviewHome extends AbstractHome<Reviews> {
+public class ReviewHome extends AbstractHome<Review> {
 
     ReviewHome() {
-        super(Reviews.class);
+        super(Review.class);
     }
 
 }

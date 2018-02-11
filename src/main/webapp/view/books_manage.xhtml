@@ -47,7 +47,7 @@
         <div id="books_data" class="left margin center_text" >
             <h:form>
                 <a4j:outputPanel id="booksTablePanel">
-                <rich:dataTable id="books" value="#{bookController.dataModule}" var="book" rows="10" styleClass="table_size">
+                <rich:dataTable id="books" value="#{bookController.dataModule}" var="book" rows="10" style="width: 1000px">
                 <f:facet name="header">
                     <h:form>
                         <h:outputText value="All books" />
@@ -100,7 +100,7 @@
 
                 <rich:column>
                     <f:facet name="header">
-                            <h:commandLink action="#{bookController.sortBy}"> CREATE DATE
+                            <h:commandLink action="#{bookController.sortBy}"> Date
                                 <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getDateColumnConstant()}" />
                             </h:commandLink>
                     </f:facet>
@@ -108,7 +108,7 @@
                 </rich:column>
 
                 <rich:column>
-                    <f:facet name="header">Select All
+                    <f:facet name="header">
                         <div id="selectAll">
                             <h:selectBooleanCheckbox onclick="onSelectAll()">
                             </h:selectBooleanCheckbox>
@@ -159,7 +159,7 @@
 
     <!--popups-->
 
-    <rich:popupPanel id="popup_add_book" modal="true" autosized="true" resizeable="false">
+    <rich:popupPanel id="popup_add_book" modal="true" autosized="true" resizeable="false" styleClass="big_dialog_size">
         <f:facet name="header">
             <h:outputText value="Add book" />
         </f:facet>
@@ -169,7 +169,7 @@
             </h:outputLink>
         </f:facet>
 
-        <div class="board_style left margin">
+        <div class="left margin">
             <h:form id="add_book_form">
                 <h:panelGrid>
                     <div>
@@ -179,10 +179,8 @@
                     </div>
                     <div>
                         <h:outputLabel value="ISBN:" for="inputBookIsbn"/>
-                        <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}">
-                        </h:inputText>
-                        <h:message for="inputBookIsbn" value="#{bookController.isbnValidMessage}" style="color:red" />
-                        <h:outputText id="isbnvalidMessage" value="#{bookController.isbnValidMessage}" styleClass="validate_message"/>
+                        <h:inputText id="inputBookIsbn" value="#{bookController.newBook.isbn}" validator="#{validatorBean.validateISBN}" />
+                        <h:message for="inputBookIsbn" style="color:red" />
                     </div>
                     <div>
                         <h:outputLabel value="Publisher:" for="inputBookPublisher"/>

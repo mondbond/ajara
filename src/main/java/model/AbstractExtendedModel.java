@@ -69,8 +69,6 @@ public abstract class AbstractExtendedModel<E> extends ExtendedDataModel<E> {
     }
 
     public interface Sorted{
-
-
         /**
          * Sorting by params from RequestParameterMap
          * */

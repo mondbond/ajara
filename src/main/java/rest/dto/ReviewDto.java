@@ -1,13 +1,14 @@
 package rest.dto;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class ReviewDto implements Serializable {
 
-    public ReviewDto(Long id, String commenterName, String com, int rating, Date date) {
+    public ReviewDto(Long id, String commenterName, String com, int rating, LocalDate date) {
         this.id = id;
         this.commenterName = commenterName;
         this.com = com;
@@ -23,5 +24,6 @@ public class ReviewDto implements Serializable {
 
     private @Getter @Setter int rating;
 
-    private @Getter @Setter Date date;
+    private @Getter @Setter
+    LocalDate date;
 }

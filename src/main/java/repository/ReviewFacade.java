@@ -1,13 +1,13 @@
 package repository;
 
-import entity.Reviews;
+import entity.Review;
 
 import javax.ejb.Stateless;
 
 @Stateless
-public class ReviewFacade extends AbstractFacade<Reviews> {
+public class ReviewFacade extends AbstractFacade<Review> {
 
     ReviewFacade() {
-        super(Reviews.class);
+        super(Review.class);
     }
 }
