@@ -122,3 +122,19 @@ a, a:link, a:visited, a:active {
     width: 200px;
     white-space:normal!important;
 }
+
+.content_panel {
+    margin-top: 50px;
+    margin-left: 20vh;
+}
+
+#undername_line {
+    height: 2px;
+    width: available;
+    background-color: #c3062a;
+}
+
+.table_size {
+    width: 900px !important;
+    height: 500px !important;
+}

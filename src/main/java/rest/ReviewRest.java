@@ -3,7 +3,6 @@ package rest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.BookFacade;
-import repository.ReviewFacade;
 import rest.dto.ReviewDto;
 
 import javax.ejb.EJB;
@@ -17,12 +16,10 @@ import java.util.stream.Collectors;
 
 @Path("/reviews")
 public class ReviewRest {
-    final Logger logger = LoggerFactory.getLogger(ReviewRest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewRest.class);
 
     @EJB
-    ReviewFacade reviewFacade;
-
-    @EJB
+    private
     BookFacade bookFacade;
 
     @GET

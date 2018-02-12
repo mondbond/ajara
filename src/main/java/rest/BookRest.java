@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 @Path("/books")
 public class BookRest {
-    final Logger logger = LoggerFactory.getLogger(BookRest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookRest.class);
     private BookMapper bm = new BookMapper();
 
     @EJB

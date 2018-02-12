@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Path("/authors")
 public class AuthorRest {
-    final Logger logger = LoggerFactory.getLogger(AuthorRest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorRest.class);
 
     @EJB
     private AuthorManager authorManager;
