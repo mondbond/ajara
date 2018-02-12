@@ -18,7 +18,7 @@ public class BookFacade extends AbstractFacade<Book> {
         super(Book.class);
     }
 
-    // TODO: 12.02.2018 remove all methods to AuthorManager.
+    // TODO: 12.02.2018 remove all methods to AuthorManager
 
 //    /**
 //     * Return list of books with rating in range
