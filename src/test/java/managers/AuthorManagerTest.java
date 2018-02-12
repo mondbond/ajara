@@ -146,6 +146,6 @@ public class AuthorManagerTest {
 
     @Test
     public void testGetAutocompleteBySecondName() throws Exception {
-        // TODO: 12.02.2018 remove all methods from AuthorFacade and test all of them
+        // TODO: 12.02.2018 remove all methods from AuthorFacade and test all of them.
     }
 }
