@@ -1,16 +1,15 @@
 package rest;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.BookFacade;
 import rest.dto.ReviewDto;
 
 import javax.ejb.EJB;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,10 +23,15 @@ public class ReviewRest {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{bookId}")
-    public List<ReviewDto> getReviewsByPk(@PathParam("bookId") String bookId){
-       return bookFacade.findByPk(Long.parseLong(bookId)).getReviews().stream()
-               .map(r -> new ReviewDto(r.getId(), r.getCommenterName(), r.getCom(), r.getRating(), r.getCreateDate()))
-               .collect(Collectors.toList());
+    @Path("/{pk}")
+    public List<ReviewDto> getReviewsByBookPk(@PathParam("pk") String bookId) {
+
+        List<ReviewDto> reviews = bookFacade.findByPk(Long.parseLong(bookId)).getReviews().stream()
+                .map(r -> new ReviewDto(r.getId(), r.getCommenterName(), r.getCom(), r.getRating(), r.getCreateDate()))
+                .collect(Collectors.toList());
+        if (!ObjectUtils.allNotNull(reviews)) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return reviews;
     }
 }

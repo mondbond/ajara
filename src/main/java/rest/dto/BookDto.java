@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Builder
 public class BookDto implements Serializable {
 
-    public BookDto(Long id, String isbn, String name, String publisher, int publishYear, Float avgRating, LocalDate createDate, List<Long> authors) {
+    public BookDto(Long id, String isbn, String name, String publisher, int publishYear, Float avgRating, LocalDateTime createDate, List<Long> authors) {
         this.id = id;
         this.isbn = isbn;
         this.name = name;
@@ -35,7 +35,7 @@ public class BookDto implements Serializable {
 
     private @Getter @Setter Float avgRating;
 
-    private @Getter @Setter LocalDate createDate;
+    private @Getter @Setter LocalDateTime createDate;
 
     private @Getter @Setter
     List<Long> authors = new ArrayList<>();

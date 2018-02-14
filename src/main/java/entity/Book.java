@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class Book implements Serializable, HasDate {
 
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="book_id_sequence")
-    @SequenceGenerator(name="book_id_sequence", allocationSize = 1, sequenceName="BOOK_SEQ")
+    @SequenceGenerator(name="book_id_sequence", allocationSize = 1, sequenceName="BOOK_PK_SEQ")
     private Long id;
 
     @Column(name = "ISBN", unique = true)
@@ -63,7 +63,7 @@ public class Book implements Serializable, HasDate {
     private Float avgRating;
 
     @Column(name = "CREATE_DATE")
-    private LocalDate createDate;
+    private LocalDateTime createDate;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
@@ -81,7 +81,7 @@ public class Book implements Serializable, HasDate {
     }
 
     @Override
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         createDate = date;
     }
 }

@@ -70,16 +70,11 @@ public class BookController implements AbstractExtendedModel.Sorted{
      * Inserting new book
      * */
     public void insertNewBook() throws BookException {
-//        isbnValidMessage = "";
-//        if(bookManager.isUnique("ISBN", newBook.getIsbn())){
             ArrayList<Author> authors = new ArrayList<>();
             newBook.getAuthors().addAll(authors);
             LOGGER.info("insertNewBook:(book = [{}])", newBook);
             bookManager.save(newBook);
             newBook = new Book();
-//        }else {
-//            isbnValidMessage = "ISBN must be unique";
-//        }
     }
 
     /**
@@ -87,18 +82,12 @@ public class BookController implements AbstractExtendedModel.Sorted{
      * @param author author of a book
      * */
     public void createBookByAuthor(Author author) throws BookException {
-//        authorIsbnValidMessage = "";
-//        detailBookAddAuthorAutocompleteMessage ="";
-//        if(bookManager.isUnique("ISBN", newBook.getIsbn())){
             ArrayList<Author> authors = (ArrayList<Author>) newBook.getAuthors();
         authors.add(author);
         newBook.setAuthors(authors);
         LOGGER.info("insertNewBook:(book = [{}], author = [{}])", newBook, author);
         bookManager.save(newBook);
         newBook = new Book();
-//        }else {
-//            authorIsbnValidMessage = "ISBN must be unique";
-//        }
     }
 
     /**

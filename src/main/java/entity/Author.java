@@ -8,7 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class Author implements Serializable, HasDate {
 
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="author_id_sequence")
-    @SequenceGenerator(name="author_id_sequence", allocationSize = 1, sequenceName="AJARA_SEQ")
+    @SequenceGenerator(name="author_id_sequence", allocationSize = 1, sequenceName="AUTHOR_PK_SEQ")
     private long id;
 
     @Column(name = "FIRST_NAME")
@@ -53,7 +53,7 @@ public class Author implements Serializable, HasDate {
     private Float avgRating; // TODO: Rename to averageRating
 
     @Column(name = "CREATE_DATE")
-    private LocalDate createDate;
+    private LocalDateTime createDate;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
@@ -64,7 +64,7 @@ public class Author implements Serializable, HasDate {
     }
 
     @Override
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         createDate = date;
     }
 }

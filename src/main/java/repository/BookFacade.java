@@ -18,29 +18,35 @@ public class BookFacade extends AbstractFacade<Book> {
         super(Book.class);
     }
 
-    // TODO: 12.02.2018 remove all methods to AuthorManager
+    /**
+     * Get paginating list of books by rating
+     * @param from start range
+     * @param to end range
+     * @param skip count of rows to skip
+     * @param limit count of rows to select
+     * @param sortColumn sorting column
+     * @param isAsc is sorting order ASC
+     * @return list of Book
+     * */
+    public List<Book> getPaginationByRating(int from , int to,  int skip, int limit, String sortColumn, boolean isAsc) {
+        LOGGER.info("getPaginationByRating:(from = [{}], to = [{}], skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])",from, to, skip, limit, sortColumn, isAsc);
+        String sqlString = "from " + Book.class.getName() + " b where b.avgRating > " + from +" and b.avgRating <= " + to + " order by " + sortColumn + " " + ((isAsc)? "ASC": "DESC");
+        Query query = getEntityManager().createQuery(sqlString, Book.class);
+        query.setFirstResult(skip);
+        query.setMaxResults(limit);
+        List<Book> result = query.getResultList();
+        LOGGER.debug("OUT getPaginationByRating:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result.size());
+        return result;
+    }
 
-//    /**
-//     * Return list of books with rating in range
-//     * @param from int for start range
-//     * @param to int for end of range
-//     * @return list of books
-//     * */
-//    public List<Book> filterByRatingRange(Integer from, Integer to){
-//        LOGGER.info("IN filterByRatingRange:(from = [{}]), to = [{}]", from, to);
-//
-//        Query query = getEntityManager().createNamedQuery(Book.PAGINATION_QUERY_BY_RATING, Book.class);
-//        query.setParameter(1, from);
-//        query.setParameter(2, to);
-//        List<Book> result = query.getResultList();
-//        LOGGER.debug("OUT filterByRatingRange:(entity = [{}]), size = [{}]", Book.class, result.size());
-//        return result;
-//    }
-
-
+    /**
+     * Get paginating list of books by rating with range
+     * @param from smaller parameter
+     * @param to bigger parameter
+     * @return list of Book
+     * */
     public Long getCountByRatingRange(int from, int to){
         LOGGER.info("IN getCountByRatingRange:(from = [{}]), to = [{}]", from, to);
-
         Query query = getEntityManager().createNamedQuery(Book.QUERY_COUNT_BY_RATING);
         query.setParameter(1,  new Float(from));
         query.setParameter(2, new Float(to));
@@ -85,40 +91,4 @@ public class BookFacade extends AbstractFacade<Book> {
         LOGGER.debug("OUT getCountByAuthor:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result);
         return result;
     }
-
-    /**
-     * Get paginating list of books by rating
-     * @param from start range
-     * @param to end range
-     * @param skip count of rows to skip
-     * @param limit count of rows to select
-     * @param sortColumn sorting column
-     * @param isAsc is sorting order ASC
-     * @return list of Book
-     * */
-    public List<Book> getPaginationByRating(int from , int to,  int skip, int limit, String sortColumn, boolean isAsc) {
-        LOGGER.info("getPaginationByRating:(from = [{}], to = [{}], skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])",from, to, skip, limit, sortColumn, isAsc);
-        String sqlString = "from " + Book.class.getName() + " b where b.avgRating > " + from +" and b.avgRating <= " + to + " order by " + sortColumn + " " + ((isAsc)? "ASC": "DESC");
-        Query query = getEntityManager().createQuery(sqlString, Book.class);
-        query.setFirstResult(skip);
-        query.setMaxResults(limit);
-        List<Book> result = query.getResultList();
-        LOGGER.debug("OUT getPaginationByRating:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result.size());
-        return result;
-    }
-//
-//    /**
-//     * Get paginating list of books by rating
-//     * @param from start range
-//     * @param to end range
-//     * @return list of Book
-//     * */
-//    public Long getCountByRatingRange(int from , int to) {
-//        LOGGER.info("getCountByRatingRange:(from = [{}], to = [{}], sort column = [{}], is ASC = [{}])",from, to);
-//        String sqlString = "select count(*) from " + Book.class.getName() + " b where b.avgRating > " + from +" and b.avgRating <= " + to;
-//        Query query = getEntityManager().createQuery(sqlString);
-//        Long result = (Long) query.getSingleResult();
-//        LOGGER.debug("OUT getSizeByRating:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result);
-//        return result;
-//    }
 }

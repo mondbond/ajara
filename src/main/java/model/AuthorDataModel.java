@@ -51,8 +51,6 @@ public class AuthorDataModel extends AbstractExtendedModel<Author> {
         return dao.countAll();
     }
 
-
-
     public String getPkColumnConstant() {
         return Author.getPK_COLUMN();
     }

@@ -1,5 +1,7 @@
 package rest;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.BookFacade;
@@ -7,11 +9,9 @@ import rest.dto.BookDto;
 import rest.mappers.BookMapper;
 
 import javax.ejb.EJB;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,16 +26,26 @@ public class BookRest {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/sort/{sort}")
-    public List<BookDto> getBooks(@PathParam("sort") String sortColumn) {
-        return bookFacade.getPagination(0, 100, sortColumn, false).stream()
+    @Path("/")
+    public List<BookDto> getBooks(@QueryParam("skip") int skip, @QueryParam("limit") int limit,
+                                  @QueryParam("sort") String sortColumn, @QueryParam("isAsc") boolean isAsc) {
+        List<BookDto> books =  bookFacade.getPagination(skip, limit, sortColumn, isAsc).stream()
                 .map(bm).collect(Collectors.toList());
+        if(CollectionUtils.isEmpty(books)){
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return books;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{bookId}")
-    public BookDto getBook(@PathParam("bookId") Long bookId) {
+    @Path("/{pk}")
+    public BookDto getBook(@PathParam("pk") Long bookId) {
+
+        BookDto book = Stream.of(bookFacade.findByPk(bookId)).map(bm).findFirst().get();
+        if(!ObjectUtils.allNotNull(book)){
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
         return Stream.of(bookFacade.findByPk(bookId)).map(bm).findFirst().get();
     }
 }

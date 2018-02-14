@@ -146,6 +146,19 @@ public class AuthorManagerTest {
 
     @Test
     public void testGetAutocompleteBySecondName() throws Exception {
-        // TODO: 12.02.2018 remove all methods from AuthorFacade and test all of them
+        AuthorFacade homeMock = mock(AuthorFacade.class);
+        authorManager.setAuthorFacade(homeMock);
+
+        String prefixParam = "B";
+        List<Author> expected = new ArrayList<>();
+        expected.add(Author.builder().secondName("Bolduin").build());
+        expected.add(Author.builder().secondName("Belmondo").build());
+
+        when(homeMock.getAutocompleteByColumn(prefixParam)).thenReturn(expected);
+
+        List<Author> actual = authorManager.getAutocompleteBySecondName(prefixParam);
+
+        verify(homeMock, times(1)).getAutocompleteByColumn(prefixParam);
+        Assert.assertEquals(actual, expected);
     }
 }

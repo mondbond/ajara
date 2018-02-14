@@ -4,6 +4,8 @@ import entity.Author;
 import entity.Book;
 import exception.AuthorException;
 import managers.AuthorManager;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rest.dto.AuthorDto;
@@ -26,16 +28,25 @@ public class AuthorRest {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/")
     public Response getAllAuthors() throws AuthorException {
+        LOGGER.info("getAuthorByPk(pk = [{}])");
         List<Author> list = authorManager.getAllAuthors();
-        return Response.status(200).entity(list).build();
+        if (CollectionUtils.isEmpty(list)) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        } else {
+            return Response.status(Response.Status.OK).entity(list).build();
+        }
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{pk}")
     public AuthorDto getAuthorByPk(@PathParam(value = "pk") Long pk) throws AuthorException {
-        Author author =  authorManager.getAuthorByPk(pk);
-        return  new AuthorDto(author.getId(), author.getFirstName(),
+        LOGGER.info("getAuthorByPk(pk = [{}])", pk);
+        Author author = authorManager.getAuthorByPk(pk);
+        if (!ObjectUtils.allNotNull(author)) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return new AuthorDto(author.getId(), author.getFirstName(),
                 author.getSecondName(), author.getCreateDate(),
                 author.getBooks().stream()
                         .map(Book::getId)
@@ -46,8 +57,14 @@ public class AuthorRest {
     @Path("/{pk}")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response deleteByPk(@PathParam(value = "pk") Long pk) throws AuthorException {
+        LOGGER.info("deleteByPk(pk = [{}])", pk);
+        Author author = authorManager.getAuthorByPk(pk);
+        if (!ObjectUtils.allNotNull(author)) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
         authorManager.delete(pk);
-        return Response.status(200).build();
+
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST
@@ -55,17 +72,34 @@ public class AuthorRest {
     @Path("/")
     public Response createAuthor(@FormParam("name") String name,
                                  @FormParam("second_name") String secondName) throws AuthorException {
-        authorManager.save(new Author(name, secondName));
-        return Response.status(200).build();
+        LOGGER.info("createAuthor(name = [{}]), second name = [{}]", name, secondName);
+        try {
+            authorManager.save(new Author(name, secondName));
+        } catch (Exception e) {
+            throw new WebApplicationException();
+        }
+
+        return Response.status(Response.Status.OK).build();
     }
 
     @PUT
     @Path("/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void updateAuthor(@FormParam("pk") Long id,
-                             @FormParam("name") String name,
-                             @FormParam("second_name") String secondName) throws AuthorException {
+    public Response updateAuthor(@FormParam("pk") Long id,
+                                 @FormParam("name") String name,
+                                 @FormParam("second_name") String secondName) throws AuthorException {
+        LOGGER.info("updateAuthor(name = [{}]), second name = [{}]", name, secondName);
         Author author = authorManager.getAuthorByPk(id);
-        authorManager.update(author);
+        if (!ObjectUtils.allNotNull(author)) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+
+        try {
+            authorManager.update(author);
+        } catch (Exception e) {
+            throw new WebApplicationException();
+        }
+
+        return Response.status(Response.Status.OK).build();
     }
 }

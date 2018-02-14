@@ -13,7 +13,6 @@ public abstract class AbstractExtendedModel<E> extends ExtendedDataModel<E> {
 
     protected HashMap<String, Boolean> mOderMap = new HashMap<>();
 
-
     /**
      * Handle order changing in author table
      * */
@@ -25,7 +24,6 @@ public abstract class AbstractExtendedModel<E> extends ExtendedDataModel<E> {
         }
         isASC = mOderMap.get(columnName);
     }
-
 
     @Override
     public boolean isRowAvailable() {
