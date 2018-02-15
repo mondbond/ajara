@@ -76,7 +76,7 @@
                             Author
                     </f:facet>
                     <rich:list value="#{book.authors}" var="newAuthor" styleClass="no_list_style">
-                            <h:commandLink value="#{newAuthor.fullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
+                            <h:commandLink value="#{newAuthor.getFullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}"/>
                     </rich:list>
                 </rich:column>
 
@@ -95,7 +95,7 @@
                                 <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
                             </h:commandLink>
                     </f:facet>
-                    <h:outputText value="#{book.avgRating}"/>
+                    <h:outputText value="#{book.averageRating}"/>
                 </rich:column>
 
                 <rich:column>
@@ -139,10 +139,10 @@
             </h:commandButton>
 
             <h:form id="superform">
-                <rich:autocomplete id="her" value="#{bookController.authorAutocomplete}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                <rich:autocomplete id="her" value="#{bookController.authorAutocomplete}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.getFullName()}"
                                    layout="list" styleClass="margin left">
                     <a4j:ajax event="selectitem" />
-                        <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onclick="pass_filter_id('#{newAuthor.id}')" />
+                        <h:outputLabel value="#{newAuthor.getFullName()}" style="font-weight:bold" onclick="pass_filter_id('#{newAuthor.id}')" />
                 </rich:autocomplete>
 
                 <h:commandButton action="#{bookController.filterByAuthor}" value="Filter by author" styleClass="margin left" style="display: inline-block">
@@ -196,7 +196,7 @@
                     <div>
                         <h:outputText value="Authors: " for="bm_add_authors"/>
                         <rich:list id="bm_add_authors" value="#{bookController.newBook.authors}" var="newAuthor">
-                            <h:outputText value="#{newAuthor.fullName()}" />
+                            <h:outputText value="#{newAuthor.getFullName()}" />
                             <h:commandLink actionListener="#{bookController.deleteAuthorFromAddBookForm(newAuthor.id)}" value=" X">
                                 <a4j:ajax execute="bm_add_authors" render="bm_add_authors" />
                             </h:commandLink>
@@ -205,10 +205,10 @@
 
                         <h:outputText value="Add author: "/>
                         <div>
-                            <rich:autocomplete value="#{bookController.booksAddAuthorAutocompleteValue}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                            <rich:autocomplete value="#{bookController.booksAddAuthorAutocompleteValue}" attached="false" autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.getFullName()}"
                                                id="autocomplateAuthor" layout="list" styleClass="margin left">
                             <a4j:ajax event="selectitem" />
-                            <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onclick="pass_select_id('#{newAuthor.id}')" />
+                            <h:outputLabel value="#{newAuthor.getFullName()}" style="font-weight:bold" onclick="pass_select_id('#{newAuthor.id}')" />
                         </rich:autocomplete>
                         <h:outputText id="addAuthorAutocompleteMessage" value="#{bookController.newBookAddAuthorAutocompleteMessage}" style="color:red" />
                         </div>
@@ -218,7 +218,7 @@
                         </h:commandButton>
                     </div>
 
-                    <a4j:commandButton value="Save book" action="#{bookController.insertNewBook}">
+                    <a4j:commandButton value="Save book" action="#{bookController.insertNewBook()}">
                         <a4j:ajax execute="@form booksTablePanel" render="@form booksTablePanel" />
                     </a4j:commandButton>
 

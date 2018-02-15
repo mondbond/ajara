@@ -17,7 +17,7 @@ public class BookMapper implements Function<Book,BookDto> {
                 .name(book.getName())
                 .publisher(book.getPublisher())
                 .publishYear(book.getPublishYear())
-                .avgRating(book.getAvgRating())
+                .averageRating(book.getAverageRating())
                 .createDate(book.getCreateDate())
                 .authors(book.getAuthors().stream()
                         .map(Author::getId)

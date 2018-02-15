@@ -16,13 +16,18 @@ public class ReviewDto implements Serializable {
         this.date = date;
     }
 
-    private @Getter @Setter Long id;
+    private @Getter @Setter
+    Long id;
 
-    private @Getter @Setter String commenterName;
+    private @Getter @Setter
+    String commenterName;
 
-    private @Getter @Setter String com;
+    private @Getter @Setter
+    String com;
 
-    private @Getter @Setter int rating;
+    private @Getter @Setter
+    int rating;
 
-    private @Getter @Setter LocalDateTime date;
+    private @Getter @Setter
+    LocalDateTime date;
 }

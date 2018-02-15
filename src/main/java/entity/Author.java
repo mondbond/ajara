@@ -15,19 +15,20 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Entity
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "books")
 @EntityListeners({CreateDateListener.class})
 @Table(name = "AUTHOR")
-@NamedQuery(name = "Author.by.secondName.like",
-            query = "select a from Author a WHERE a.secondName LIKE ?1")
+@NamedQuery(name = Author.QUERY_LIKE_SECOND_NAME,
+        query = "select a from Author a WHERE a.secondName LIKE ?1")
 public class Author implements Serializable, HasDate {
-    public static @Getter final String PK_COLUMN = "ID";
-    public static @Getter final String NAME_COLUMN = "FIRST_NAME";
-    public static @Getter final String SECOND_NAME_COLUMN = "SECOND_NAME";
-    public static @Getter final String AVG_RATING_COLUMN = "AVG_RATING";
-    public static @Getter final String DATE_COLUMN = "CREATE_DATE";
+    public static final String PK_COLUMN = "ID";
+    public static final String NAME_COLUMN = "FIRST_NAME";
+    public static final String SECOND_NAME_COLUMN = "SECOND_NAME";
+    public static final String AVG_RATING_COLUMN = "AVERAGE_RATING";
+    public static final String DATE_COLUMN = "CREATE_DATE";
 
     public static final String QUERY_LIKE_SECOND_NAME = "Author.by.secondName.like";
 
@@ -37,8 +38,8 @@ public class Author implements Serializable, HasDate {
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="author_id_sequence")
-    @SequenceGenerator(name="author_id_sequence", allocationSize = 1, sequenceName="AUTHOR_PK_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_id_sequence")
+    @SequenceGenerator(name = "author_id_sequence", allocationSize = 1, sequenceName = "AUTHOR_PK_SEQ")
     private long id;
 
     @Column(name = "FIRST_NAME")
@@ -49,8 +50,8 @@ public class Author implements Serializable, HasDate {
     @Pattern(regexp = "[a-zA-Z0-9- ]{3,100}", message = "Second name must contain minimum 3 maximum 100 characters without special symbols")
     private String secondName;
 
-    @Column(name = "AVG_RATING")
-    private Float avgRating; // TODO: Rename to averageRating
+    @Column(name = "AVERAGE_RATING")
+    private Float averageRating;
 
     @Column(name = "CREATE_DATE")
     private LocalDateTime createDate;
@@ -59,8 +60,8 @@ public class Author implements Serializable, HasDate {
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
-    public String fullName() {
-        return secondName + " " + firstName ;
+    public String getFullName() {
+        return secondName + " " + firstName;
     }
 
     @Override

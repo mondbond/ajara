@@ -1,14 +1,13 @@
 package rest;
 
 import entity.Author;
-import entity.Book;
 import exception.AuthorException;
 import managers.AuthorManager;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rest.dto.AuthorDto;
+import rest.mappers.AuthorMapper;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -21,6 +20,8 @@ import java.util.stream.Collectors;
 public class AuthorRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorRest.class);
 
+    private AuthorMapper authorMapper = new AuthorMapper();
+
     @EJB
     private AuthorManager authorManager;
 
@@ -29,29 +30,22 @@ public class AuthorRest {
     @Path("/")
     public Response getAllAuthors() throws AuthorException {
         LOGGER.info("getAuthorByPk(pk = [{}])");
-        List<Author> list = authorManager.getAllAuthors();
-        if (CollectionUtils.isEmpty(list)) {
-//            throw new WebApplicationException(Response.Status.NOT_FOUND);
-            Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.status(Response.Status.OK).entity(list).build();
+        List<AuthorDto> list = authorManager.getAllAuthors().stream().map(authorMapper).collect(Collectors.toList());
+        return (CollectionUtils.isEmpty(list)) ? Response.status(Response.Status.NOT_FOUND).build()
+                : Response.status(Response.Status.OK).entity(list).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{pk}")
-    public AuthorDto getAuthorByPk(@PathParam(value = "pk") Long pk) throws AuthorException {
+    public Response getAuthorByPk(@PathParam(value = "pk") Long pk) throws AuthorException {
         LOGGER.info("getAuthorByPk(pk = [{}])", pk);
         Author author = authorManager.getAuthorByPk(pk);
-        if (!ObjectUtils.allNotNull(author)) {
-//            throw new WebApplicationException(Response.Status.NOT_FOUND);
-            Response.status(Response.Status.NOT_FOUND).build();
+        if (author == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return new AuthorDto(author.getId(), author.getFirstName(),
-                author.getSecondName(), author.getCreateDate(),
-                author.getBooks().stream()
-                        .map(Book::getId)
-                        .collect(Collectors.toList()));
+        return Response.status(Response.Status.OK).entity(authorMapper.apply(author)
+        ).build();
     }
 
     @DELETE
@@ -60,9 +54,8 @@ public class AuthorRest {
     public Response deleteByPk(@PathParam(value = "pk") Long pk) throws AuthorException {
         LOGGER.info("deleteByPk(pk = [{}])", pk);
         Author author = authorManager.getAuthorByPk(pk);
-        if (!ObjectUtils.allNotNull(author)) {
-//            throw new WebApplicationException(Response.Status.NOT_FOUND);
-            Response.status(Response.Status.NOT_FOUND).build();
+        if (author == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
         authorManager.delete(pk);
         return Response.status(Response.Status.OK).build();
@@ -77,9 +70,9 @@ public class AuthorRest {
         try {
             authorManager.save(new Author(name, secondName));
         } catch (Exception e) {
-            Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @PUT
@@ -88,16 +81,17 @@ public class AuthorRest {
     public Response updateAuthor(@FormParam("pk") Long id,
                                  @FormParam("name") String name,
                                  @FormParam("second_name") String secondName) throws AuthorException {
-        LOGGER.info("updateAuthor(name = [{}]), second name = [{}]", name, secondName);
+        LOGGER.info("updateAuthor(name = [{}]), second name = [{}], pk = [{}]", name, secondName, id);
         Author author = authorManager.getAuthorByPk(id);
-        if (!ObjectUtils.allNotNull(author)) {
-            Response.status(Response.Status.NOT_FOUND).build();
+        if (author == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-
+        author.setFirstName(name);
+        author.setSecondName(secondName);
         try {
             authorManager.update(author);
         } catch (Exception e) {
-            Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.status(Response.Status.OK).build();
     }

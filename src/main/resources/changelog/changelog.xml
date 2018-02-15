@@ -149,6 +149,8 @@
                                  baseTableName="REVIEWS"
                                  constraintName="ID_BOOK_C"
                                  deferrable="true"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
                                  initiallyDeferred="true"
                                  referencedColumnNames="ID"
                                  referencedTableName="BOOK"/>
@@ -156,13 +158,13 @@
 
     <changeSet id="50" author="mond">
         <addColumn tableName="BOOK">
-            <column name="AVG_RATING" type="float">
+            <column name="AVERAGE_RATING" type="float">
                 <constraints nullable="true"/>
             </column>
         </addColumn>
 
         <addColumn tableName="AUTHOR">
-            <column name="AVG_RATING" type="float">
+            <column name="AVERAGE_RATING" type="float">
                 <constraints nullable="true"/>
             </column>
         </addColumn>
@@ -178,6 +180,20 @@
         </sql>
     </changeSet>
 
+    <changeSet id="320" author="me">
+        <sql endDelimiter="/">
+            create or replace FUNCTION GET_AVG_RATING_BY_BOOK
+            (
+            PARAM1 IN NUMBER
+            ) RETURN NUMBER IS average_book_rating NUMBER(11,2);
+            BEGIN
+                SELECT AVG(rating) INTO average_book_rating FROM REVIEWS WHERE id_book = PARAM1;
+            RETURN (average_book_rating);
+            END GET_AVG_RATING_BY_BOOK;
+            /
+        </sql>
+    </changeSet>
+
     <changeSet id="318" author="me">
         <sql endDelimiter="/">
             create or replace PROCEDURE GET_AVG
@@ -186,13 +202,13 @@
             ) IS
             CURSOR author_to_update IS SELECT A.ID FROM Author A WHERE A.ID IN (SELECT AB.AUTHOR_ID FROM JOIN_BOOK_AUTHOR AB WHERE AB.BOOK_ID = PID);
             BEGIN
-            UPDATE BOOK B SET
-            B.AVG_RATING = GET_AVG_RATING_BY_BOOK(PID)
-            WHERE B.ID = PID;
-            FOR update_author_id IN author_to_update LOOP
-            UPDATE Author A SET A.AVG_RATING = (SELECT AVG(B.AVG_RATING) FROM BOOK B WHERE B.ID IN (SELECT BOOK_ID FROM JOIN_BOOK_AUTHOR AB WHERE AB.AUTHOR_ID = update_author_id.ID)) WHERE A.ID = update_author_id.ID;
-            EXIT WHEN author_to_update%NOTFOUND;
-            END LOOP;
+                UPDATE BOOK B SET
+                B.AVERAGE_RATING = GET_AVG_RATING_BY_BOOK(PID)
+                WHERE B.ID = PID;
+                FOR update_author_id IN author_to_update LOOP
+                    UPDATE Author A SET A.AVERAGE_RATING = (SELECT AVG(B.AVERAGE_RATING) FROM BOOK B WHERE B.ID IN (SELECT BOOK_ID FROM JOIN_BOOK_AUTHOR AB WHERE AB.AUTHOR_ID = update_author_id.ID)) WHERE A.ID = update_author_id.ID;
+                    EXIT WHEN author_to_update%NOTFOUND;
+                END LOOP;
             END GET_AVG;
             /
         </sql>
@@ -206,16 +222,16 @@
             DECLARE
             var number;
             BEGIN
-            case
-            when inserting then
-            package_pk.book_pk:=0;
-            var:=:new.id_book;
-            package_pk.book_pk:=var;
-            when deleting then
-            package_pk.book_pk:=0;
-            var:=:old.id_book;
-            package_pk.book_pk:=var;
-            end case;
+                case
+                when inserting then
+                package_pk.book_pk:=0;
+                var:=:new.id_book;
+                package_pk.book_pk:=var;
+                when deleting then
+                package_pk.book_pk:=0;
+                var:=:old.id_book;
+                package_pk.book_pk:=var;
+                end case;
             NULL;
             END;
             /
@@ -230,8 +246,8 @@
             DECLARE
             book_var_id number;
             BEGIN
-            book_var_id:=PACKAGE_PK.book_pk;
-            GET_AVG(book_var_id);
+                book_var_id:=PACKAGE_PK.book_pk;
+                GET_AVG(book_var_id);
             NULL;
             END;
             /
@@ -255,20 +271,19 @@
 
             BEFORE EACH ROW IS
             BEGIN
-            case
-            when inserting then
-            emps (emps.count + 1) := :new.author_id;
-            when deleting then
-            emps (emps.count + 1) := :old.author_id;
-            end case;
+                case
+                when inserting then
+                emps (emps.count + 1) := :new.author_id;
+                when deleting then
+                emps (emps.count + 1) := :old.author_id;
+                end case;
             NULL;
             END BEFORE EACH ROW;
 
             AFTER STATEMENT IS
             BEGIN
-            forall e in emps.FIRST .. emps.LAST
-            UPDATE AUTHOR A SET A.AVG_RATING = (SELECT AVG(B.AVG_RATING) FROM BOOK B WHERE B.ID IN (SELECT BOOK_ID FROM JOIN_BOOK_AUTHOR AB WHERE AB.AUTHOR_ID = emps(e))) WHERE A.ID = emps(e);
-
+                forall e in emps.FIRST .. emps.LAST
+                UPDATE AUTHOR A SET A.AVERAGE_RATING = (SELECT AVG(B.AVERAGE_RATING) FROM BOOK B WHERE B.ID IN (SELECT BOOK_ID FROM JOIN_BOOK_AUTHOR AB WHERE AB.AUTHOR_ID = emps(e))) WHERE A.ID = emps(e);
             NULL;
             END AFTER STATEMENT;
             END CHANGE_A_B_RELATION;

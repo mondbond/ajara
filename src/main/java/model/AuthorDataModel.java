@@ -1,12 +1,13 @@
 package model;
 
 import entity.Author;
+import exception.AuthorException;
+import managers.AuthorManager;
 import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.model.Range;
 import org.ajax4jsf.model.SequenceRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import repository.AuthorFacade;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -16,17 +17,17 @@ import javax.faces.context.FacesContext;
 public class AuthorDataModel extends AbstractExtendedModel<Author> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorDataModel.class);
 
-    private String sortingColumn = Author.getDATE_COLUMN();
+    private String sortingColumn = Author.DATE_COLUMN;
 
     @EJB
-    private  AuthorFacade dao;
+    private AuthorManager authorManager;
 
     public AuthorDataModel() {
     }
 
     /**
      * Sorting authors by params from RequestParameterMap
-     * */
+     */
     public void sortBy(String sortingColumn) {
         LOGGER.info("SORT [{}] and map = [{}]", sortingColumn, mOderMap);
         this.sortingColumn = sortingColumn;
@@ -38,7 +39,11 @@ public class AuthorDataModel extends AbstractExtendedModel<Author> {
         int firstRow = ((SequenceRange) range).getFirstRow();
         int numberOfLines = ((SequenceRange) range).getRows();
 
-        this.list = dao.getPagination(firstRow, numberOfLines, sortingColumn , isASC);
+        try {
+            this.list = authorManager.getPagination(firstRow, numberOfLines, sortingColumn, isASC);
+        } catch (AuthorException e) {
+            e.printStackTrace();
+        }
 
         for (int i = 0; i < list.size(); i++) {
             dataVisitor.process(facesContext, i, o);
@@ -47,27 +52,31 @@ public class AuthorDataModel extends AbstractExtendedModel<Author> {
 
     @Override
     public int getRowCount() {
-        LOGGER.info("getRowCount: " + String.valueOf(dao.countAll()));
-        return dao.countAll();
+        try {
+            return authorManager.countAll();
+        } catch (AuthorException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public String getPkColumnConstant() {
-        return Author.getPK_COLUMN();
+        return Author.PK_COLUMN;
     }
 
     public String getNameColumnConstant() {
-        return Author.getNAME_COLUMN();
+        return Author.NAME_COLUMN;
     }
 
     public String getSecondNameColumnConstant() {
-        return Author.getSECOND_NAME_COLUMN();
+        return Author.SECOND_NAME_COLUMN;
     }
 
     public String getRatingColumnConstant() {
-        return Author.getAVG_RATING_COLUMN();
+        return Author.AVG_RATING_COLUMN;
     }
 
     public String getDateColumnConstant() {
-        return Author.getDATE_COLUMN();
+        return Author.DATE_COLUMN;
     }
 }

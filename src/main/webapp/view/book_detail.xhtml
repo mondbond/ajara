@@ -8,8 +8,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a4j="http://richfaces.org/a4j"
-      xmlns:rich="http://richfaces.org/rich"
-      xmlns:p="http://xmlns.jcp.org/jsf/core">
+      xmlns:rich="http://richfaces.org/rich">
 
 <h:head>
     <title>#{bookController.detailBook.name}</title>
@@ -55,7 +54,7 @@
                     <h:message for="inputReviewRating" style="color:red" />
 
                     <h:outputLabel value="Comment:"/>
-                    <h:inputTextarea id="inputCommentArea" value="#{reviewController.newReview.com}" />
+                    <h:inputTextarea id="inputCommentArea" value="#{reviewController.newReview.commentText}" />
                     <h:message for="inputCommentArea" style="color:red" />
 
                     <h:commandButton value="Save Record" action="#{bookController.refreshDetailBook()}" styleClass="margin" onclick="location.reload()">
@@ -79,7 +78,7 @@
                                     <h:outputText value="Rating:" style="font-weight:bold" />
                                     <h:outputText value="#{review.rating}" />
                                     <h:outputText value="Comment:" style="font-weight:bold" />
-                                    <h:outputText value="#{review.com}" style="width: 200px;display:block" />
+                                    <h:outputText value="#{review.commentText}" style="width: 200px;display:block" />
                                     <h:outputText value="Date:" style="font-weight:bold" />
                                     <h:outputText value="#{review.createDate}" />
                                 </h:panelGrid>
@@ -110,7 +109,7 @@
 
                 <h:outputText value="Authors: " for="updateAuthorText"/>
                 <rich:list id="updateAuthorText" value="#{bookController.detailBook.authors}" var="newAuthor">
-                    <h:commandLink value="#{newAuthor.fullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}" />
+                    <h:commandLink value="#{newAuthor.getFullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}" />
                     <h:commandLink actionListener="#{bookController.deleteAuthorFromBook(newAuthor.id)}" value=" X">
                         <a4j:ajax execute="updateAuthor" render="updateAuthor" />
                     </h:commandLink>
@@ -126,7 +125,7 @@
                 <h:outputText id="updateYearText" value="#{bookController.detailBook.publishYear}"/>
 
                 <h:outputText value="Rating: " for="updateRatingText"/>
-                <h:outputText id="updateRatingText" value="#{bookController.detailBook.avgRating}"/>
+                <h:outputText id="updateRatingText" value="#{bookController.detailBook.averageRating}"/>
 
                 <a4j:commandButton value="Edit" action="#{bookController.update()}">
                     <rich:componentControl target="popup_edit_book" operation="show" />
@@ -164,7 +163,7 @@
                     <div>
                         <h:outputText value="Authors: " for="updateAuthor" styleClass="bold"/>
                         <rich:list id="updateAuthor" value="#{bookController.detailBook.authors}" var="newAuthor">
-                            <h:commandLink value="#{newAuthor.fullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}" />
+                            <h:commandLink value="#{newAuthor.getFullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}" />
                             <h:commandLink actionListener="#{bookController.deleteAuthorFromBook(newAuthor.id)}" value=" X">
                                 <a4j:ajax execute="updateAuthor" render="updateAuthor" />
                             </h:commandLink>
@@ -174,10 +173,10 @@
                         <h:outputText value="Add author: " styleClass="bold"/>
                         <div>
                         <rich:autocomplete value="#{bookController.bookAddAuthorAutocompleteValue}" id="authorAutocomplateForm" attached="false"
-                                           autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.fullName()}"
+                                           autocompleteMethod="#{bookController.autocompleteAuthor}" var="newAuthor" mode="cachedAjax" fetchValue="#{newAuthor.getFullName()}"
                                            layout="list" styleClass="margin left">
                             <a4j:ajax event="selectitem" />
-                            <h:outputLabel value="#{newAuthor.fullName()}" style="font-weight:bold" onfocus="pass_id('#{newAuthor.id}')" onclick="pass_id('#{newAuthor.id}')"/>
+                            <h:outputLabel value="#{newAuthor.getFullName()}" style="font-weight:bold" onfocus="pass_id('#{newAuthor.id}')" onclick="pass_id('#{newAuthor.id}')"/>
                         </rich:autocomplete>
                             <h:outputText id="addAuthorAutocompleteMessage" value="#{bookController.detailBookAddAuthorAutocompleteMessage}" for="updateAuthorText" style="color:red"/>
                         </div>

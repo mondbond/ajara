@@ -15,9 +15,9 @@ public abstract class AbstractExtendedModel<E> extends ExtendedDataModel<E> {
 
     /**
      * Handle order changing in author table
-     * */
-    protected void changeOrder(String columnName){
-        if(mOderMap.containsKey(columnName)) {
+     */
+    protected void changeOrder(String columnName) {
+        if (mOderMap.containsKey(columnName)) {
             mOderMap.put(columnName, !mOderMap.get(columnName));
         } else {
             mOderMap.put(columnName, true);
@@ -66,10 +66,10 @@ public abstract class AbstractExtendedModel<E> extends ExtendedDataModel<E> {
         throw new UnsupportedOperationException();
     }
 
-    public interface Sorted{
+    public interface Sorted {
         /**
          * Sorting by params from RequestParameterMap
-         * */
+         */
         void sortBy();
     }
 }

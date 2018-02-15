@@ -1,6 +1,11 @@
 package managers;
 
 import entity.Author;
+import org.junit.runner.RunWith;
+import org.mockito.internal.util.reflection.Whitebox;
+import org.powermock.api.support.membermodification.MemberModifier;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -16,8 +21,11 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({ AuthorManager.class })
 public class AuthorManagerTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorManagerTest.class);
+
 
     private AuthorManager authorManager;
 
@@ -44,7 +52,9 @@ public class AuthorManagerTest {
         AuthorFacade facadeMock = mock(AuthorFacade.class);
         when(facadeMock.findByPk(expected)).thenReturn(Author.builder().id(expected).build());
 
-        authorManager.setAuthorFacade(facadeMock);
+        MemberModifier
+                .field(AuthorManager .class, "authorFacade").set(
+                authorManager , facadeMock);
 
         Long actual = authorManager.getAuthorByPk(expected).getId();
 
@@ -66,9 +76,9 @@ public class AuthorManagerTest {
         expectedResults.add(Author.builder().id(111L).build());
         expectedResults.add(Author.builder().id(9999L).build());
         AuthorFacade facadeMock = mock(AuthorFacade.class);
-        when(facadeMock.findByPks(params)).thenReturn(expectedResults);
 
-        authorManager.setAuthorFacade(facadeMock);
+        when(facadeMock.findByPks(params)).thenReturn(expectedResults);
+        Whitebox.setInternalState(authorManager, "authorFacade", facadeMock);
 
         List<Author> actual = authorManager.getAuthorsByPk(params);
 
@@ -88,7 +98,7 @@ public class AuthorManagerTest {
         AuthorFacade facadeMock = mock(AuthorFacade.class);
         when(facadeMock.findAll()).thenReturn(expectedResults);
 
-        authorManager.setAuthorFacade(facadeMock);
+        Whitebox.setInternalState(authorManager, "authorFacade", facadeMock);
 
         List<Author> actual = authorManager.getAllAuthors();
 
@@ -99,7 +109,7 @@ public class AuthorManagerTest {
     @Test
     public void testSave() throws Exception {
         AuthorHome homeMock = mock(AuthorHome.class);
-        authorManager.setAuthorHome(homeMock);
+        Whitebox.setInternalState(authorManager, "authorHome", homeMock);
 
         Author authorParam = Author.builder().build();
         authorManager.save(authorParam);
@@ -110,7 +120,7 @@ public class AuthorManagerTest {
     @Test
     public void testUpdate() throws Exception {
         AuthorHome homeMock = mock(AuthorHome.class);
-        authorManager.setAuthorHome(homeMock);
+        Whitebox.setInternalState(authorManager, "authorHome", homeMock);
 
         Author authorParam = Author.builder().build();
         authorManager.update(authorParam);
@@ -121,7 +131,7 @@ public class AuthorManagerTest {
     @Test
     public void testDelete() throws Exception {
         AuthorHome homeMock = mock(AuthorHome.class);
-        authorManager.setAuthorHome(homeMock);
+        Whitebox.setInternalState(authorManager, "authorHome", homeMock);
 
         Long deleteParam = 100L;
         authorManager.delete(deleteParam);
@@ -132,7 +142,7 @@ public class AuthorManagerTest {
     @Test
     public void testDeleteList() throws Exception {
         AuthorHome homeMock = mock(AuthorHome.class);
-        authorManager.setAuthorHome(homeMock);
+        Whitebox.setInternalState(authorManager, "authorHome", homeMock);
 
         ArrayList<Long> deleteParams = new ArrayList<>();
         deleteParams.add(234L);
@@ -141,24 +151,24 @@ public class AuthorManagerTest {
         deleteParams.add(9999L);
         authorManager.deleteList(deleteParams);
 
-        verify(homeMock, times(1)).deleteList(deleteParams);
+        verify(homeMock, times(1)).deleteByPkList(deleteParams);
     }
 
     @Test
     public void testGetAutocompleteBySecondName() throws Exception {
-        AuthorFacade homeMock = mock(AuthorFacade.class);
-        authorManager.setAuthorFacade(homeMock);
+        AuthorFacade homeFacade = mock(AuthorFacade.class);
+        Whitebox.setInternalState(authorManager, "authorFacade", homeFacade);
 
         String prefixParam = "B";
         List<Author> expected = new ArrayList<>();
         expected.add(Author.builder().secondName("Bolduin").build());
         expected.add(Author.builder().secondName("Belmondo").build());
 
-        when(homeMock.getAutocompleteByColumn(prefixParam)).thenReturn(expected);
+        when(homeFacade.getAutocompleteByColumn(prefixParam)).thenReturn(expected);
 
         List<Author> actual = authorManager.getAutocompleteBySecondName(prefixParam);
 
-        verify(homeMock, times(1)).getAutocompleteByColumn(prefixParam);
+        verify(homeFacade, times(1)).getAutocompleteByColumn(prefixParam);
         Assert.assertEquals(actual, expected);
     }
 }

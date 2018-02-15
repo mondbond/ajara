@@ -1,13 +1,12 @@
 package exception;
 
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@NoArgsConstructor
 public class AuthorException extends Exception {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorException.class);
-
-    public AuthorException(){
-    }
 
     public AuthorException(String message){
         super(message);

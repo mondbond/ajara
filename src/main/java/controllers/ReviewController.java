@@ -31,12 +31,14 @@ public class ReviewController {
     private BookManager bookManager;
 
     @EJB
-    private @Setter ReviewDataModel dataModel;
+    private @Setter
+    ReviewDataModel dataModel;
 
     /**
      * Create review entity with pointed book
+     *
      * @param book book of review relate to
-     * */
+     */
     public void createReview(Book book) throws BookException, ReviewException {
         LOGGER.info("IN createReview(book = [{}])", book);
         newReview.setBook(bookManager.getBookByPk(book.getId()));
@@ -46,17 +48,19 @@ public class ReviewController {
 
     /**
      * Delete review by pk
+     *
      * @param pk pk of review
-     * */
+     */
     public void deleteReview(Long pk) throws ReviewException {
         reviewManager.deleteReview(pk);
     }
 
     /**
      * Get reviews by book
+     *
      * @param id book id of what reviews are you need
      * @return ReviewDataModel with seted book id in
-     * */
+     */
     public ReviewDataModel getReviewDataModelByBook(Long id) {
         dataModel.setBookId(id);
         return dataModel;

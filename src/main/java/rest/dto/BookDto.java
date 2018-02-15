@@ -1,5 +1,6 @@
 package rest.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,32 +11,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Builder
+@AllArgsConstructor
 public class BookDto implements Serializable {
 
-    public BookDto(Long id, String isbn, String name, String publisher, int publishYear, Float avgRating, LocalDateTime createDate, List<Long> authors) {
-        this.id = id;
-        this.isbn = isbn;
-        this.name = name;
-        this.publisher = publisher;
-        this.publishYear = publishYear;
-        this.avgRating = avgRating;
-        this.createDate = createDate;
-        this.authors = authors;
-    }
+    private @Getter @Setter
+    Long id;
 
-    private @Getter @Setter Long id;
+    private @Getter @Setter
+    String isbn;
 
-    private @Getter @Setter String isbn;
+    private @Getter @Setter
+    String name;
 
-    private @Getter @Setter String name;
+    private @Getter @Setter
+    String publisher;
 
-    private @Getter @Setter String publisher;
+    private @Getter @Setter
+    int publishYear;
 
-    private @Getter @Setter int publishYear;
+    private @Getter @Setter
+    Float averageRating;
 
-    private @Getter @Setter Float avgRating;
-
-    private @Getter @Setter LocalDateTime createDate;
+    private @Getter @Setter
+    LocalDateTime createDate;
 
     private @Getter @Setter
     List<Long> authors = new ArrayList<>();

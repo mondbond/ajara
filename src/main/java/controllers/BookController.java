@@ -116,7 +116,8 @@ public class BookController implements AbstractExtendedModel.Sorted{
         isbnValidMessage = "";
         Book sameBookInDb = bookManager.getBookByPk(detailBook.getId());
         if(!sameBookInDb.getIsbn().equals( detailBook.getIsbn())){
-            if(bookManager.isUnique(Book.getISBN_COLUMN(), detailBook.getIsbn())){
+            // TODO: Move validation to manager, check if update book works in rest
+            if(bookManager.isUnique(Book.ISBN_COLUMN, detailBook.getIsbn())){
                 LOGGER.info("update:(detailBook = [{}]", detailBook);
                 detailBook.setAuthors(detailBook.getAuthors().stream().distinct().collect(Collectors.toList()));
                 bookManager.update(detailBook);
@@ -157,8 +158,10 @@ public class BookController implements AbstractExtendedModel.Sorted{
     public void addAuthorToBook() throws AuthorException {
         LOGGER.info("IN addAuthorToBook:");
         bookAddAuthorAutocompleteValue = null;
-        detailBookAddAuthorAutocompleteMessage = null;
+        detailBookAddAuthorAutocompleteMessage = "";
+        // TODO: Avoid code duplicate, extract to private method
         if(hiddenDetailBookAddAuthorId != null && !hiddenDetailBookAddAuthorId.equals("")){
+
             Author author = authorManager.getAuthorByPk(Long.parseLong(hiddenDetailBookAddAuthorId));
             if(isHasSameBook(detailBook, author)){
                 detailBookAddAuthorAutocompleteMessage = "You already select this author";
@@ -169,6 +172,8 @@ public class BookController implements AbstractExtendedModel.Sorted{
             detailBookAddAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
         }
         hiddenDetailBookAddAuthorId = null;
+//        addUniqueAuthorToBook(detailBook, hiddenDetailBookAddAuthorId, detailBookAddAuthorAutocompleteMessage);
+
     }
 
     public void addAuthorToAddNewBookForm() throws AuthorException {
@@ -176,6 +181,7 @@ public class BookController implements AbstractExtendedModel.Sorted{
         booksAddAuthorAutocompleteValue = null;
         newBookAddAuthorAutocompleteMessage = "";
         if(hiddenManageBookAddAuthorId != null && !hiddenManageBookAddAuthorId.equals("")){
+
             Author author = authorManager.getAuthorByPk(Long.parseLong(hiddenManageBookAddAuthorId));
             if(isHasSameBook(newBook, author)){
                 newBookAddAuthorAutocompleteMessage = "You already select this author";
@@ -186,14 +192,31 @@ public class BookController implements AbstractExtendedModel.Sorted{
             newBookAddAuthorAutocompleteMessage = "Field must be choosed from autocomplete form";
         }
         hiddenManageBookAddAuthorId =null;
+//        addUniqueAuthorToBook(newBook, hiddenManageBookAddAuthorId, newBookAddAuthorAutocompleteMessage);
+
     }
 
-    public void clearMessages(){
+    private void clearMessages(){
         LOGGER.info("clearMessages message is cleared");
         newBookAddAuthorAutocompleteMessage = "";
         detailBookAddAuthorAutocompleteMessage = "";
         isbnValidMessage = "";
     }
+
+//    private void addUniqueAuthorToBook(Book book, String hiddenAuthorId, String message) throws AuthorException {
+//        if(hiddenAuthorId != null && !hiddenAuthorId.equals("")){
+//
+//            Author author = authorManager.getAuthorByPk(Long.parseLong(hiddenAuthorId));
+//            if(isHasSameBook(book, author)){
+//                message = "You already select this author";
+//            }else {
+//                book.getAuthors().add(author);
+//            }
+//        }else {
+//            message = "Field must be choosed from autocomplete form";
+//        }
+//        hiddenAuthorId = null;
+//    }
 
     private boolean isHasSameBook(Book book, Author author){
         return book.getAuthors().stream().anyMatch(item -> item.getId() == author.getId());

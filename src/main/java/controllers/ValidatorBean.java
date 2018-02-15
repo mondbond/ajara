@@ -24,14 +24,13 @@ public class ValidatorBean {
     public void validateISBN(FacesContext context, UIComponent component,
                              Object value) throws ValidatorException {
         LOGGER.info("validateISBN [{}]", value.toString());
-
-        if(!value.toString().matches("[0-9]{10,18}")){
+        if (!value.toString().matches("[0-9]{10,18}")) {
             FacesMessage msg =
                     new FacesMessage("ISBN must contain minimum 10, maximum 18 numbers",
                             "ISBN must contain minimum 10, maximum 18 numbers");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
-        }else if (!bookFacade.isUnique(Book.getISBN_COLUMN(), value.toString())){
+        } else if (!bookFacade.isUnique(Book.ISBN_COLUMN, value.toString())) {
             FacesMessage msg =
                     new FacesMessage("ISBN is not unique",
                             "ISBN is not unique");
@@ -39,7 +38,4 @@ public class ValidatorBean {
             throw new ValidatorException(msg);
         }
     }
-
-
-
 }

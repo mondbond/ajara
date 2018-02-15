@@ -16,29 +16,31 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@EqualsAndHashCode(exclude = "authors")
+@Getter
+@Setter
 @Entity
 @EntityListeners({CreateDateListener.class})
-@Table(name = "BOOK", uniqueConstraints={@UniqueConstraint(columnNames={"isbn"})})
+@Table(name = "BOOK", uniqueConstraints = {@UniqueConstraint(columnNames = {"isbn"})})
 @NamedQueries({
         @NamedQuery(name = Book.QUERY_COUNT_BY_RATING,
-                query = "select count(*) from Book b WHERE b.avgRating > ?1 and b.avgRating <= ?2")
+                query = "select count(*) from Book b WHERE b.averageRating > ?1 and b.averageRating <= ?2")
 })
 public class Book implements Serializable, HasDate {
-    public static final @Getter String PK_COLUMN = "ID";
-    public static final @Getter String NAME_COLUMN = "NAME";
-    public static final @Getter String AUTHOR_COLUMN = "AUTHOR";
-    public static final @Getter String ISBN_COLUMN = "ISBN";
-    public static final @Getter String PUBLISHER_COLUMN = "PUBLISHER";
-    public static final @Getter String YEAR_COLUMN = "PUBLISH_YEAR";
-    public static final @Getter String AVG_RATING_COLUMN = "AVG_RATING";
-    public static final @Getter String DATE_COLUMN = "CREATE_DATE";
+    public static String PK_COLUMN = "ID";
+    public static String NAME_COLUMN = "NAME";
+    public static String AUTHOR_COLUMN = "AUTHOR";
+    public static String ISBN_COLUMN = "ISBN";
+    public static String PUBLISHER_COLUMN = "PUBLISHER";
+    public static String YEAR_COLUMN = "PUBLISH_YEAR";
+    public static String AVG_RATING_COLUMN = "AVERAGE_RATING";
+    public static String DATE_COLUMN = "CREATE_DATE";
 
     public static final String QUERY_COUNT_BY_RATING = "Book.count.eq.ratinq";
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="book_id_sequence")
-    @SequenceGenerator(name="book_id_sequence", allocationSize = 1, sequenceName="BOOK_PK_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_id_sequence")
+    @SequenceGenerator(name = "book_id_sequence", allocationSize = 1, sequenceName = "BOOK_PK_SEQ")
     private Long id;
 
     @Column(name = "ISBN", unique = true)
@@ -57,8 +59,8 @@ public class Book implements Serializable, HasDate {
     @Range(min = 1000, max = 2018, message = "Year must be between 1000 and 2018")
     private Integer publishYear;
 
-    @Column(name = "AVG_RATING")
-    private Float avgRating;
+    @Column(name = "AVERAGE_RATING")
+    private Float averageRating;
 
     @Column(name = "CREATE_DATE")
     private LocalDateTime createDate;
@@ -67,16 +69,11 @@ public class Book implements Serializable, HasDate {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "JOIN_BOOK_AUTHOR",
             joinColumns = {@JoinColumn(name = "book_id")},
-            inverseJoinColumns = {@JoinColumn (name = "author_id")})
+            inverseJoinColumns = {@JoinColumn(name = "author_id")})
     private List<Author> authors = new ArrayList<>();
 
-    @OneToMany(mappedBy = "book", orphanRemoval = true)
+    @OneToMany(mappedBy = "book", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
-
-    @Override
-    public String toString() {
-        return "Book";
-    }
 
     @Override
     public void setDate(LocalDateTime date) {

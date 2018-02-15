@@ -10,7 +10,7 @@
       xmlns:rich="http://richfaces.org/rich">
 
 <h:head>
-    <title>#{authorController.detailAuthor.fullName()}</title>
+    <title>#{authorController.detailAuthor.getFullName()}</title>
     <link rel="stylesheet" type="text/css" href="../style/style.css"/>
     <link rel="stylesheet" type="text/css" href="../style/detail_author_style.css"/>
 </h:head>
@@ -20,7 +20,7 @@
 
     <div class="content_panel">
         <a4j:outputPanel id="author_title_name">
-            <h2>Author: #{authorController.detailAuthor.fullName()}</h2>
+            <h2>Author: #{authorController.detailAuthor.getFullName()}</h2>
         </a4j:outputPanel>
 
         <div id="undername_line">
@@ -81,7 +81,7 @@
                         <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getRatingColumnConstant()}" />
                     </h:commandLink>
                 </f:facet>
-                <h:outputText value="#{book.avgRating}"/>
+                <h:outputText value="#{book.averageRating}"/>
             </rich:column>
 
             <rich:column>

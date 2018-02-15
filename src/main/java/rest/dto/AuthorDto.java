@@ -1,5 +1,6 @@
 package rest.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,25 +9,24 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 public class AuthorDto implements Serializable {
 
-    public AuthorDto(long id, String firstName, String secondName, LocalDateTime createDate, List<Long> books) {
-        this.id = id;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.createDate = createDate;
-        this.books = books;
-    }
+    private @Getter
+    long id;
 
-    private @Getter long id;
+    private @Getter @Setter
+    String firstName;
 
-    private @Getter @Setter String firstName;
+    private @Getter @Setter
+    String secondName;
 
-    private @Getter @Setter String secondName;
+    private @Getter @Setter
+    Float averageRating;
 
-    private @Getter @Setter Float avgRating;
+    private @Getter @Setter
+    LocalDateTime createDate;
 
-    private @Getter @Setter LocalDateTime createDate;
-
-    private @Getter @Setter List<Long> books = new ArrayList<>();
+    private @Getter @Setter
+    List<Long> books = new ArrayList<>();
 }
