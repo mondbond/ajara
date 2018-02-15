@@ -72,14 +72,6 @@ public class BookManager {
         }
     }
 
-//    public List<Book> filterByRating(int rating) throws BookException {
-//        try {
-//            return bookFacade.filterByRating(rating - 1, rating);
-//        }catch (Exception e){
-//            throw new BookException("Something happen while you trying to filter by rating", e);
-//        }
-//    }
-
     public Long getCountByRatingRange(int from, int to) throws BookException {
         try {
             return bookFacade.getCountByRatingRange(from, to);

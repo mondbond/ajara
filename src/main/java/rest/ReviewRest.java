@@ -24,13 +24,13 @@ public class ReviewRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{pk}")
-    public List<ReviewDto> getReviewsByBookPk(@PathParam("pk") String bookId) {
+    public List<ReviewDto> getReviewsByBookPk(@PathParam("pk") String pk) {
 
-        List<ReviewDto> reviews = bookFacade.findByPk(Long.parseLong(bookId)).getReviews().stream()
+        List<ReviewDto> reviews = bookFacade.findByPk(Long.parseLong(pk)).getReviews().stream()
                 .map(r -> new ReviewDto(r.getId(), r.getCommenterName(), r.getCom(), r.getRating(), r.getCreateDate()))
                 .collect(Collectors.toList());
         if (!ObjectUtils.allNotNull(reviews)) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            Response.status(Response.Status.NOT_FOUND).build();
         }
         return reviews;
     }

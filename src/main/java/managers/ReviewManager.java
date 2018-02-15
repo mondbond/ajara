@@ -30,6 +30,15 @@ public class ReviewManager {
         }
     }
 
+    public void deleteReview(Long pk) throws ReviewException {
+        try {
+            reviewHome.deleteByPk(pk);
+        }catch (Exception e){
+            throw new ReviewException("Something happen while you trying to delete review", e);
+        }
+    }
+
+//    todo: return this method to review facade
     /**
      * Get paginating list of entities for params
      * @param skip count of rows to skip
@@ -49,13 +58,5 @@ public class ReviewManager {
         List<Review> result = query.getResultList();
         LOGGER.debug("OUT getPagination:returned list of [{}], size = [{}]", Review.class.getSimpleName(), result.size());
         return result;
-    }
-
-    public void deleteReview(Long pk) throws ReviewException {
-        try {
-            reviewHome.deleteByPk(pk);
-        }catch (Exception e){
-            throw new ReviewException("Something happen while you trying to delete review", e);
-        }
     }
 }

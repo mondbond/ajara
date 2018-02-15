@@ -31,10 +31,10 @@ public class AuthorRest {
         LOGGER.info("getAuthorByPk(pk = [{}])");
         List<Author> list = authorManager.getAllAuthors();
         if (CollectionUtils.isEmpty(list)) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        } else {
-            return Response.status(Response.Status.OK).entity(list).build();
+//            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            Response.status(Response.Status.NOT_FOUND).build();
         }
+        return Response.status(Response.Status.OK).entity(list).build();
     }
 
     @GET
@@ -44,7 +44,8 @@ public class AuthorRest {
         LOGGER.info("getAuthorByPk(pk = [{}])", pk);
         Author author = authorManager.getAuthorByPk(pk);
         if (!ObjectUtils.allNotNull(author)) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+//            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            Response.status(Response.Status.NOT_FOUND).build();
         }
         return new AuthorDto(author.getId(), author.getFirstName(),
                 author.getSecondName(), author.getCreateDate(),
@@ -60,10 +61,10 @@ public class AuthorRest {
         LOGGER.info("deleteByPk(pk = [{}])", pk);
         Author author = authorManager.getAuthorByPk(pk);
         if (!ObjectUtils.allNotNull(author)) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+//            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            Response.status(Response.Status.NOT_FOUND).build();
         }
         authorManager.delete(pk);
-
         return Response.status(Response.Status.OK).build();
     }
 
@@ -71,14 +72,13 @@ public class AuthorRest {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Path("/")
     public Response createAuthor(@FormParam("name") String name,
-                                 @FormParam("second_name") String secondName) throws AuthorException {
+                                 @FormParam("second_name") String secondName) {
         LOGGER.info("createAuthor(name = [{}]), second name = [{}]", name, secondName);
         try {
             authorManager.save(new Author(name, secondName));
         } catch (Exception e) {
-            throw new WebApplicationException();
+            Response.status(Response.Status.BAD_REQUEST).build();
         }
-
         return Response.status(Response.Status.OK).build();
     }
 
@@ -91,15 +91,14 @@ public class AuthorRest {
         LOGGER.info("updateAuthor(name = [{}]), second name = [{}]", name, secondName);
         Author author = authorManager.getAuthorByPk(id);
         if (!ObjectUtils.allNotNull(author)) {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+            Response.status(Response.Status.NOT_FOUND).build();
         }
 
         try {
             authorManager.update(author);
         } catch (Exception e) {
-            throw new WebApplicationException();
+            Response.status(Response.Status.BAD_REQUEST).build();
         }
-
         return Response.status(Response.Status.OK).build();
     }
 }
