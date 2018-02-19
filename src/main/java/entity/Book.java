@@ -1,32 +1,29 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import entity.listeners.CreateDateListener;
-import entity.listeners.HasDate;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "authors")
+@EqualsAndHashCode(exclude = "authors", callSuper = true)
 @Getter
 @Setter
 @Entity
-@EntityListeners({CreateDateListener.class})
+@SequenceGenerator(name = "variable_sequence", allocationSize = 1, sequenceName = "BOOK_PK_SEQ")
 @Table(name = "BOOK", uniqueConstraints = {@UniqueConstraint(columnNames = {"isbn"})})
 @NamedQueries({
         @NamedQuery(name = Book.QUERY_COUNT_BY_RATING,
                 query = "select count(*) from Book b WHERE b.averageRating > ?1 and b.averageRating <= ?2")
 })
-public class Book implements Serializable, HasDate {
+public class Book extends BaseEntity implements Serializable {
     public static String PK_COLUMN = "ID";
     public static String NAME_COLUMN = "NAME";
     public static String AUTHOR_COLUMN = "AUTHOR";
@@ -37,11 +34,6 @@ public class Book implements Serializable, HasDate {
     public static String DATE_COLUMN = "CREATE_DATE";
 
     public static final String QUERY_COUNT_BY_RATING = "Book.count.eq.ratinq";
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_id_sequence")
-    @SequenceGenerator(name = "book_id_sequence", allocationSize = 1, sequenceName = "BOOK_PK_SEQ")
-    private Long id;
 
     @Column(name = "ISBN", unique = true)
     @Pattern(regexp = "[0-9]{10,18}", message = "ISBN must contain minimum 10, maximum 18 numbers and be unique")
@@ -62,9 +54,6 @@ public class Book implements Serializable, HasDate {
     @Column(name = "AVERAGE_RATING")
     private Float averageRating;
 
-    @Column(name = "CREATE_DATE")
-    private LocalDateTime createDate;
-
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "JOIN_BOOK_AUTHOR",
@@ -74,9 +63,4 @@ public class Book implements Serializable, HasDate {
 
     @OneToMany(mappedBy = "book", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<Review> reviews;
-
-    @Override
-    public void setDate(LocalDateTime date) {
-        createDate = date;
-    }
 }

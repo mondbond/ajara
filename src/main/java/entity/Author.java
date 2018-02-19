@@ -1,29 +1,25 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import entity.listeners.CreateDateListener;
-import entity.listeners.HasDate;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode(exclude = "books")
-@EntityListeners({CreateDateListener.class})
+@EqualsAndHashCode(exclude = "books", callSuper = true)
+@SequenceGenerator(name = "variable_sequence", allocationSize = 1, sequenceName = "AUTHOR_PK_SEQ")
 @Table(name = "AUTHOR")
 @NamedQuery(name = Author.QUERY_LIKE_SECOND_NAME,
         query = "select a from Author a WHERE a.secondName LIKE ?1")
-public class Author implements Serializable, HasDate {
+public class Author extends BaseEntity {
     public static final String PK_COLUMN = "ID";
     public static final String NAME_COLUMN = "FIRST_NAME";
     public static final String SECOND_NAME_COLUMN = "SECOND_NAME";
@@ -37,10 +33,14 @@ public class Author implements Serializable, HasDate {
         this.secondName = secondName;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_id_sequence")
-    @SequenceGenerator(name = "author_id_sequence", allocationSize = 1, sequenceName = "AUTHOR_PK_SEQ")
-    private long id;
+    @Builder
+    public Author(long id, String firstName, String secondName, Float averageRating, LocalDateTime createDate, List<Book> books) {
+        super(id, createDate);
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.averageRating = averageRating;
+        this.books = books;
+    }
 
     @Column(name = "FIRST_NAME")
     @Pattern(regexp = "[a-zA-Z0-9- ]{3,100}", message = "Name must contain minimum 3 maximum 100 characters without special symbols")
@@ -53,19 +53,11 @@ public class Author implements Serializable, HasDate {
     @Column(name = "AVERAGE_RATING")
     private Float averageRating;
 
-    @Column(name = "CREATE_DATE")
-    private LocalDateTime createDate;
-
     @JsonIgnore
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
     public String getFullName() {
         return secondName + " " + firstName;
-    }
-
-    @Override
-    public void setDate(LocalDateTime date) {
-        createDate = date;
     }
 }
