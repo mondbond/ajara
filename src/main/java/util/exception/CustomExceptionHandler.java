@@ -1,4 +1,4 @@
-package util;
+package util.exception;
 
 import lombok.val;
 import org.apache.commons.lang3.exception.ExceptionUtils;

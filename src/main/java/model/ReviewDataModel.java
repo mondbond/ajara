@@ -20,8 +20,6 @@ public class ReviewDataModel extends AbstractExtendedModel<Review> {
 
     private @Setter Long bookId;
 
-    private String sortingColumn = Review.DATE_COLUMN;
-
     @EJB
     private ReviewManager manager;
 
@@ -34,7 +32,8 @@ public class ReviewDataModel extends AbstractExtendedModel<Review> {
         int numberOfLines = ((SequenceRange) range).getRows();
 
         try {
-            this.list = manager.getPagination(firstRow, numberOfLines, sortingColumn , isASC, bookId);
+            String sortingColumn = Review.DATE_COLUMN;
+            this.list = manager.getPagination(firstRow, numberOfLines, sortingColumn, isASC, bookId);
         } catch (ReviewException e) {
             e.printStackTrace();
         }

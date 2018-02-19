@@ -1,4 +1,4 @@
-package controllers;
+package beans;
 
 import entity.Author;
 import entity.Book;
@@ -47,6 +47,10 @@ public class BookController implements AbstractExtendedModel.Sorted{
 
     private @Getter @Setter String newBookAddAuthorAutocompleteMessage;
     private @Getter @Setter String detailBookAddAuthorAutocompleteMessage;
+
+    private @Getter @Setter String formId = "add_book_form:addAuthorAutocompleteMessage";
+
+
     private @Getter @Setter String filterAuthorValidationMessage;
 
     private @Getter @Setter String isbnValidMessage;
@@ -116,7 +120,6 @@ public class BookController implements AbstractExtendedModel.Sorted{
         isbnValidMessage = "";
         Book sameBookInDb = bookManager.getBookByPk(detailBook.getId());
         if(!sameBookInDb.getIsbn().equals( detailBook.getIsbn())){
-            // TODO: Move validation to manager, check if update book works in rest
             if(bookManager.isUnique(Book.ISBN_COLUMN, detailBook.getIsbn())){
                 LOGGER.info("update:(detailBook = [{}]", detailBook);
                 detailBook.setAuthors(detailBook.getAuthors().stream().distinct().collect(Collectors.toList()));
@@ -159,6 +162,7 @@ public class BookController implements AbstractExtendedModel.Sorted{
         LOGGER.info("IN addAuthorToBook:");
         bookAddAuthorAutocompleteValue = null;
         detailBookAddAuthorAutocompleteMessage = "";
+
         // TODO: Avoid code duplicate, extract to private method
         if(hiddenDetailBookAddAuthorId != null && !hiddenDetailBookAddAuthorId.equals("")){
 
@@ -173,13 +177,17 @@ public class BookController implements AbstractExtendedModel.Sorted{
         }
         hiddenDetailBookAddAuthorId = null;
 //        addUniqueAuthorToBook(detailBook, hiddenDetailBookAddAuthorId, detailBookAddAuthorAutocompleteMessage);
-
     }
 
     public void addAuthorToAddNewBookForm() throws AuthorException {
         LOGGER.info("IN addAuthorToAddNewBookForm:");
         booksAddAuthorAutocompleteValue = null;
         newBookAddAuthorAutocompleteMessage = "";
+
+        Map<String, String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String amount = map.get(formId);
+        LOGGER.info("IN addAuthorToBook DEBUG: [{}]", amount);
+
         if(hiddenManageBookAddAuthorId != null && !hiddenManageBookAddAuthorId.equals("")){
 
             Author author = authorManager.getAuthorByPk(Long.parseLong(hiddenManageBookAddAuthorId));

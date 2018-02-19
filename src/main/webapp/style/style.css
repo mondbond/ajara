@@ -1,10 +1,8 @@
 /*general*/
 body{
-    background-image: url("../img/paper_fibers.png");
-    /*background-image: url("../img/paper-fabric.ai");*/
+    /*background-image: url("../img/paper_fibers.png");*/
+    background-image: url("../img/paper-fabric.jpg");
     background-repeat: repeat;
-    /*margin: 0;*/
-    /*padding: 0;*/
 }
 
 html, body {

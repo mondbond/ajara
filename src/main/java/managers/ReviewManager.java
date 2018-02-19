@@ -55,6 +55,4 @@ public class ReviewManager {
             throw new ReviewException("Enable to count books by rating", e);
         }
     }
-
-
 }

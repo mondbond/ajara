@@ -1,4 +1,4 @@
-package util;
+package util.exception;
 
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerFactory;
@@ -12,7 +12,6 @@ public class CustomExceptionHandlerFactory extends ExceptionHandlerFactory {
 
     @Override
     public ExceptionHandler getExceptionHandler() {
-        ExceptionHandler handler = new CustomExceptionHandler(parent.getExceptionHandler());
-        return handler;
+        return new CustomExceptionHandler(parent.getExceptionHandler());
     }
 }

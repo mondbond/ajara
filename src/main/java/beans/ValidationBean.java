@@ -1,4 +1,4 @@
-package controllers;
+package beans;
 
 import entity.Book;
 import org.slf4j.Logger;
@@ -15,8 +15,8 @@ import javax.faces.validator.ValidatorException;
 
 @ManagedBean(name = "validatorBean")
 @ViewScoped
-public class ValidatorBean {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ValidatorBean.class);
+public class ValidationBean {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ValidationBean.class);
 
     @EJB
     private BookFacade bookFacade;

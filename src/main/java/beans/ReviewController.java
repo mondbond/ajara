@@ -1,4 +1,4 @@
-package controllers;
+package beans;
 
 import entity.Book;
 import entity.Review;
