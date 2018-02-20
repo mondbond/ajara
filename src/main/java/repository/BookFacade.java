@@ -30,13 +30,16 @@ public class BookFacade extends AbstractFacade<Book> {
      * @return list of Book
      */
     public List<Book> getPaginationByRating(int from, int to, int skip, int limit, String sortColumn, boolean isAsc) {
-        LOGGER.info("getPaginationByRating:(from = [{}], to = [{}], skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])", from, to, skip, limit, sortColumn, isAsc);
-        String sqlString = "from " + Book.class.getName() + " b where b.averageRating > " + from + " and b.averageRating <= " + to + " order by " + sortColumn + " " + ((isAsc) ? "ASC" : "DESC");
+        LOGGER.info("getPaginationByRating:(from = [{}], to = [{}], skip = [{}], limit = [{}], sort column = [{}]," +
+                " is ASC = [{}])", from, to, skip, limit, sortColumn, isAsc);
+        String sqlString = "from " + Book.class.getName() + " b where b.averageRating > " +
+                from + " and b.averageRating <= " + to + " order by " + sortColumn + " " + ((isAsc) ? "ASC" : "DESC");
         Query query = getEntityManager().createQuery(sqlString, Book.class);
         query.setFirstResult(skip);
         query.setMaxResults(limit);
         List<Book> result = query.getResultList();
-        LOGGER.debug("OUT getPaginationByRating:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result.size());
+        LOGGER.debug("OUT getPaginationByRating:returned list of [{}], size = [{}]", Book.class.getSimpleName(),
+                result.size());
         return result;
     }
 
@@ -68,13 +71,16 @@ public class BookFacade extends AbstractFacade<Book> {
      * @return list of Book
      */
     public List<Book> getPaginationByAuthor(Author author, int skip, int limit, String sortColumn, boolean isAsc) {
-        LOGGER.info("IN getPaginationByAuthor:(author = [{}], skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])", author, skip, limit, sortColumn, isAsc);
-        String sqlString = "select * from Book b inner join JOIN_BOOK_AUTHOR j on j.author_id = " + author.getId() + " and j.book_id = b.id order by " + sortColumn + " " + ((isAsc) ? "ASC" : "DESC");
+        LOGGER.info("IN getPaginationByAuthor:(author = [{}], skip = [{}], limit = [{}], sort column = [{}], " +
+                "is ASC = [{}])", author, skip, limit, sortColumn, isAsc);
+        String sqlString = "select * from Book b inner join JOIN_BOOK_AUTHOR j on j.author_id = " + author.getId() +
+                " and j.book_id = b.id order by " + sortColumn + " " + ((isAsc) ? "ASC" : "DESC");
         Query query = getEntityManager().createNativeQuery(sqlString, Book.class);
         query.setFirstResult(skip);
         query.setMaxResults(limit);
         List<Book> result = query.getResultList();
-        LOGGER.debug("OUT getPaginationByAuthor:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result.size());
+        LOGGER.debug("OUT getPaginationByAuthor:returned list of [{}], size = [{}]", Book.class.getSimpleName(),
+                result.size());
         return result;
     }
 
@@ -86,7 +92,8 @@ public class BookFacade extends AbstractFacade<Book> {
      */
     public Long getCountByAuthor(Author author) {
         LOGGER.info("IN getCountByAuthor:(author = [{}])", author);
-        String sqlString = "SELECT COUNT(*) from Book b inner join JOIN_BOOK_AUTHOR j on j.author_id = " + author.getId() + " and j.book_id = b.id";
+        String sqlString = "SELECT COUNT(*) from Book b inner join JOIN_BOOK_AUTHOR j on j.author_id = " +
+                author.getId() + " and j.book_id = b.id";
         Query query = getEntityManager().createNativeQuery(sqlString);
         Long result = ((BigDecimal) query.getSingleResult()).longValue();
         LOGGER.debug("OUT getCountByAuthor:returned list of [{}], size = [{}]", Book.class.getSimpleName(), result);

@@ -2,7 +2,7 @@ package model;
 
 import entity.Author;
 import entity.Book;
-import exception.BookException;
+import util.exception.BookException;
 import lombok.Getter;
 import lombok.Setter;
 import managers.BookManager;
@@ -20,11 +20,10 @@ import javax.faces.context.FacesContext;
 public class BookDataModel extends AbstractExtendedModel<Book> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookDataModel.class);
 
-    private @Getter
-    @Setter
+    private @Getter @Setter
     Author filteredAuthor;
-    private @Getter
-    @Setter
+
+    private @Getter @Setter
     Integer filteredRating = null;
 
     private String sortingColumn = Book.DATE_COLUMN;
@@ -127,4 +126,3 @@ public class BookDataModel extends AbstractExtendedModel<Book> {
         return Book.DATE_COLUMN;
     }
 }
-

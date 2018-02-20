@@ -28,7 +28,6 @@ public class ReviewRest {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{pk}")
     public Response getReviewsByBookPk(@PathParam("pk") String pk) {
-
         List<ReviewDto> reviews = bookFacade.findByPk(Long.parseLong(pk)).getReviews().stream()
                 .map(r -> new ReviewDto(r.getId(), r.getCommenterName(), r.getCommentText(), r.getRating(), r.getCreateDate()))
                 .collect(Collectors.toList());

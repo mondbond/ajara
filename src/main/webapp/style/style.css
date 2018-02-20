@@ -1,7 +1,6 @@
 /*general*/
 body{
-    /*background-image: url("../img/paper_fibers.png");*/
-    background-image: url("../img/paper-fabric.jpg");
+    background-image: url("../img/paper.png");
     background-repeat: repeat;
 }
 
@@ -38,6 +37,16 @@ html, body {
 
 .padding{
     padding: 10px;
+}
+
+/*font*/
+
+.big_font{
+    font-size: 35px;
+}
+
+.bold{
+    font-weight: bold;
 }
 
 body{
@@ -93,16 +102,6 @@ a, a:link, a:visited, a:active {
     height: 400px;
 }
 
-/*font*/
-
-.big_font{
-    font-size: 35px;
-}
-
-.bold{
-    font-weight: bold;
-}
-
 .validate_message{
     color: #c3062a;
 }
@@ -114,6 +113,7 @@ a, a:link, a:visited, a:active {
 /*style*/
 .no_list_style{
     list-style-type: none;
+    padding-left: 0;
 }
 
 .column_size{

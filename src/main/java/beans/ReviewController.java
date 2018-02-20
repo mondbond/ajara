@@ -2,8 +2,8 @@ package beans;
 
 import entity.Book;
 import entity.Review;
-import exception.BookException;
-import exception.ReviewException;
+import util.exception.BookException;
+import util.exception.ReviewException;
 import lombok.Getter;
 import lombok.Setter;
 import managers.BookManager;

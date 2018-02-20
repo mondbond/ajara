@@ -1,7 +1,7 @@
 package beans;
 
 import entity.Author;
-import exception.AuthorException;
+import util.exception.AuthorException;
 import lombok.Getter;
 import lombok.Setter;
 import managers.AuthorManager;
@@ -19,8 +19,6 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-
-// TODO: 15.02.2018 comment/ unused/ code reformat
 
 @ManagedBean(name = "authorController")
 @SessionScoped

@@ -39,7 +39,7 @@
 
                 <rich:column>
                     <f:facet name="header">
-                        <h:commandLink action="#{authorController.sortBy}" > id
+                        <h:commandLink action="#{authorController.sortBy}" > ID
                             <f:param name="#{authorController.COLUMN_NAME}" value="#{authorController.authorDataModel.getPkColumnConstant()}" />
                         </h:commandLink>
                     </f:facet>
@@ -190,10 +190,9 @@
             });
 
             set_listeners_to_checkboxes();
-        }
+        };
 
         function set_listeners_to_checkboxes(){
-            var boxes = [];
             var boxes = document.querySelectorAll('.deleteSelector');
             boxes.forEach(function (item, i, arr) {
                 boxes[i].addEventListener("click", function(e){
@@ -207,11 +206,10 @@
         }
 
         function onSelectAll() {
-            var boxes = [];
             var boxes = document.querySelectorAll('.deleteSelector');
             var bool_value = document.getElementById('selectAll').getElementsByTagName('input')[0].checked;
             boxes.forEach(function (item, i, arr) {
-                if(boxes[i].checked != bool_value){
+                if(boxes[i].checked !== bool_value){
                     boxes[i].click();
                 }
             });

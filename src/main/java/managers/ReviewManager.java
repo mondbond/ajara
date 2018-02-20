@@ -1,7 +1,7 @@
 package managers;
 
 import entity.Review;
-import exception.ReviewException;
+import util.exception.ReviewException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.ReviewFacade;
@@ -40,7 +40,8 @@ public class ReviewManager {
         }
     }
 
-    public List<Review> getPagination(int skip, int limit, String sortColumn, boolean isAsc, Long bookId) throws ReviewException {
+    public List<Review> getPagination(int skip, int limit, String sortColumn, boolean isAsc, Long bookId)
+            throws ReviewException {
         try {
             return reviewFacade.getPagination(skip, limit, sortColumn, isAsc, bookId);
         } catch (Exception e) {

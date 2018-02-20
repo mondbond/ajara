@@ -25,7 +25,6 @@
         function pass_id(i){
             document.getElementById('edit_Book_Form:hiddenSelectedAuthorsIdContainer').value=i;
             document.getElementById('edit_Book_Form:hiddenSelectedAuthorsIdContainer').onchange();
-            alert("ddfashfhdfas" + document.getElementById('edit_Book_Form:hiddenSelectedAuthorsIdContainer').value );
         }
     </script>
 
@@ -82,7 +81,7 @@
                                     <h:outputText value="#{review.createDate}" />
                                 </h:panelGrid>
                         </rich:column>
-                        <rich:column>
+                        <rich:column styleClass="center_text">
                             <f:facet name="header">Select</f:facet>
                             <h:panelGroup>
                                 <h:commandLink style="color: inherit" action="#{bookController.refreshDetailBook()}">
@@ -107,11 +106,8 @@
                 <h:outputText id="updateNameText" value="#{bookController.detailBook.name}"/>
 
                 <h:outputText value="Authors: " for="updateAuthorText"/>
-                <rich:list id="updateAuthorText" value="#{bookController.detailBook.authors}" var="newAuthor">
+                <rich:list id="updateAuthorText" value="#{bookController.detailBook.authors}" var="newAuthor" styleClass="no_list_style">
                     <h:commandLink value="#{newAuthor.getFullName()}" actionListener="#{authorController.toDetailPage(newAuthor.id)}" />
-                    <h:commandLink actionListener="#{bookController.deleteAuthorFromBook(newAuthor.id)}" value=" X">
-                        <a4j:ajax execute="updateAuthor" render="updateAuthor" />
-                    </h:commandLink>
                 </rich:list>
 
                 <h:outputText value="ISBN: " for="updateIsbn"/>

@@ -2,7 +2,7 @@ package managers;
 
 import entity.Author;
 import entity.Book;
-import exception.BookException;
+import util.exception.BookException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repository.BookFacade;
@@ -89,7 +89,8 @@ public class BookManager {
         }
     }
 
-    public List<Book> getPaginationByRating(int from, int to, int skip, int limit, String sortColumn, boolean isAsc) throws BookException {
+    public List<Book> getPaginationByRating(int from, int to, int skip, int limit, String sortColumn, boolean isAsc)
+            throws BookException {
         try {
             return bookFacade.getPaginationByRating(from, to, skip, limit, sortColumn, isAsc);
         } catch (Exception e) {
@@ -105,7 +106,8 @@ public class BookManager {
         }
     }
 
-    public List<Book> getPaginationByAuthor(Author author, int skip, int limit, String sortColumn, boolean isAsc) throws BookException {
+    public List<Book> getPaginationByAuthor(Author author, int skip, int limit, String sortColumn, boolean isAsc)
+            throws BookException {
         try {
             return bookFacade.getPaginationByAuthor(author, skip, limit, sortColumn, isAsc);
         } catch (Exception e) {

@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import repository.AuthorFacade;
 import repository.AuthorHome;
@@ -34,14 +33,8 @@ public class AuthorManagerTest {
         authorManager = new AuthorManager();
     }
 
-    @BeforeMethod
-    public void setUp() throws Exception {
-        LOGGER.info("setUp");
-    }
-
     @AfterMethod
-    public void tearDown() throws Exception {
-        LOGGER.info("tearDown");
+    public void tearDown() {
         authorManager = new AuthorManager();
     }
 

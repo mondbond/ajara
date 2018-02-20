@@ -170,7 +170,7 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="300" author="me">
+    <changeSet id="300" author="mond">
         <sql endDelimiter="/">
             create or replace package package_pk is
             type saved_id is table of number;
@@ -180,7 +180,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="320" author="me">
+    <changeSet id="320" author="mond">
         <sql endDelimiter="/">
             create or replace FUNCTION GET_AVG_RATING_BY_BOOK
             (
@@ -194,7 +194,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="318" author="me">
+    <changeSet id="318" author="mond">
         <sql endDelimiter="/">
             create or replace PROCEDURE GET_AVG
             (
@@ -214,7 +214,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="317" author="me">
+    <changeSet id="317" author="mond">
         <sql endDelimiter="/">
             create or replace TRIGGER BEFORE_REVIEW_SAVE_BOOK_PK_TRG
             BEFORE INSERT OR UPDATE OR DELETE ON REVIEWS
@@ -239,7 +239,7 @@
     </changeSet>
 
 
-    <changeSet id="316" author="me">
+    <changeSet id="316" author="mond">
         <sql endDelimiter="/">
             create or replace TRIGGER ON_AFTER_REVIEWS_INSERT_TRG
             AFTER INSERT OR DELETE ON REVIEWS
@@ -254,7 +254,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="305" author="me">
+    <changeSet id="305" author="mond">
         <sql endDelimiter="/">
             create or replace TRIGGER CHANGE_A_B_RELATION
             FOR DELETE OR INSERT ON JOIN_BOOK_AUTHOR

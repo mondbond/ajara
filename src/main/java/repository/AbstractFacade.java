@@ -79,7 +79,8 @@ public abstract class AbstractFacade<T> {
      * @return list of entities
      */
     public List<T> getPagination(int skip, int limit, String sortColumn, boolean isAsc) {
-        LOGGER.info("IN getPagination:(skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])", skip, limit, sortColumn, isAsc);
+        LOGGER.info("IN getPagination:(skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])", skip, limit,
+                sortColumn, isAsc);
         String sqlString = "from " + entity.getName() + " order by " + sortColumn + " " + ((isAsc) ? "ASC" : "DESC");
         Query query = entityManager.createQuery(sqlString, entity);
         query.setFirstResult(skip);
@@ -96,7 +97,8 @@ public abstract class AbstractFacade<T> {
      */
     public int countAll() {
         LOGGER.info("IN countAllByBookId:(entity = [{}])", entity);
-        int result = ((Long) entityManager.createQuery("SELECT count(*) from " + entity.getName()).getSingleResult()).intValue();
+        int result = ((Long) entityManager.createQuery("SELECT count(*) from " +
+                entity.getName()).getSingleResult()).intValue();
         LOGGER.debug("OUT countAllByBookId: entity = [{}], count = [{}]", entity.getSimpleName(), result);
         return result;
     }

@@ -1,4 +1,4 @@
-package exception;
+package util.exception;
 
 
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 package managers;
 
 import entity.Author;
-import exception.AuthorException;
+import util.exception.AuthorException;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

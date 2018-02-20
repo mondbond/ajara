@@ -19,6 +19,7 @@ import java.util.List;
 @Table(name = "AUTHOR")
 @NamedQuery(name = Author.QUERY_LIKE_SECOND_NAME,
         query = "select a from Author a WHERE a.secondName LIKE ?1")
+
 public class Author extends BaseEntity {
     public static final String PK_COLUMN = "ID";
     public static final String NAME_COLUMN = "FIRST_NAME";

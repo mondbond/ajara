@@ -29,12 +29,14 @@ public class ReviewFacade extends AbstractFacade<Review> {
     public List<Review> getPagination(int skip, int limit, String sortColumn, boolean isAsc, Long bookId) {
         LOGGER.info("IN getPagination:(of = [{}], skip = [{}], limit = [{}], sort column = [{}], is ASC = [{}])",
                 Review.class.getSimpleName(), skip, limit, sortColumn, isAsc);
-        String sqlString = "from Review R where book.id = " + bookId + " order by " + sortColumn + " " + ((isAsc) ? "ASC" : "DESC");
+        String sqlString = "from Review R where book.id = " + bookId + " order by " + sortColumn + " " +
+                ((isAsc) ? "ASC" : "DESC");
         Query query = getEntityManager().createQuery(sqlString, Review.class);
         query.setFirstResult(skip);
         query.setMaxResults(limit);
         List<Review> result = query.getResultList();
-        LOGGER.debug("OUT getPagination:returned list of [{}], size = [{}]", Review.class.getSimpleName(), result.size());
+        LOGGER.debug("OUT getPagination:returned list of [{}], size = [{}]", Review.class.getSimpleName(),
+                result.size());
         return result;
     }
 
@@ -45,7 +47,8 @@ public class ReviewFacade extends AbstractFacade<Review> {
      */
     public int countAllByBookPk(Long pk) {
         LOGGER.info("IN countAllByBookPk:(book pk = [{}])", pk);
-        int result = ((Long) getEntityManager().createQuery("SELECT count(*) from Review r where r.book = " + pk).getSingleResult()).intValue();
+        int result = ((Long) getEntityManager().createQuery("SELECT count(*) from Review r where r.book = " +
+                pk).getSingleResult()).intValue();
         return result;
     }
 }

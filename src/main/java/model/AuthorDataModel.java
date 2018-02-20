@@ -1,7 +1,7 @@
 package model;
 
 import entity.Author;
-import exception.AuthorException;
+import util.exception.AuthorException;
 import managers.AuthorManager;
 import org.ajax4jsf.model.DataVisitor;
 import org.ajax4jsf.model.Range;

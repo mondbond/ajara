@@ -7,16 +7,19 @@ import java.util.List;
 
 public abstract class AbstractExtendedModel<E> extends ExtendedDataModel<E> {
 
-    protected Integer rowKey;
+    private Integer rowKey;
     protected List<E> list;
-    protected boolean isASC;
+    boolean isASC;
 
-    protected HashMap<String, Boolean> mOderMap = new HashMap<>();
+    HashMap<String, Boolean> mOderMap = new HashMap<>();
+
+    AbstractExtendedModel() {
+    }
 
     /**
      * Handle order changing in author table
      */
-    protected void changeOrder(String columnName) {
+    void changeOrder(String columnName) {
         if (mOderMap.containsKey(columnName)) {
             mOderMap.put(columnName, !mOderMap.get(columnName));
         } else {

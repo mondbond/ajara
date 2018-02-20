@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -26,15 +27,17 @@ public class Review extends BaseEntity {
     public static final String DATE_COLUMN = "CREATE_DATE";
 
     @Column(name = "COMMENTER_NAME")
-    @Pattern(regexp = "[a-zA-Z0-9- ]{3,100}", message = "Name must contain minimum 3 maximum 100 characters without special symbols")
+    @Pattern(regexp = "[a-zA-Z0-9- ]{3,100}", message = "Name must contain minimum 3 maximum 100 characters " +
+            "without special symbols")
     private String commenterName;
 
     @Column(name = "COMMENT_TEXT")
     private String commentText;
 
     @Column(name = "RATING")
+    @NotNull(message = "Can not be empty")
+    @Min(value = 0, message = "The value must be positive")
     @Range(min = 0, max = 5, message = "Rating must be between 0 and 5")
-    @NotNull
     private Integer rating;
 
     @JsonIgnore
@@ -42,4 +45,3 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "ID_BOOK")
     private Book book;
 }
-

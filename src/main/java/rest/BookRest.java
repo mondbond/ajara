@@ -1,7 +1,7 @@
 package rest;
 
 import entity.Book;
-import exception.BookException;
+import util.exception.BookException;
 import managers.BookManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -28,14 +28,19 @@ public class BookRest {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/")
     public Response getAllBooks(@QueryParam("skip") int skip, @QueryParam("limit") int limit,
-                                @QueryParam("sort") String sortColumn, @QueryParam("isAsc") boolean isAsc) throws BookException {
-        List<BookDto> books = bookManager.getPagination(skip, limit, sortColumn, isAsc).stream()
+                                @QueryParam("sort") String sortColumn, @QueryParam("isAsc") boolean isAsc)
+            throws BookException {
+        try {
+            List<BookDto> books = bookManager.getPagination(skip, limit, sortColumn, isAsc).stream()
                 .map(bookMapper).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(books)) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return (CollectionUtils.isEmpty(books)) ? Response.status(Response.Status.NOT_FOUND).build()
                 : Response.status(Response.Status.OK).entity(books).build();
+        }catch (Exception e){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @GET
@@ -61,7 +66,6 @@ public class BookRest {
         bookManager.delete(pk);
         return Response.status(Response.Status.OK).build();
     }
-
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

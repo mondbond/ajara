@@ -1,7 +1,7 @@
 package model;
 
 import entity.Review;
-import exception.ReviewException;
+import util.exception.ReviewException;
 import lombok.Setter;
 import managers.ReviewManager;
 import org.ajax4jsf.model.DataVisitor;

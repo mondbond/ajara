@@ -37,7 +37,7 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper  {
                     (ExceptionQueuedEventContext) event.getSource();
             Throwable t = context.getException();
             @val FacesContext fc = FacesContext.getCurrentInstance();
-            @val  Map<String, Object> requestMap = fc.getExternalContext().getRequestMap();
+            @val Map<String, Object> requestMap = fc.getExternalContext().getRequestMap();
             @val NavigationHandler nav = fc.getApplication().getNavigationHandler();
             try {
                 requestMap.put("exceptionMessage", ExceptionUtils.getRootCauseMessage(t));

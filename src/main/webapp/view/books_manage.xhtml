@@ -8,7 +8,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a4j="http://richfaces.org/a4j"
-      xmlns:rich="http://richfaces.org/rich" xmlns:p="http://xmlns.jcp.org/jsf/core">
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:p="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
     <title>Books</title>
@@ -99,7 +100,7 @@
 
                 <rich:column>
                     <f:facet name="header">
-                            <h:commandLink action="#{bookController.sortBy}"> Date
+                            <h:commandLink action="#{bookController.sortBy}"> Create date
                                 <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getDateColumnConstant()}" />
                             </h:commandLink>
                     </f:facet>
@@ -187,9 +188,9 @@
                         <h:message for="inputBookPublisher" style="color:red" />
                     </div>
                     <div>
-                        <h:outputLabel value="Year:" for="inputBookPublisher"/>
+                        <h:outputLabel value="Year:" for="inputBookYear"/>
                         <h:inputText id="inputBookYear" value="#{bookController.newBook.publishYear}"/>
-                        <h:message for="inputBookPublisher" style="color:red" />
+                        <h:message for="inputBookYear" style="color:red" />
                     </div>
 
                     <div>
@@ -269,10 +270,9 @@
             });
 
             set_listeners_to_checkboxes();
-        }
+        };
 
             function set_listeners_to_checkboxes(){
-                var boxes = [];
                 var boxes = document.querySelectorAll('.deleteSelector');
                 boxes.forEach(function (item, i, arr) {
                     boxes[i].addEventListener("click", function(e){
@@ -286,7 +286,6 @@
             }
 
             function onSelectAll() {
-            var boxes = [];
             var boxes = document.querySelectorAll('.deleteSelector');
             var bool_value = document.getElementById('selectAll').getElementsByTagName('input')[0].checked;
             boxes.forEach(function (item, i, arr) {

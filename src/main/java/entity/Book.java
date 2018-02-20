@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,14 +41,17 @@ public class Book extends BaseEntity implements Serializable {
     private String isbn;
 
     @Column(name = "NAME")
-    @Pattern(regexp = "[a-zA-Z0-9- ]{3,50}", message = "Name must contain minimum 3 maximum 50 characters without special characters")
+    @Pattern(regexp = "[a-zA-Z0-9- ]{3,50}", message = "Name must contain minimum 3 maximum 50 characters without " +
+            "special characters")
     private String name;
 
     @Column(name = "PUBLISHER")
-    @Pattern(regexp = "[a-zA-Z0-9- ]{3,50}", message = "PUBLISHER must contain minimum 3 maximum 50 characters without special characters")
+    @Pattern(regexp = "[a-zA-Z0-9- ]{3,50}", message = "Publisher must contain minimum 3 maximum 50 characters " +
+            "without special characters")
     private String publisher;
 
     @Column(name = "PUBLISH_YEAR")
+    @NotNull(message = "Year must be between 1000 and 2018")
     @Range(min = 1000, max = 2018, message = "Year must be between 1000 and 2018")
     private Integer publishYear;
 

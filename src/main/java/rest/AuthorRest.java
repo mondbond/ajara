@@ -1,7 +1,7 @@
 package rest;
 
 import entity.Author;
-import exception.AuthorException;
+import util.exception.AuthorException;
 import managers.AuthorManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
