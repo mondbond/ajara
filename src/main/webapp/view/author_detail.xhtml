@@ -68,7 +68,7 @@
             <rich:column>
                 <f:facet name="header">
                     <h:commandLink action="#{bookController.sortBy}"> Year
-                        <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getYearColumnConstant()}" />
+                        <f:param name="#{bookController.COLUMN_NAME}" value="#{bookController.dataModule.getYearColumnConstant()}" converterMessage="Please enter digits only"/>
                     </h:commandLink>
                 </f:facet>
                 <h:outputText value="#{book.publishYear}"/>

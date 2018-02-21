@@ -48,7 +48,7 @@
                     <h:message for="inputReviewName" style="color:red" />
 
                     <h:outputLabel value="Rating:" for="inputReviewRating"/>
-                    <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}"/>
+                    <h:inputText id="inputReviewRating" value="#{reviewController.newReview.rating}" converterMessage="Please enter digits only"/>
                     <h:message for="inputReviewRating" style="color:red" />
 
                     <h:outputLabel value="Comment:"/>
@@ -196,7 +196,7 @@
 
                     <div>
                         <h:outputText value="Year: " for="updateYear" styleClass="bold"/>
-                        <h:inputText id="updateYear" value="#{bookController.detailBook.publishYear}"/>
+                        <h:inputText id="updateYear" value="#{bookController.detailBook.publishYear}" converterMessage="Please enter digits only"/>
                         <h:message for="updateYear" style="color:red" />
                     </div>
 

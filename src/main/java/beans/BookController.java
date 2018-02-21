@@ -153,6 +153,7 @@ public class BookController implements AbstractExtendedModel.Sorted {
             detailBook.setAuthors(detailBook.getAuthors().stream().distinct().collect(Collectors.toList()));
             bookManager.update(detailBook);
         }
+        detailBookAddAuthorAutocompleteMessage = "";
     }
 
     /**

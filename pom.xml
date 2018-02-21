@@ -6,7 +6,7 @@
 
     <groupId>com.test</groupId>
     <artifactId>library</artifactId>
-    <version>3</version>
+    <version>final</version>
     <packaging>war</packaging>
 
     <repositories>
